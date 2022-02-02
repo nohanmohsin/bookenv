@@ -1,6 +1,8 @@
+@use './colors';
 html{
     font-size: 100%;
     box-sizing: border-box;
+    height: 100%;
 }
 
 *, *::before, *::after{
@@ -10,5 +12,7 @@ html{
 body{
     margin: 0;
     padding: 0;
+    height: 100%;
+    background-color: colors.$black;
     font-family: 'Roboto', sans-serif;
 }

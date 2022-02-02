@@ -1,0 +1,29 @@
+@use "../globals";
+section.hero-section {
+  display: flex;
+  .hero-text {
+    width: 50%;
+    color: globals.$white;
+    span.emphasized {
+      font-size: 3rem;
+      font-weight: 400;
+      color: globals.$primary-color;
+    }
+    p {
+      margin: globals.$margin-big 0;
+    }
+    .login-btn-parent {
+      span {
+        color: globals.$secondary-color;
+      }
+      button {
+        height: 2.5rem;
+        width: 6.875rem;
+        background-color: globals.$secondary-color;
+        margin-right: 1.375rem;
+        border: none;
+        border-radius: globals.$border-radius-full;
+      }
+    }
+  }
+}

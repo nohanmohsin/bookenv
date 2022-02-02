@@ -1,7 +1,8 @@
 h1,
 h2,
 h3{
-    margin-top: 0;
+
+    margin: 0;
 }
 
 a, 
@@ -14,21 +15,22 @@ a:active{
 
 h1{
     font-size: 3rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 h2{
     font-size: 2.1875rem;
-    font-weight: 400; 
+    font-weight: 300; 
 }
 
 h3{
     font-size: 1.25rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 p,
-span{
+span,
+button{
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 200;
 }
