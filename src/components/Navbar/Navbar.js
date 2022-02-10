@@ -1,18 +1,22 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-const hidingURLs= ['home', 'signup', 'signin', 'addbook']
-const Navbar = () => {
+import React from "react";
+import { useLocation, Link } from "react-router-dom";
+//pages to not show the navbar in
+const dontShow = ["/signup", "signin", "/upload"];
+const Navbar = (parentCheck) => {
+  const location = useLocation().pathname;
+  if (!dontShow.includes(location)) {
     return (
-        <div className='navbar'>
-            <h1 className='logo'>Logo</h1>
-            <input type="text" placeholder='Search books'/>
-            <div className='login-btn-parent'>
-                <span>Sign In</span>
-                <button>Sign Up</button>
-            </div>
-            
+      <nav className="navbar">
+        <h1 className="logo">Logo</h1>
+        <input type="text" placeholder="Search books" />
+        <div className="login-btn-parent">
+          <span>Sign In</span>
+          <Link to="/signup"><button>Sign Up</button></Link>
         </div>
+      </nav>
     );
+  } 
+  return null;
 };
 
 export default Navbar;

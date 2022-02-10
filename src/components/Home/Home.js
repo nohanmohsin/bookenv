@@ -1,12 +1,15 @@
 import React from "react";
-
+import heroImage from '../../Asset 2.svg';
+import {Link} from 'react-router-dom';
 const Home = () => {
   return (
     <section className="hero-section">
-      <div className="hero-image"></div>
+      <div className="hero-image">
+        <img src={heroImage} alt="a bookshelf with books" />
+      </div>
       <div className="hero-text">
         <h1 className="catchphrase">
-          A library for everyone with Only{" "}
+          A library for everyone with <br /> Only{" "}
           <span className="emphasized">Free Books</span>
         </h1>
         <p>
@@ -15,7 +18,8 @@ const Home = () => {
           specific books to discuss with fellow bookworms.
         </p>
         <div className="login-btn-parent">
-          <button>Sign Up</button>
+
+          <Link to="/signup"><button>Sign Up</button></Link>
           <span>Sign In</span>
         </div>
       </div>
