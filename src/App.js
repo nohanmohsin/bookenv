@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import Signup from "./components/userAuth/Signup";
 import { AuthProvider } from "./contexts/AuthContext";
+import Signin from "./components/userAuth/Signin";
+import ResetPass from "./components/userAuth/ResetPass";
 function App() {
   return (
     <Router>
@@ -14,7 +16,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route exact path="/signup" element={<Signup />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path='/reset-pass' element={<ResetPass />} />
           </Routes>
         </div>
       </AuthProvider>

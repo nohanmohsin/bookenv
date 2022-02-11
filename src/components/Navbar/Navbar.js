@@ -1,9 +1,10 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
 //pages to not show the navbar in
-const dontShow = ["/signup", "signin", "/upload"];
-const Navbar = (parentCheck) => {
+const dontShow = ['/signup', '/signin', '/resetpass', '/upload'];
+const Navbar = () => {
   const location = useLocation().pathname;
+  console.log(dontShow.includes(location));
   if (!dontShow.includes(location)) {
     return (
       <nav className="navbar">

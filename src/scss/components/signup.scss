@@ -1,6 +1,8 @@
 @use "../globals";
 
-.signup{
+.signup,
+.login,
+.reset-pass{
 	height: 100%;
 	display: flex;
 	text-align: center;
@@ -16,7 +18,7 @@
 	form{
 		margin-top: globals.$margin-big;
 	}
-	input.signup-input{
+	input{
 		display: block;
 		background-color: transparent;
 		color: globals.$white;
@@ -25,7 +27,7 @@
         width: 30rem;
         padding: 0.688rem 0.938rem;
 		border-radius: globals.$border-radius-small;
-		margin-bottom: globals.$margin;
+		margin-bottom: globals.$margin-small;
 	}
 	input::placeholder{
 		color: globals.$light-white;
