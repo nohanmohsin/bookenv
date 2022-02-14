@@ -1,8 +1,17 @@
 import React from "react";
 import heroImage from '../../Asset 2.svg';
 import {Link} from 'react-router-dom';
+import { useAuth } from "../../contexts/AuthContext";
+
 const Home = () => {
+  const {currentUser} = useAuth();
+
   return (
+    currentUser ?
+    <main className="home">
+      
+    </main>
+    :
     <section className="hero-section">
       <div className="hero-image">
         <img src={heroImage} alt="a bookshelf with books" />
@@ -13,7 +22,7 @@ const Home = () => {
           <span className="emphasized">Free Books</span>
         </h1>
         <p>
-          Read your favourite books for FREE!!! Upload some if you have any.
+          Read your favorite books for FREE!!! Upload some if you have any.
           This is an online library maintained by the community. Join threads of
           specific books to discuss with fellow bookworms.
         </p>

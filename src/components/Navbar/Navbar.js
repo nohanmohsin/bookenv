@@ -4,7 +4,6 @@ import { useLocation, Link } from "react-router-dom";
 const dontShow = ['/signup', '/signin', '/resetpass', '/upload'];
 const Navbar = () => {
   const location = useLocation().pathname;
-  console.log(dontShow.includes(location));
   if (!dontShow.includes(location)) {
     return (
       <nav className="navbar">

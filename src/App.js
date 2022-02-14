@@ -6,6 +6,7 @@ import Signup from "./components/userAuth/Signup";
 import { AuthProvider } from "./contexts/AuthContext";
 import Signin from "./components/userAuth/Signin";
 import ResetPass from "./components/userAuth/ResetPass";
+import PdfRenderer from "./scss/components/PdfRenderer/PdfRenderer";
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
             <Route path='/reset-pass' element={<ResetPass />} />
+            <Route path='/view' element={<PdfRenderer />}/>
           </Routes>
         </div>
       </AuthProvider>
