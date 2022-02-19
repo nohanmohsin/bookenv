@@ -5,8 +5,9 @@ import { useAuth } from "../../contexts/AuthContext";
 
 const Home = () => {
   const {currentUser} = useAuth();
-
+  console.log(currentUser);
   return (
+    //if the user is logged in I will show them their news feed
     currentUser ?
     <main className="home">
       
