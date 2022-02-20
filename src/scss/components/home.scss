@@ -1,21 +1,19 @@
 @use "../globals";
+main.landing-page{
+  height: 100%;
+}
 section.hero-section {
   display: flex;
   align-items: center;
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  -webkit-transform: translate(0, -50%);
-    transform: translate(0, -50%);
+  justify-content: space-between;
+  height:100%;
   padding: 0 3.125rem;
-  .hero-image{
-    width: 50%;
-    margin-right: auto;
-    img{
-      height: 90%;
-      width: 90%;
-    }
+  img.hero-image{
+    height: 90%;
+    width: 45%;
+    margin-right: globals.$margin-big;
   }
+  
   .hero-text {
     width: 50%;
     color: globals.$white;
@@ -44,5 +42,12 @@ section.hero-section {
         border-radius: globals.$border-radius-full;
       }
     }
+  }
+}
+
+
+section.become-contributor{
+  img.hero-image{
+    margin-left: globals.$margin-big;
   }
 }

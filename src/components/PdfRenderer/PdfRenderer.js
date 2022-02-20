@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { ref, getBlob, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 import { Document, Page, pdfjs } from "react-pdf";
 import { storage } from "../../firebase";
 
@@ -14,7 +14,6 @@ const PdfRenderer = () => {
   const [file, setFile] = useState();
   let { fileName } = useParams();
   const storageRef = ref(storage, `files/${fileName}`);
-  const reader = new FileReader();
   useEffect(() => {
     
 
