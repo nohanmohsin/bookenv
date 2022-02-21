@@ -1,6 +1,6 @@
 import React from "react";
 import bookshelf from "../../illustrations/bookshelf.svg";
-import manAddingBook from "../../illustrations/man adding book.svg"
+import manAddingBook from "../../illustrations/man adding book.svg";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 

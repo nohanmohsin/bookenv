@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
+//import bookShelf from "../../illustrations/bookshelf.svg";
+import { Link } from "react-router-dom";
 
 const Upload = () => {
-  
   const [loading, setLoading] = useState(false);
   const formHandler = (e) => {
     e.preventDefault();
@@ -30,7 +31,7 @@ const Upload = () => {
         );
         setLoading(false);
       },
-      //function for successful completion 
+      //function for successful completion
       () => {
         setLoading(false);
       }
@@ -38,8 +39,21 @@ const Upload = () => {
   };
   return (
     <main className="upload">
-      <form onSubmit={formHandler}>
-        <input type="file" className="input" />
+      <form onSubmit={formHandler} className="upload-form">
+        <h1>
+          Add a new book for <br /> Everyone to read!
+        </h1>
+        <input
+          type="text"
+          className="gbooks-link"
+          placeholder="Google Books Link"
+          required
+        />
+        <label className="file-input-label">
+          <input type="file" className="input" id="file-upload" required />
+          Upload the book here
+        </label>
+
         <button disabled={loading} type="submit">
           Upload
         </button>

@@ -7,7 +7,7 @@ section.hero-section {
   align-items: center;
   justify-content: space-between;
   height:100%;
-  padding: 0 3.125rem;
+  padding: 0 globals.$margin-big;
   img.hero-image{
     height: 90%;
     width: 45%;
@@ -33,21 +33,15 @@ section.hero-section {
         color: globals.$secondary-color;
       }
       button {
-        height: 2.5rem;
-        width: auto;
-		    padding: 0 globals.$margin;
-        background-color: globals.$secondary-color;
         margin-right: 1.375rem;
-        border: none;
-        border-radius: globals.$border-radius-full;
       }
     }
   }
 }
-
-
 section.become-contributor{
   img.hero-image{
     margin-left: globals.$margin-big;
+    height: 80%;
+
   }
 }

@@ -1,0 +1,25 @@
+@use '../globals';
+form.upload-form{
+    width: 50%;
+    height: 100vh;
+    padding-left: globals.$margin-big;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    flex-direction: column;
+    input.gbooks-link,
+    button{
+        margin-top: globals.$margin-big;
+        display: block;
+    }
+    label{
+        margin-top: globals.$margin-small;
+        color: globals.$light-white;
+        display: flex;
+        align-items: center;
+    }
+    input[type="file"]{
+        display: none;
+    }
+
+}

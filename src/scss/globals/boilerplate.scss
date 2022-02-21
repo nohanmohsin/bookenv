@@ -1,34 +1,37 @@
-@use './colors';
-html{
-    font-size: 100%;
-    box-sizing: border-box;
-    height: 100%;
+@use "./colors" as *;
+@use "./measurements-vars" as *;
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+  height: 100%;
 }
 
-*, *::before, *::after{
-    box-sizing: inherit;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
-body{
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    color: colors.$black;
-    background-color: colors.$black;
-    font-family: 'Roboto', sans-serif;
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  color: $white;
+  background-color: $black;
+  font-family: "Roboto", sans-serif;
 }
 
-.App{
-    height: 100vh;
-    overflow: auto;
+.App {
+  height: 100vh;
+  overflow: auto;
 }
 
-input:focus{
-    outline: none;
+input:focus {
+  outline: none;
 }
 
-a, 
+a,
 a:visited,
-a:active{
-    text-decoration: none;
+a:active {
+  text-decoration: none;
 }

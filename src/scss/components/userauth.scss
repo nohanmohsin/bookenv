@@ -20,28 +20,12 @@
 	}
 	input{
 		display: block;
-		background-color: transparent;
-		color: globals.$white;
-		border: 1px solid globals.$gray;
-		height: 2.5rem;
-        width: 30rem;
-        padding: 0.688rem 0.938rem;
-		border-radius: globals.$border-radius-small;
 		margin-bottom: globals.$margin-small;
-	}
-	input::placeholder{
-		color: globals.$light-white;
 	}
 	button{
 		display: block;
 		margin-top: globals.$margin-big;
 		margin-left: auto;
 		margin-right: auto;
-		height: 2.5rem;
-        width: auto;
-		padding: 0 globals.$margin;
-		background-color: globals.$secondary-color;
-		border: none;
-        border-radius: globals.$border-radius-full;
 	}
 }
