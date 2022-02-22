@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
-//import bookShelf from "../../illustrations/bookshelf.svg";
-import { Link } from "react-router-dom";
+import bookwall from "../../illustrations/bookwall.svg";
 
 const Upload = () => {
   const [loading, setLoading] = useState(false);
@@ -58,6 +57,8 @@ const Upload = () => {
           Upload
         </button>
       </form>
+      <img src={bookwall} alt="a wall full of books" className="bookwall"/>
+      
     </main>
   );
 };

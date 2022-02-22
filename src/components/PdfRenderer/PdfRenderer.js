@@ -28,14 +28,13 @@ const PdfRenderer = () => {
         const blob = xhr.response;
         //setting the file to the response
         setFile((blob));
-        console.log(blob);
       };
       xhr.open('GET', url);
       xhr.send();
 
     })
     .catch((error) => {
-      console.log(error)
+      alert('sorry couldnt fetch the pdf for you at the moment');
     });
     // eslint-disable-next-line
   }, [])
