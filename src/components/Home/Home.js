@@ -33,6 +33,7 @@ const Home = () => {
             </div>
           </div>
         </section>
+
         <section className="become-contributor hero-section">
           <div className="hero-text">
             <h1 className="catchphrase">
@@ -50,6 +51,15 @@ const Home = () => {
             </div>
           </div>
           <img src={manAddingBook} alt="person adding a book to a library" className="hero-image"/>
+        </section>
+
+        <section className="keep-reading">
+          <h1 className='emphasized'>Or</h1>
+          <h1>Just keep on reading!!</h1>
+          <p>You are always free to just read the books available in our website...open up the book and read as much as you want and we'll save your progress and (if you want) we'll tell others about it. You can also earn awards from reading your favourite books too</p>
+          <Link to="/explore">
+            <button>Explore</button>
+          </Link>
         </section>
       </main>
     )

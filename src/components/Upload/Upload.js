@@ -1,41 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 import bookwall from "../../illustrations/bookwall.svg";
 
 const Upload = () => {
   const [loading, setLoading] = useState(false);
+  const [uploadTask, setUploadTask] = useState();
+  const [fileName, setFileName] = useState();
   const formHandler = (e) => {
     e.preventDefault();
-    const file = e.target[0].files[0];
-    uploadFile(file);
+    const file = e.target[1].files[0];
+    const storageRef = ref(storage, `files/${file.name}`);
+    let tempTask = uploadBytesResumable(storageRef, file);
+    setUploadTask(tempTask);
   };
 
-  const uploadFile = (file) => {
-    if (!file) return;
-    const storageRef = ref(storage, `files/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    //https://firebase.google.com/docs/reference/js/v8/firebase.storage.UploadTask
-    uploadTask.on(
-      "state_changed",
-      //setting loading to true while the file upload is pending
-      (snapshot) => {
-        //to keep the upload button disabled till the upload is completed
-        setLoading(true);
-      },
-      //function for error
-      (error) => {
-        alert(
-          "Something went wrong while uploading this file :( Try again later"
-        );
-        setLoading(false);
-      },
-      //function for successful completion
-      () => {
-        setLoading(false);
-      }
-    );
-  };
+  useEffect(() => {
+    if (uploadTask) {
+      //https://firebase.google.com/docs/reference/js/v8/firebase.storage.UploadTask
+      uploadTask.on(
+        "state_changed",
+        //setting loading to true while the file upload is pending
+        (snapshot) => {
+          //to keep the upload button disabled till the upload is completed
+          setLoading(true);
+          console.log(snapshot.bytesTransferred / snapshot.totalBytes);
+        },
+        //function for error
+        (error) => {
+          switch (error.code) {
+            case "storage/unauthorized":
+              // User doesn't have permission to access the object
+              alert("something went wrong while uploading this file :(");
+              setLoading(false);
+              break;
+            case "storage/canceled":
+              // User canceled the upload
+              console.log("the cancel method works");
+              
+              break;
+            default:
+              alert("something went wrong while uploading this file :(");
+              setLoading(false);
+          }
+        },
+        //function for successful completion
+        () => {
+          setLoading(false);
+          console.log("the upload is successful");
+        }
+      );
+    }
+  }, [uploadTask]);
   return (
     <main className="upload">
       <form onSubmit={formHandler} className="upload-form">
@@ -49,16 +65,26 @@ const Upload = () => {
           required
         />
         <label className="file-input-label">
-          <input type="file" className="input" id="file-upload" required />
+          <input type="file" className="input" id="file-upload" onChange={(e) => {
+            setFileName(e.target.files[0].name)
+          }} required />
           Upload the book here
         </label>
-
-        <button disabled={loading} type="submit">
-          Upload
-        </button>
+        <div className="buttons-container">
+          <button disabled={loading} type="submit" className="upload">
+            Upload
+          </button>
+          {loading === true ? (
+            <button className="cancel" onClick={() => {
+              uploadTask.cancel()
+              setLoading(false)
+            }}>
+              Cancel
+            </button>
+          ) : null}
+        </div>
       </form>
-      <img src={bookwall} alt="a wall full of books" className="bookwall"/>
-      
+      <img src={bookwall} alt="a wall full of books" className="bookwall" />
     </main>
   );
 };
