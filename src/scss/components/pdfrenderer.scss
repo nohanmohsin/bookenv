@@ -1,0 +1,28 @@
+main.pdf-renderer{
+    height: 100vh;
+    .pdf-container{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        height: 90vh;
+        margin: 0 auto;
+        
+        &::-webkit-scrollbar{
+            display: none;
+        }
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    canvas{
+        margin: 0 auto;
+    }
+    button{
+        display: block;
+        position: fixed;
+        top: 100px;
+        
+    }
+    button.next-page{
+        margin-left: 100px;
+    }
+}

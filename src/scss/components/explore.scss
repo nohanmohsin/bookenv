@@ -1,0 +1,15 @@
+@use '../globals';
+main.explore{
+    padding-left: globals.$margin-big;
+    section{
+        margin-top: globals.$margin-big;
+    }
+    .books-details-container{
+        display: flex;
+        margin-top: globals.$margin;
+    }
+    .authors-details-container{
+        display: flex;
+        margin-top: globals.$margin;
+    }
+}

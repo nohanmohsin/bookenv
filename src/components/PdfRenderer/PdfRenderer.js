@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { Document, Page, pdfjs } from "react-pdf";
 import { storage } from "../../firebase";
+//import sampleFile from "../../pdf.pdf";
 
 //idk why this exists tbh...it works tho...I aint touching this
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -10,15 +11,14 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pd
 const PdfRenderer = () => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [scale, setScale] = useState(1.0);
   //the pdf file that is going to be displayed
   const [file, setFile] = useState();
   let { fileName } = useParams();
   const storageRef = ref(storage, `files/${fileName}`);
   useEffect(() => {
-    
 
     //gets the link of the file in firebase storage
-    
     getDownloadURL(storageRef)
     .then((url) => {
       //requesting the file from the storage
@@ -54,33 +54,32 @@ const PdfRenderer = () => {
   }
 
   return (
-    <main className="pdf-container">
-      {
-        file ? 
-        <>
-          <Document
-            file={file}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={console.error()}
-          >
-            <Page pageNumber={pageNumber} />
-          </Document>
-          <p>
-            {" "}
-            Page {pageNumber} of {numPages}
-          </p>
-          {pageNumber > 1 && (
-            <button onClick={changePageBack}>Previous Page</button>
-          )}
-          {pageNumber < numPages && (
-            <button onClick={changePageNext}>Next Page</button>
-          )}
-        </>
-          
-      :
-      <p>loading...</p>
-      }
+    <main className="pdf-renderer">
+      <div className="pdf-container">
+        <Document
+          file={file}
+          onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={console.error()}
+          className="pdf-doc"
+        >
+          <Page pageNumber={pageNumber} height={600} scale={scale}/>
+        </Document>
+      </div>
       
+      <p>
+        {" "}
+        Page {pageNumber} of {numPages}
+      </p>
+      {pageNumber > 1 && (
+        <button onClick={changePageBack}>Previous Page</button>
+      )}
+      {pageNumber < numPages && (
+        <button onClick={changePageNext} className="next-page">Next Page</button>
+      )}
+      <button onClick={() => {
+        setScale((prevScale) => prevScale + 0.3)
+        
+      }}>scale</button>
     </main>
   );
 };

@@ -5,16 +5,18 @@ import bookwall from "../../illustrations/bookwall.svg";
 
 const Upload = () => {
   const [loading, setLoading] = useState(false);
+  //state for upload task
   const [uploadTask, setUploadTask] = useState();
   const [fileName, setFileName] = useState();
   const formHandler = (e) => {
     e.preventDefault();
     const file = e.target[1].files[0];
     const storageRef = ref(storage, `files/${file.name}`);
+    
     let tempTask = uploadBytesResumable(storageRef, file);
     setUploadTask(tempTask);
   };
-
+  //monitoring the uploadTask
   useEffect(() => {
     if (uploadTask) {
       //https://firebase.google.com/docs/reference/js/v8/firebase.storage.UploadTask
@@ -24,7 +26,7 @@ const Upload = () => {
         (snapshot) => {
           //to keep the upload button disabled till the upload is completed
           setLoading(true);
-          console.log(snapshot.bytesTransferred / snapshot.totalBytes);
+          
         },
         //function for error
         (error) => {
@@ -34,11 +36,7 @@ const Upload = () => {
               alert("something went wrong while uploading this file :(");
               setLoading(false);
               break;
-            case "storage/canceled":
-              // User canceled the upload
-              console.log("the cancel method works");
-              
-              break;
+            
             default:
               alert("something went wrong while uploading this file :(");
               setLoading(false);
@@ -47,7 +45,7 @@ const Upload = () => {
         //function for successful completion
         () => {
           setLoading(false);
-          console.log("the upload is successful");
+          
         }
       );
     }

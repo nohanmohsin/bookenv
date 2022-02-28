@@ -1,0 +1,26 @@
+@use "../globals";
+.book-basic-details {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  
+  margin-right: globals.$margin;
+  background-size: cover;
+  background-repeat: no-repeat;
+  img{
+    height: 14rem;
+    width: 10.5rem;
+    border-radius: globals.$border-radius-small;
+  }
+  
+  span {
+    margin-top: calc(globals.$margin-small - 5px);
+    width: 60%;
+    font-weight: 400;
+  }
+  span:hover{
+    color: globals.$primary-color;
+    cursor: pointer;
+  }
+
+}

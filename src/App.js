@@ -8,6 +8,7 @@ import Signin from "./components/userAuth/Signin";
 import ResetPass from "./components/userAuth/ResetPass";
 import PdfRenderer from "./components/PdfRenderer/PdfRenderer";
 import Upload from "./components/Upload/Upload";
+import Explore from "./components/Explore/Explore";
 function App() {
   return (
     <Router>
@@ -23,6 +24,7 @@ function App() {
             <Route path='/reset-pass' element={<ResetPass />} />
             <Route path='/view=:fileName' element={<PdfRenderer />}/>
             <Route path="/upload" element={<Upload />} />
+            <Route path="/explore" element={<Explore />} />
           </Routes>
         </div>
       </AuthProvider>
