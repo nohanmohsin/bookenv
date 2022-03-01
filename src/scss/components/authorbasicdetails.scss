@@ -11,7 +11,13 @@
     object-position: 0px 0px;
     object-fit: cover;
   }
-  span{
-    margin-top: calc(globals.$margin - 5px);
+  span {
+    margin-top: calc(globals.$margin-small - 5px);
+    width: 60%;
+    font-weight: 400;
+  }
+  span:hover{
+    color: globals.$primary-color;
+    cursor: pointer;
   }
 }
