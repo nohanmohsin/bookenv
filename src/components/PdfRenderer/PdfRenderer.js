@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { Document, Page, pdfjs } from "react-pdf";
 import { storage } from "../../firebase";
-//import sampleFile from "../../pdf.pdf";
-
 //idk why this exists tbh...it works tho...I aint touching this
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 

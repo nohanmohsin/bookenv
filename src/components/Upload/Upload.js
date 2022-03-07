@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { db } from "../../firebase";
 import { storage } from "../../firebase";
 import bookwall from "../../illustrations/bookwall.svg";
 
-
 const Upload = () => {
+
   const [loading, setLoading] = useState(false);
+  const [fileName, setFileName] = useState();
   //state for upload task
   const [uploadTask, setUploadTask] = useState();
-  const [fileName, setFileName] = useState();
   const formHandler = (e) => {
     e.preventDefault();
     const booksLinkRef = e.target[0].value;
     let usableLink = booksLinkRef.substr(booksLinkRef.indexOf("id") + 3, 12);
-
     if (
       booksLinkRef.startsWith("https://books.google.com") &&
       booksLinkRef.indexOf("id=") !== -1
     ) {
-
       //fetching the data related to the uploaded book from google books api
       fetch(`https://www.googleapis.com/books/v1/volumes/${usableLink}`)
         .then((res) => res.json())
         .then(async (data) => {
-          try{
-            
+          try {
+            //uploading the book data from google books to the database
             const docRef = await addDoc(collection(db, "books"), {
               name: data.volumeInfo.title,
               author: data.volumeInfo.authors,
@@ -35,23 +33,27 @@ const Upload = () => {
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
               imageURLs: data.volumeInfo.imageLinks,
-              
-            })
-          } catch (e) {
-            console.error("Error adding document: ", e);
+            });
+            //uploading the file to storage after adding the data from the api to db
+            const file = e.target[1].files[0];
+            const storageRef = ref(storage, `files/${docRef.id}.pdf`);
+            let tempTask = uploadBytesResumable(storageRef, file);
+            setUploadTask(tempTask);
+          } catch (err) {
+            //no need to alert here cos the upload Task gets cancelled here
+            uploadTask.cancel()
+            setLoading(false);
           }
-          
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          uploadTask.cancel();
+          alert("something went wrong while uploading this file :(");
+          setLoading(false);
+        });
     } else {
       alert("Your Link is invalid");
       e.target[0].value = "";
     }
-    const file = e.target[1].files[0];
-    const storageRef = ref(storage, `files/${file.name}`);
-
-    let tempTask = uploadBytesResumable(storageRef, file);
-    setUploadTask(tempTask);
   };
   //monitoring the uploadTask
   useEffect(() => {
@@ -63,6 +65,7 @@ const Upload = () => {
         (snapshot) => {
           //to keep the upload button disabled till the upload is completed
           setLoading(true);
+          console.log('loading')
         },
         //function for error
         (error) => {
@@ -71,8 +74,12 @@ const Upload = () => {
               // User doesn't have permission to access the object
               alert("something went wrong while uploading this file :(");
               setLoading(false);
+              console.log('unauthorized');
               break;
-
+            //not alerting when the user has cancelled the upload
+            case 'storage/cancelled':
+              setLoading(false);
+              break;
             default:
               alert("something went wrong while uploading this file :(");
               setLoading(false);
@@ -80,6 +87,7 @@ const Upload = () => {
         },
         //function for successful completion
         () => {
+          console.log('completed')
           setLoading(false);
         }
       );
@@ -98,16 +106,10 @@ const Upload = () => {
           required
         />
         <label className="file-input-label">
-          <input
-            type="file"
-            className="input"
-            id="file-upload"
-            onChange={(e) => {
-              setFileName(e.target.files[0].name);
-            }}
-            required
-          />
-          Upload the book here
+          <input type="file" className="input" id="file-upload" onChange={(e) => {
+            setFileName(e.target.files[0].name)
+          }} required />
+          {fileName ? <>{fileName}</> : <>Upload the book here</>}
         </label>
         <div className="buttons-container">
           <button disabled={loading} type="submit" className="upload">

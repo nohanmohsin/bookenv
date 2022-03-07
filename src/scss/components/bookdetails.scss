@@ -1,0 +1,39 @@
+@use '../globals';
+main.book-details{
+    section.main-details{
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        gap: globals.$margin-huge;
+        
+        img{
+            height: 30.625rem;
+            
+            border-radius: globals.$border-radius-small;
+        }
+        .text-details{
+            display: flex;
+            flex-direction: column;
+            gap: globals.$margin;
+            .genres-container{
+                display: flex;
+                gap: globals.$margin-small;
+            }
+            .genre{
+                display: inline-block;
+                height: 1.5rem;
+                width: auto;
+                padding: 0 globals.$margin-small;
+                background-color: globals.$light-primary-color;
+                border-radius: globals.$border-radius-full;
+                border: 1px solid globals.$primary-color;
+            }
+            .buttons-container{
+                span{
+                    color: globals.$secondary-color;
+                }
+            }
+        }
+    }
+}
