@@ -10,6 +10,7 @@ import PdfRenderer from "./components/PdfRenderer/PdfRenderer";
 import Upload from "./components/Upload/Upload";
 import Explore from "./components/Explore/Explore";
 import BookDetails from "./components/BookDetails/BookDetails";
+import SearchPage from "./components/SearchPage/SearchPage";
 function App() {
   return (
     <Router>
@@ -27,6 +28,7 @@ function App() {
             <Route path="/upload" element={<Upload />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/:bookID" element={<BookDetails />}/>
+            <Route path="search=:query" element={<SearchPage />} />
           </Routes>
         </div>
       </AuthProvider>

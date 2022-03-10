@@ -27,12 +27,13 @@ const Upload = () => {
             //uploading the book data from google books to the database
             const docRef = await addDoc(collection(db, "books"), {
               name: data.volumeInfo.title,
+              lowerCaseName: data.volumeInfo.title.toLowerCase(),
               author: data.volumeInfo.authors,
-              genres: data.volumeInfo.categories,
+              genres: data.volumeInfo.categories[0],
               publishDate: data.volumeInfo.publishedDate,
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
-              imageURLs: data.volumeInfo.imageLinks,
+              imageURL: data.volumeInfo.imageLinks.thumbnail,
             });
             //uploading the file to storage after adding the data from the api to db
             const file = e.target[1].files[0];
@@ -41,6 +42,7 @@ const Upload = () => {
             setUploadTask(tempTask);
           } catch (err) {
             //no need to alert here cos the upload Task gets cancelled here
+            //cancelling the upload because the book data couldnt be added to the db
             uploadTask.cancel()
             setLoading(false);
           }

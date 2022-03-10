@@ -2,14 +2,14 @@
 main.book-details{
     section.main-details{
         display: flex;
-        height: 100vh;
+        //subtracting the height of the navbar
+        height: calc(100vh - 3.4375rem);
         justify-content: center;
         align-items: center;
         gap: globals.$margin-huge;
         
         img{
             height: 30.625rem;
-            
             border-radius: globals.$border-radius-small;
         }
         .text-details{
@@ -34,6 +34,17 @@ main.book-details{
                     color: globals.$secondary-color;
                 }
             }
+        }
+        margin-bottom: globals.$margin-huge;
+    }
+    section.overview,
+    section.more-books{
+        display: inline-block;
+        width: 50%;
+    }
+    section.overview{
+        p{
+            width: 90%;
         }
     }
 }

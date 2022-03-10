@@ -1,7 +1,7 @@
 import React from "react";
 
 const BookBasicDetails = ({ data }) => {
-  const bgImageURL = data.backgroundImage;
+  const bgImageURL = data.imageURL;
   return (
     <div className="book-basic-details">
       <img src={bgImageURL} alt="book cover" />

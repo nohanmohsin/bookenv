@@ -1,0 +1,14 @@
+@use '../globals';
+main.search-page{
+    margin-top: globals.$margin-big;
+    padding-left: globals.$margin-big;
+    .book-results{
+        margin-top: globals.$margin;
+        h2{
+            margin-bottom: globals.$margin-small;
+        }
+    }
+    .book-results-container{
+        display: flex;
+    }
+}

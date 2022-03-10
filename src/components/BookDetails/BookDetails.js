@@ -9,7 +9,7 @@ const BookDetails = () => {
     author: ["Andy Weir"],
     publishDate: "2014-02-11",
     genres: "Fiction / Science Fiction / Action & Adventure",
-    imageURLs: {
+    imageURL: {
       thumbnail:
         "http://books.google.com/books/publisher/content?id=MQeHAAAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72sR1qKHjR2KH592fMe3NM7ag0pnPI76kEZ4DOBFqbh9Itwx7UL_mWT4_eVaaJ9CospNg4b-1gcBGf7uWw2LEusT-20JNJ2UeRbDXNOGxica4V2yOZSQlX1LUGXA0ZAJgrtdHPK&source=gbs_api",
       smallThumbnail:
@@ -22,20 +22,20 @@ const BookDetails = () => {
   };
   let { bookID } = useParams();
   //function for getting the book data from firestore db
-  //   const getData = async () => {
-  //     //https://firebase.google.com/docs/firestore/query-data/get-data
-  //     const docRef = doc(db, "books", bookID);
-  //     const docSnap = await getDoc(docRef);
-  //     if (docSnap.exists()) {
-  //       setData(docSnap.data());
-  //     } else {
-  //       console.log("No such document!");
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     getData();
-  //     // eslint-disable-next-line
-  //   }, []);
+    const getData = async () => {
+      //https://firebase.google.com/docs/firestore/query-data/get-data
+      const docRef = doc(db, "books", bookID);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setData(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
+    };
+    useEffect(() => {
+      getData();
+      // eslint-disable-next-line
+    }, []);
   return (
     <main className="book-details">
       <section className="main-details">
