@@ -1,8 +1,6 @@
 import React from "react";
 import { exampleData } from "./exampleData";
-import { authorData } from "./authorData";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
-import AuthorBasicDetails from "../AuthorBasicDetails/AuthorBasicDetails";
 
 const Explore = () => {
   return (

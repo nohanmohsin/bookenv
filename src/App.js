@@ -28,7 +28,7 @@ function App() {
             <Route path="/upload" element={<Upload />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/:bookID" element={<BookDetails />}/>
-            <Route path="search=:query" element={<SearchPage />} />
+            <Route path="search=:searchQuery" element={<SearchPage />} />
           </Routes>
         </div>
       </AuthProvider>

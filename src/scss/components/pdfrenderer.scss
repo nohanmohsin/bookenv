@@ -1,17 +1,22 @@
 main.pdf-renderer{
-    height: 100vh;
+    height: calc(100vh - 3.4375rem);
+    display: flex;
     .pdf-container{
         display: flex;
         flex-direction: column;
         width: 50%;
-        height: 90vh;
-        margin: 0 auto;
+        height: 95%;
+        margin: auto;
+        overflow: scroll;
         
         &::-webkit-scrollbar{
             display: none;
         }
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
+        .annotationLayer{
+            display: none;
+        }
     }
     canvas{
         margin: 0 auto;

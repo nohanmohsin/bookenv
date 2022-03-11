@@ -1,12 +1,11 @@
 import React from "react";
 
 const BookBasicDetails = ({ data }) => {
-  const bgImageURL = data.imageURL;
   return (
     <div className="book-basic-details">
-      <img src={bgImageURL} alt="book cover" />
+      <img src={data.imageUrl} alt="book cover" />
       <span>
-        {data.name}{" "} ({data.publishDate})
+        {data.name}
       </span>
     </div>
   );
