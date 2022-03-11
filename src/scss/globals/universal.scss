@@ -1,5 +1,8 @@
 @use "./colors" as *;
 @use "./measurements-vars" as *;
+a{
+  cursor: pointer;
+}
 button {
   height: 2.5rem;
   width: auto;

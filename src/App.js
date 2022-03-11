@@ -11,6 +11,7 @@ import Upload from "./components/Upload/Upload";
 import Explore from "./components/Explore/Explore";
 import BookDetails from "./components/BookDetails/BookDetails";
 import SearchPage from "./components/SearchPage/SearchPage";
+import NotFound from "./components/NotFound/NotFound";
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/not-found" element={<NotFound errorName={'book'} />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
             <Route path='/reset-pass' element={<ResetPass />} />

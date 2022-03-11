@@ -25,6 +25,7 @@ const SearchPage = () => {
   return (
     <main className="search-page">
       <h1>Results for "{searchQuery}"</h1>
+      
       <div className="book-results">
         <h2>Books</h2>
         <div className="book-results-container">
