@@ -12,6 +12,8 @@ import Explore from "./components/Explore/Explore";
 import BookDetails from "./components/BookDetails/BookDetails";
 import SearchPage from "./components/SearchPage/SearchPage";
 import NotFound from "./components/NotFound/NotFound";
+import Threads from "./components/Threads/Threads";
+
 function App() {
   return (
     <Router>
@@ -30,7 +32,8 @@ function App() {
             <Route path="/upload" element={<Upload />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/:bookID" element={<BookDetails />}/>
-            <Route path="search=:searchQuery" element={<SearchPage />} />
+            <Route path="/search=:searchQuery" element={<SearchPage />} />
+            <Route path="/threads" element={<Threads />} />
           </Routes>
         </div>
       </AuthProvider>
