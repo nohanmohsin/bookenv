@@ -13,6 +13,10 @@ button {
   border-radius: $border-radius-full;
 }
 
+button:disabled{
+  background-color: #488956;
+}
+
 input,
 label {
   background-color: transparent;

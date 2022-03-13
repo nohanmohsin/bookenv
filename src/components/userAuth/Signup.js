@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -20,18 +21,21 @@ const Signup = () => {
     try {
       
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(usernameRef.current.value, emailRef.current.value, passwordRef.current.value);
+      setLoading(false);
       navigate("/");
     } catch {
       alert("Failed to create an account");
+      setLoading(false);
     }
 
-    setLoading(false);
+    
   }
   return (
     <main className="signup">
       <h1>Create an Account</h1>
       <form className="signup-form" onSubmit={handleSubmit}>
+        <input type="text" className="signup-input" placeholder="Username" ref={usernameRef}/>
         <input
           className="signup-input"
           type="text"
@@ -41,14 +45,16 @@ const Signup = () => {
         />
         <input
           className="signup-input"
-          type="text"
+          type="password"
+          minLength={8}
           placeholder="Password"
           required
           ref={passwordRef}
+
         />
         <input
           className="signup-input"
-          type="text"
+          type="password"
           placeholder="Confirm Password"
           required
           ref={passwordConfirmRef}
