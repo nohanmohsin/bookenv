@@ -67,7 +67,6 @@ const Upload = () => {
         (snapshot) => {
           //to keep the upload button disabled till the upload is completed
           setLoading(true);
-          console.log('loading')
         },
         //function for error
         (error) => {
@@ -76,7 +75,6 @@ const Upload = () => {
               // User doesn't have permission to access the object
               alert("something went wrong while uploading this file :(");
               setLoading(false);
-              console.log('unauthorized');
               break;
             //not alerting when the user has cancelled the upload
             case 'storage/cancelled':
@@ -89,7 +87,6 @@ const Upload = () => {
         },
         //function for successful completion
         () => {
-          console.log('completed')
           setLoading(false);
         }
       );

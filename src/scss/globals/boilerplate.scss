@@ -23,13 +23,12 @@ body {
 
 .App {
   height: 100vh;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 input:focus {
   outline: none;
 }
-
 a,
 a:visited,
 a:active {

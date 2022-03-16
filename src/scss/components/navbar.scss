@@ -9,7 +9,10 @@
     width: 100%;
     padding: 0 globals.$margin-big;
     color: globals.$black;
-    z-index: 60;
+    background-color: globals.$black;
+    position: fixed;
+    z-index: 2;
+    margin-bottom: 3.4375rem;
     h1{
         font-size: 1.875rem;
         color: globals.$primary-color;

@@ -1,5 +1,8 @@
 @use "./colors" as *;
 @use "./measurements-vars" as *;
+.scrollable-content{
+  margin-top: 3.4375rem;
+}
 a{
   cursor: pointer;
 }

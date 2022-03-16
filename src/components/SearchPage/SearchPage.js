@@ -19,7 +19,6 @@ const SearchPage = () => {
       setResults(resultsArray);
     };
     fetchResults();
-    console.log(searchQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

@@ -1,0 +1,15 @@
+@use '../globals';
+.message{
+    display: flex;
+    gap: globals.$margin-small;
+    margin: globals.$margin 0;
+    img{
+        border-radius: globals.$border-radius-full;
+    }
+    h3{
+        font-size: 1rem;
+    }
+    p{
+        margin: calc(globals.$margin-small - 3px) 0;
+    }
+}

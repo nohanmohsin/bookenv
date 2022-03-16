@@ -41,10 +41,6 @@ const PdfRenderer = () => {
     });
     // eslint-disable-next-line
   }, [])
-  useEffect(() => {
-    console.log(window.innerWidth)
-    
-  }, [])
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);

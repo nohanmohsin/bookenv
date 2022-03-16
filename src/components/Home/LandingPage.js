@@ -5,7 +5,7 @@ import manAddingBook from "../../illustrations/man adding book.svg";
 
 const LandingPage = () => {
   return (
-    <main className="landing-page">
+    <main className="landing-page scrollable-content">
       <section className="hero-section">
         <img
           src={bookshelf}
