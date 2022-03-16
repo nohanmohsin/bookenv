@@ -7,6 +7,9 @@ section.chatbox{
         height: 80%;
         padding: 0 globals.$margin;
         overflow-y: scroll;
+        span{
+            width: 100%;
+        }
     }
     form{
         display: flex;

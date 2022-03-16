@@ -4,7 +4,6 @@ import {
   orderBy,
   limit,
   query,
-  getDocs,
   serverTimestamp,
   addDoc,
 } from "firebase/firestore";
@@ -15,7 +14,7 @@ import Message from "./Message";
 const ChatBox = ({ threadID }) => {
   const dummy = useRef();
   const [formValue, setFormValue] = useState("");
-  //used to change the query limit of msgQuery on scroll(will implement some day :/)
+  //used to change the query limit of msgQuery on scroll
   const [msgQueryLimit, setMsgQueryLimit] = useState(50);
 
   const messagesRef = collection(db, `threads/${threadID}/messages`);
@@ -26,22 +25,33 @@ const ChatBox = ({ threadID }) => {
   );
   const [messages] = useCollectionData(msgQuery);
 
+  const handleMessagesScroll = (e) => {
+    //increasing msg query limit on scroll to the top
+    if(e.target.scrollTop === 0){
+      setMsgQueryLimit((prevLimit) => prevLimit + 50);
+      console.log('scrolled');
+    }
+  }
   const sendMessage = async (e) => {
     e.preventDefault();
     await addDoc(messagesRef, {
       msg: formValue,
-      createdAt: serverTimestamp(),
+      createdAt: serverTimestamp()
     });
     setFormValue("");
     dummy.current.scrollIntoView({ behavior: "smooth" });
   };
+  useEffect(() => {
+    console.log('meow');
+    dummy.current.scrollIntoView();
+    console.log(messages)
+  }, [])
   return (
     <section className="chatbox">
-      <div className="messages-container">
-        {messages && messages.map((message) => <Message message={message} />)}
+      <div className="messages-container" onScroll={handleMessagesScroll}>
+        {messages && messages.map((message) => <Message message={message.msg} createdAt={message.createdAt.seconds} key={message.id}/>)}
+        <div ref={dummy}></div>
       </div>
-
-      <span ref={dummy}></span>
       <form onSubmit={sendMessage}>
         <input
           value={formValue}

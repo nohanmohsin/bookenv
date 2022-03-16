@@ -37,7 +37,7 @@ const BookDetails = () => {
       // eslint-disable-next-line
     }, []);
   return (
-    <main className="book-details scrollable-content">
+    <main className="book-details">
       <section className="main-details">
         <img src={exampleData.imageURLs.thumbnail} alt="book cover" />
         <div className="text-details">

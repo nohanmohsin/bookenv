@@ -1,7 +1,9 @@
 import React from "react";
 
-const Message = ({ message }) => {
+const Message = ({ message, createdAt }) => {
   const name = "alu bhau";
+  const date = new Date(createdAt * 1000);
+  const formattedDate = date.toJSON()
   return (
     <div className="message">
       <img
@@ -12,7 +14,8 @@ const Message = ({ message }) => {
       />
       <div className="text-container">
         <h3>{name}</h3>
-        <p>this is clearly a message</p>
+        <span>{formattedDate.slice(0, 10)}</span>
+        <p>{message}</p>
       </div>
     </div>
   );

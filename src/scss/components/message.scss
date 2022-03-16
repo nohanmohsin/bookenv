@@ -7,7 +7,14 @@
         border-radius: globals.$border-radius-full;
     }
     h3{
+        display: inline;
         font-size: 1rem;
+
+    }
+    span{
+        font-size: 0.85rem;
+        margin-left: calc(globals.$margin-small - 8px);
+        color: globals.$gray;
     }
     p{
         margin: calc(globals.$margin-small - 3px) 0;
