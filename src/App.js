@@ -13,6 +13,7 @@ import BookDetails from "./components/BookDetails/BookDetails";
 import SearchPage from "./components/SearchPage/SearchPage";
 import NotFound from "./components/NotFound/NotFound";
 import Threads from "./components/Threads/Threads";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 function App() {
   return (
@@ -24,16 +25,47 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/not-found" element={<NotFound errorName={'book'} />} />
+            <Route
+              path="/not-found"
+              element={<NotFound errorName={"book"} />}
+            />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
-            <Route path='/reset-pass' element={<ResetPass />} />
-            <Route path='/view=:fileName' element={<PdfRenderer />}/>
-            <Route path="/upload" element={<Upload />} />
+            <Route
+              path="/reset-pass"
+              element={
+                <PrivateRoute>
+                  <ResetPass />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/view=:fileName"
+              element={
+                <PrivateRoute>
+                  <PdfRenderer />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/upload"
+              element={
+                <PrivateRoute>
+                  <Upload />
+                </PrivateRoute>
+              }
+            />
             <Route path="/explore" element={<Explore />} />
-            <Route path="/:bookID" element={<BookDetails />}/>
+            <Route path="/:bookID" element={<BookDetails />} />
             <Route path="/search=:searchQuery" element={<SearchPage />} />
-            <Route path="/threads" element={<Threads />} />
+            <Route
+              path="/threads"
+              element={
+                <PrivateRoute>
+                  <Threads />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </div>
       </AuthProvider>

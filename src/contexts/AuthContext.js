@@ -1,6 +1,8 @@
 //code shamelessly copied from a youtube tutorial
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext();
 
@@ -12,15 +14,25 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
+  let navigate = useNavigate();
   function signup(username, email, password) {
-    auth.createUserWithEmailAndPassword(email, password)
+    createUserWithEmailAndPassword(auth, email, password)
 
     //changing the display name of the user after creating user
     .then((res) => {
-      res.user.updateProfile({
+      updateProfile(auth.currentUser, {
         displayName: username ? username : res.user.uid
       })
-      
+      navigate('/')
+    })
+    .catch((err) => {
+      setCurrentUser(null)
+      if(err.code === 'auth/email-already-in-use'){
+        alert('Email already in use');
+      }
+      else{
+        alert("Failed to create an account")
+      }
     })
   }
 

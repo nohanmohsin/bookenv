@@ -42,7 +42,7 @@ const Upload = () => {
             setUploadTask(tempTask);
           } catch (err) {
             //no need to alert here cos the upload Task gets cancelled here
-            //cancelling the upload because the book data couldnt be added to the db
+            //cancelling the upload because the book data couldn't be added to the db
             uploadTask.cancel()
             setLoading(false);
           }

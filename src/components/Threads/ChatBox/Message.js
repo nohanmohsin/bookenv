@@ -3,7 +3,7 @@ import React from "react";
 const Message = ({ message, createdAt }) => {
   const name = "alu bhau";
   const date = new Date(createdAt * 1000);
-  const formattedDate = date.toJSON()
+  const formattedDate = date.toJSON().slice(0, 10);
   return (
     <div className="message">
       <img
@@ -14,7 +14,7 @@ const Message = ({ message, createdAt }) => {
       />
       <div className="text-container">
         <h3>{name}</h3>
-        <span>{formattedDate.slice(0, 10)}</span>
+        <span>{formattedDate}</span>
         <p>{message}</p>
       </div>
     </div>
