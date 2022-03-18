@@ -3,7 +3,7 @@ main.book-details{
     section.main-details{
         display: flex;
         //subtracting the height of the navbar
-        height: calc(100vh - 3.4375rem);
+        height: calc(100vh - globals.$margin-big);
         justify-content: center;
         align-items: center;
         gap: globals.$margin-huge;

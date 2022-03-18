@@ -1,5 +1,6 @@
+@use '../globals';
 main.pdf-renderer{
-    height: calc(100vh - 3.4375rem);
+    height: calc(100vh - globals.$margin-big);
     display: flex;
     .pdf-container{
         display: flex;

@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
       updateProfile(auth.currentUser, {
         displayName: username ? username : res.user.uid
       })
+      //if the user is created successfully nly then we navigate them to their newsfeed
       navigate('/')
     })
     .catch((err) => {

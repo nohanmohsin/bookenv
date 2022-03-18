@@ -1,4 +1,5 @@
 import React from "react";
+import logo from "../../logo.svg";
 import { useLocation, Link } from "react-router-dom";
 //pages to not show the navbar in
 const dontShow = ['/signup', '/signin', '/resetpass', '/upload'];
@@ -7,7 +8,7 @@ const Navbar = () => {
   if (!dontShow.includes(location)) {
     return (
       <header className="navbar">
-        <h1 className="logo">Logo</h1>
+        <img src={logo} alt="bookenv logo" height={40}/>
         <input type="text" placeholder="Search books" />
         <div className="login-btn-parent">
           <span>Sign In</span>

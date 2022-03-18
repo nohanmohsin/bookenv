@@ -1,7 +1,7 @@
 @use '../globals';
 main.not-found{
     display: flex;
-    height: calc(100vh - 3.4375rem);
+    height: calc(100vh - globals.$margin-big);
     flex-direction: column;
     align-items: center;
     justify-content: center;
