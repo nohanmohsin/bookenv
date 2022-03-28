@@ -11,7 +11,7 @@ const SearchPage = () => {
     const fetchResults = async () => {
       const resultsArray = [];
       const queryDocs = await getDocs(
-        query(collection(db, "books"), where("name", "==", searchQuery))
+        query(collection(db, "books"), where("nameIndices", "array-contains", searchQuery))
       );
       queryDocs.forEach((doc) => {
         resultsArray.push(doc.data());

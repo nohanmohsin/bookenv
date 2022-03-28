@@ -27,7 +27,7 @@ const Upload = () => {
             //uploading the book data from google books to the database
             const docRef = await addDoc(collection(db, "books"), {
               name: data.volumeInfo.title,
-              lowerCaseName: data.volumeInfo.title.toLowerCase(),
+              nameIndices: data.volumeInfo.title.split(" "),
               author: data.volumeInfo.authors,
               genres: data.volumeInfo.categories[0],
               publishDate: data.volumeInfo.publishedDate,
