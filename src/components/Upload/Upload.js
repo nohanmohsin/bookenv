@@ -27,6 +27,7 @@ const Upload = () => {
             //uploading the book data from google books to the database
             const docRef = await addDoc(collection(db, "books"), {
               name: data.volumeInfo.title,
+              //used for searching(half text search)
               nameIndices: data.volumeInfo.title.split(" "),
               author: data.volumeInfo.authors,
               genres: data.volumeInfo.categories[0],
@@ -34,6 +35,7 @@ const Upload = () => {
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
               imageURL: data.volumeInfo.imageLinks.thumbnail,
+              reviewCount: 0
             });
             //uploading the file to storage after adding the data from the api to db
             const file = e.target[1].files[0];

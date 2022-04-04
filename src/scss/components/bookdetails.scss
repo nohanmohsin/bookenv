@@ -1,7 +1,10 @@
 @use '../globals';
 main.book-details{
+    position: absolute;
+    padding: 0 globals.$margin-big;
     section.main-details{
         display: flex;
+        
         //subtracting the height of the navbar
         height: calc(100vh - globals.$margin-big);
         justify-content: center;

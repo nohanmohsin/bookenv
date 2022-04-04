@@ -42,9 +42,7 @@ const ChatBox = ({ threadID }) => {
     dummy.current.scrollIntoView({ behavior: "smooth" });
   };
   useEffect(() => {
-    console.log('meow');
     dummy.current.scrollIntoView();
-    console.log(messages)
   }, [])
   return (
     <section className="chatbox">

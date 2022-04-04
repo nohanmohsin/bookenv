@@ -9,7 +9,7 @@ const SearchPage = () => {
   let { searchQuery } = useParams();
   useEffect(() => {
     const fetchResults = async () => {
-      const resultsArray = [];
+      let resultsArray = [];
       const queryDocs = await getDocs(
         query(collection(db, "books"), where("nameIndices", "array-contains", searchQuery))
       );
