@@ -5,7 +5,7 @@ import { db } from "../../firebase";
 import Reviews from "./Reviews/Reviews";
 
 const BookDetails = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState("meow");
   const exampleData = {
     author: ["Andy Weir"],
     reviewCount: 0,
@@ -59,46 +59,48 @@ const BookDetails = () => {
     }
   };
   useEffect(() => {
-    getData();
+    //getData();
     // eslint-disable-next-line
   }, []);
   return (
     <main className="book-details scrollable-content">
       {data ? (
         <>
-          <section className="main-details">
-        <img src={data.imageURL} alt="book cover" />
-        <div className="text-details">
-          <h2>{data.name}</h2>
-          <span>{data.author[0]}</span>
-          <span>
-            {data.pageCount} pages • {data.publishDate}
-          </span>
-          <div className="genres-container">
-            {data.genres.split(" / ").map((genre) => (
-              <div className="genre">{genre}</div>
-            ))}
-          </div>
-          <div className="buttons-container">
-            <button className="read-now">Read Now</button>
-            <span>Write a review</span>
-          </div>
-        </div>
-      </section>
-      <section className="overview">
-        <h2>OverView</h2>
-        <p>{data.description}</p>
-      </section>
-      <section className="more-books">
-        <h2>More Like This</h2>
-      </section>
-      <Reviews
-        data={exampleData.reviews}
-        bookID={bookID}
-        reviewAdded={data.reviewAdded}
-      />
+          {/* <section className="main-details">
+            <img src={data.imageURL} alt="book cover" />
+            <div className="text-details">
+              <h2>{data.name}</h2>
+              <span>{data.author[0]}</span>
+              <span>
+                {data.pageCount} pages • {data.publishDate}
+              </span>
+              <div className="genres-container">
+                {data.genres.split(" / ").map((genre) => (
+                  <div className="genre">{genre}</div>
+                ))}
+              </div>
+              <div className="buttons-container">
+                <button className="read-now">Read Now</button>
+                <span>Write a review</span>
+              </div>
+            </div>
+          </section>
+          <section className="overview">
+            <h2>OverView</h2>
+            <p>{data.description}</p>
+          </section>
+          <section className="more-books">
+            <h2>More Like This</h2>
+          </section> */}
+          <Reviews
+            data={exampleData.reviews}
+            bookID={bookID}
+            reviewAdded={data.reviewAdded}
+          />
         </>
-      ) : <p>Loading...</p>}
+      ) : (
+        <p>Loading...</p>
+      )}
     </main>
   );
 };

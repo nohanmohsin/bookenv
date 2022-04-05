@@ -15,8 +15,9 @@ section.reviews{
         }
     }
     textarea{
-        height: auto;
-        overflow-y: auto;
+        width: 100%;
+        line-height: 1;
+        overflow-y: hidden;
     }
     .review{
         display: flex;

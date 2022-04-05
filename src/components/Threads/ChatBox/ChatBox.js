@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { auth } from "../../../firebase";
 import {
   collection,
   orderBy,
@@ -12,6 +13,7 @@ import { db } from "../../../firebase";
 import Message from "./Message";
 
 const ChatBox = ({ threadID }) => {
+  const user = auth.currentUser;
   const dummy = useRef();
   const [formValue, setFormValue] = useState("");
   //used to change the query limit of msgQuery on scroll
@@ -35,6 +37,8 @@ const ChatBox = ({ threadID }) => {
   const sendMessage = async (e) => {
     e.preventDefault();
     await addDoc(messagesRef, {
+      name: user.displayName,
+      photoURL: user.photoURL,
       msg: formValue,
       createdAt: serverTimestamp()
     });

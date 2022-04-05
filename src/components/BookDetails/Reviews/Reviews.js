@@ -3,8 +3,6 @@ import { auth } from "../../../firebase";
 import {
   doc,
   collection,
-  orderBy,
-  query,
   serverTimestamp,
   addDoc,
   getDocs,
@@ -16,6 +14,7 @@ import Review from "./Review";
 
 const Reviews = ({ data, bookID, reviewAdded }) => {
   const textAreaRef = useRef();
+  textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
   const [formValue, setFormValue] = useState("");
   const [reviews, setReviews] = useState([]);
   //users can only leave reviews if signed in
@@ -25,19 +24,24 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
   const submitReview = async (e) => {
     e.preventDefault();
     await addDoc(reviewsRef, {
-      userName: user.displayName,
+      name: user.displayName,
       photoURL: user.photoURL,
       review: formValue,
-      createdAt: serverTimestamp()
-    })
-    .then(() => {
-      console.log('hi');
+      createdAt: serverTimestamp(),
+    }).then(() => {
+      console.log("hi");
       updateDoc(doc(db, `books/${bookID}`), {
-        reviewAdded: true
-      })
-    })
+        reviewAdded: true,
+      });
+    });
     setFormValue("");
   };
+
+  function OnInput() {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
+    console.log(this.style.height)
+  }
   useEffect(() => {
     const getReviews = async () => {
       try {
@@ -70,8 +74,12 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
           <textarea
             ref={textAreaRef}
             value={formValue}
-            onChange={(e) => setFormValue(e.target.value)}
+            onChange={(e) => {
+              setFormValue(e.target.value);
+              OnInput()
+            }}
             placeholder="Add a Review"
+            maxLength={1000}
           />
           <button type="submit">submit</button>
         </form>
