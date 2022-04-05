@@ -35,7 +35,7 @@ const Upload = () => {
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
               imageURL: data.volumeInfo.imageLinks.thumbnail,
-              reviewCount: 0
+              reviewAdded: false
             });
             //uploading the file to storage after adding the data from the api to db
             const file = e.target[1].files[0];

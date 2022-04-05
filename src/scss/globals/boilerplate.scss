@@ -26,8 +26,11 @@ body {
   overflow-y: auto;
 }
 
-input:focus {
+input:focus, textarea:focus {
   outline: none;
+}
+textarea{
+  resize: none;
 }
 a,
 a:visited,

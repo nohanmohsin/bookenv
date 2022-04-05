@@ -21,10 +21,12 @@ button:disabled{
 }
 
 input,
-label {
+label,
+textarea {
+  font-family: "Roboto", sans-serif;
   background-color: transparent;
   color: $white;
-  border: 1px solid $gray;
+  border: 2px solid $gray;
   height: 2.5rem;
   width: 30rem;
   padding: 0.688rem 0.938rem;

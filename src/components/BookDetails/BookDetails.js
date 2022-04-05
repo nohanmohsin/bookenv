@@ -8,6 +8,7 @@ const BookDetails = () => {
   const [data, setData] = useState();
   const exampleData = {
     author: ["Andy Weir"],
+    reviewCount: 0,
     publishDate: "2014-02-11",
     genres: "Fiction / Science Fiction / Action & Adventure",
     imageURL: {
@@ -57,22 +58,24 @@ const BookDetails = () => {
       console.log("No such document!");
     }
   };
-  // useEffect(() => {
-  //   getData();
-  //   // eslint-disable-next-line
-  // }, []);
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, []);
   return (
     <main className="book-details scrollable-content">
-      <section className="main-details">
-        <img src={exampleData.imageURL.thumbnail} alt="book cover" />
+      {data ? (
+        <>
+          <section className="main-details">
+        <img src={data.imageURL} alt="book cover" />
         <div className="text-details">
-          <h2>{exampleData.name}</h2>
-          <span>{exampleData.author}</span>
+          <h2>{data.name}</h2>
+          <span>{data.author[0]}</span>
           <span>
-            {exampleData.pageCount} pages • {exampleData.publishDate}
+            {data.pageCount} pages • {data.publishDate}
           </span>
           <div className="genres-container">
-            {exampleData.genres.split(" / ").map((genre) => (
+            {data.genres.split(" / ").map((genre) => (
               <div className="genre">{genre}</div>
             ))}
           </div>
@@ -84,7 +87,7 @@ const BookDetails = () => {
       </section>
       <section className="overview">
         <h2>OverView</h2>
-        <p>{exampleData.description}</p>
+        <p>{data.description}</p>
       </section>
       <section className="more-books">
         <h2>More Like This</h2>
@@ -92,8 +95,10 @@ const BookDetails = () => {
       <Reviews
         data={exampleData.reviews}
         bookID={bookID}
-        reviewCount={data.reviewCount}
+        reviewAdded={data.reviewAdded}
       />
+        </>
+      ) : <p>Loading...</p>}
     </main>
   );
 };

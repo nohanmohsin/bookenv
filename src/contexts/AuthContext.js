@@ -1,7 +1,7 @@
 //code shamelessly copied from a youtube tutorial
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext();
@@ -41,8 +41,8 @@ export function AuthProvider({ children }) {
     return auth.signInWithEmailAndPassword(email, password);
   }
 
-  function logout() {
-    return auth.signOut();
+  function logOut() {
+    signOut(auth)
   }
 
   function resetPassword(email) {
@@ -70,7 +70,7 @@ export function AuthProvider({ children }) {
     currentUser,
     login,
     signup,
-    logout,
+    logOut,
     resetPassword,
     updateEmail,
     updatePassword,
