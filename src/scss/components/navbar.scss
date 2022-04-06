@@ -7,12 +7,11 @@
     
     align-items: center;
     width: 100%;
-    padding: 0 globals.$margin-big;
+    padding: 0 globals.$margin;
     color: globals.$black;
     background-color: globals.$black;
     position: fixed;
     z-index: 2;
-    margin-bottom: 3.4375rem;
     h1{
         font-size: 1.875rem;
         color: globals.$primary-color;
@@ -29,6 +28,18 @@
     }
     input::placeholder{
         color: globals.$black
+    }
+    input.user-search{
+        width: 15.625rem;
+        position: absolute;
+        margin-left: globals.$margin-big;
+    }
+    .navlinks{
+        display: flex;
+        gap: globals.$margin-big;
+        img{
+            background-color: transparent;
+        }
     }
     .login-btn-parent{
         span{

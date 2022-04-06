@@ -8,7 +8,7 @@ const NotFound = ({ errorName }) => {
       errorMsg = "No Book was found";
       break;
     case "contributer":
-      errorMsg = "No such user was found";
+      errorMsg = "No such User was found";
       break;
     case "thread":
       errorMsg = "No such Thread was found";
@@ -17,7 +17,7 @@ const NotFound = ({ errorName }) => {
       errorMsg = "Nothing was found";
   }
   return (
-    <main className="not-found">
+    <main className="not-found navbar-included">
       <h1 className="emphasized">404</h1>
       <h1>{errorMsg}</h1>
       <Link to="/">

@@ -1,7 +1,7 @@
 @use '../globals';
 main.book-details{
     position: absolute;
-    padding: 0 globals.$margin-big;
+    padding: 0 globals.$margin;
     width: 100%;
     section.main-details{
         display: flex;

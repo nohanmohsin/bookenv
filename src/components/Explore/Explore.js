@@ -4,7 +4,7 @@ import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
 
 const Explore = () => {
   return (
-    <main className="explore">
+    <main className="explore navbar-included">
       <section className="most-read-books">
         <h1>Explore our most read books</h1>
         <span>Our favourite books of the month</span>

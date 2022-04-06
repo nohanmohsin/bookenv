@@ -36,7 +36,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
     });
     setFormValue("");
   };
-
+  //used for textarea dynamic height change
   function OnInput() {
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";

@@ -1,6 +1,7 @@
 @use '../globals';
 main.not-found{
     display: flex;
+    position: static;
     height: calc(100vh - globals.$margin-big);
     flex-direction: column;
     align-items: center;

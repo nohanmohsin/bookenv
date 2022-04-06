@@ -22,7 +22,7 @@ const SearchPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <main className="search-page">
+    <main className="search-page navbar-included">
       <h1>Results for "{searchQuery}"</h1>
       
       <div className="book-results">

@@ -1,6 +1,7 @@
 @use "./colors" as *;
 @use "./measurements-vars" as *;
-main{
+main.navbar-included{
+  position: absolute;
   margin-top: 3.75rem;
 }
 a{

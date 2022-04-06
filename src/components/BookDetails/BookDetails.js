@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import Reviews from "./Reviews/Reviews";
 
 const BookDetails = () => {
   const [data, setData] = useState("meow");
+  let navigate = useNavigate();
   const exampleData = {
     author: ["Andy Weir"],
     reviewCount: 0,
@@ -55,18 +56,19 @@ const BookDetails = () => {
     if (docSnap.exists()) {
       setData(docSnap.data());
     } else {
-      console.log("No such document!");
+      navigate("/not-found");
     }
   };
   useEffect(() => {
-    //getData();
+    getData();
     // eslint-disable-next-line
   }, []);
   return (
-    <main className="book-details scrollable-content">
-      {data ? (
+    <main className="book-details navbar-included">
+      {/* checking for name so that we don't get error when no book is found */}
+      {data.name ? (
         <>
-          {/* <section className="main-details">
+          <section className="main-details">
             <img src={data.imageURL} alt="book cover" />
             <div className="text-details">
               <h2>{data.name}</h2>
@@ -91,7 +93,7 @@ const BookDetails = () => {
           </section>
           <section className="more-books">
             <h2>More Like This</h2>
-          </section> */}
+          </section>
           <Reviews
             data={exampleData.reviews}
             bookID={bookID}
