@@ -1,8 +1,9 @@
 //code shamelessly copied from a youtube tutorial
 import React, { useContext, useState, useEffect } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const AuthContext = React.createContext();
 
@@ -19,11 +20,17 @@ export function AuthProvider({ children }) {
     createUserWithEmailAndPassword(auth, email, password)
 
     //changing the display name of the user after creating user
-    .then((res) => {
-      updateProfile(auth.currentUser, {
+    .then(async (res) => {
+      await updateProfile(auth.currentUser, {
         displayName: username ? username : res.user.uid
       })
-      //if the user is created successfully nly then we navigate them to their news feed
+      //adding the user data to the database
+      const userDocRef= await setDoc(doc(db, "users", auth.currentUser.uid), {
+        userName: auth.currentUser.displayName,
+        uid: auth.currentUser.uid,
+        bookHistory: []
+      })
+      //if the user is created successfully only then we navigate them to their news feed
       navigate('/')
     })
     .catch((err) => {

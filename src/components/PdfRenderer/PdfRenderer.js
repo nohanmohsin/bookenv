@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { Document, Page, pdfjs } from "react-pdf";
-import { storage } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 //idk why this exists tbh...it works tho...I aint touching this
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -16,6 +17,7 @@ const PdfRenderer = () => {
   const [file, setFile] = useState();
   let { fileName } = useParams();
   const storageRef = ref(storage, `files/${fileName}`);
+  const userDBRef = doc(db, "users", auth.currentUser.uid)
   useEffect(() => {
     //making the pdf bigger according to the screen size
     if(window.innerWidth > 1280){
@@ -27,10 +29,15 @@ const PdfRenderer = () => {
       //requesting the file from the storage
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
-      xhr.onload = (event) => {
+      xhr.onload = async (event) => {
         const blob = xhr.response;
         //setting the file to the response
         setFile((blob));
+        const userUpdateDocRef = await updateDoc(userDBRef, {
+          //only getting the fileId from the fileName as it contains ".pdf" file format
+          //https://github.com/firebase/snippets-web/blob/1c4c6834f310bf53a98b3fa3c2e2191396cacd69/snippets/firestore-next/test-firestore/update_document_array.js#L8-L20
+          bookHistory: arrayUnion(fileName.slice(0, 21))
+        })
       };
       xhr.open('GET', url);
       xhr.send();
