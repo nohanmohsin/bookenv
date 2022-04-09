@@ -3,7 +3,7 @@ import React from "react";
 const BookBasicDetails = ({ data }) => {
   return (
     <div className="book-basic-details">
-      <img src={data.imageURL} alt="book cover" width={100}/>
+      <img src={data.imageURL} alt="book cover"/>
       <span>
         {data.name}
       </span>

@@ -16,7 +16,11 @@ const Navbar = () => {
         <img src={logo} alt="bookenv logo" height={40} />
         {user ? (
           <>
-            <input type="text" className="user-search" placeholder="Search books"/>
+            <input
+              type="text"
+              className="user-search"
+              placeholder="Search books"
+            />
             <NavLinks />
           </>
         ) : (
@@ -25,7 +29,16 @@ const Navbar = () => {
 
         <div className="login-btn-parent">
           {user ? (
-            <span onClick={logOut}>Sign Out</span>
+            <>
+              <Link to="/account">
+                <img
+                  src="https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo"
+                  alt=""
+                  width={48}
+                />
+              </Link>
+              <span onClick={logOut}>Sign Out</span>
+            </>
           ) : (
             <>
               <span>Sign In</span>

@@ -1,0 +1,29 @@
+@use '../globals';
+
+main.my-library{
+    position: absolute;
+    width: 100%;
+    padding: 0 globals.$margin;
+    section.shelf{
+        margin-top: globals.$margin-big;
+        .headline-and-icons-container{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: globals.$margin;
+        }
+    }
+    img.add-icon{
+        padding: 5px;
+    }
+    img.add-icon:hover{
+        padding: 5px;
+        border-radius: globals.$border-radius-tiny;
+        background-color: globals.$gray;
+    }
+    .books{
+        display: flex;
+        gap: globals.$margin;
+    }
+}

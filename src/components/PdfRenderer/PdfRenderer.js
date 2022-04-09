@@ -17,7 +17,7 @@ const PdfRenderer = () => {
   const [file, setFile] = useState();
   let { fileName } = useParams();
   const storageRef = ref(storage, `files/${fileName}`);
-  const userDBRef = doc(db, "users", auth.currentUser.uid)
+  const userDBRef = doc(db, "users", auth.currentUser.uid);
   useEffect(() => {
     //making the pdf bigger according to the screen size
     if(window.innerWidth > 1280){

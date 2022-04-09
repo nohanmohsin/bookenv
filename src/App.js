@@ -14,6 +14,7 @@ import SearchPage from "./components/SearchPage/SearchPage";
 import NotFound from "./components/NotFound/NotFound";
 import Threads from "./components/Threads/Threads";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import MyLibrary from "./components/MyLibrary/MyLibrary";
 
 function App() {
   return (
@@ -44,6 +45,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <PdfRenderer />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/my-library"
+              element={
+                <PrivateRoute>
+                  <MyLibrary />
                 </PrivateRoute>
               }
             />

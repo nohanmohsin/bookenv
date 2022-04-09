@@ -42,6 +42,11 @@
         }
     }
     .login-btn-parent{
+        display: flex;
+        align-items: center;
+        img{
+            border-radius: 50%;
+        }
         span{
             color: globals.$secondary-color;
         }

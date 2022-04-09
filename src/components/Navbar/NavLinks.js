@@ -15,15 +15,16 @@ const NavLinks = () => {
       <Link to={"/threads"}>
         <img src={threadsIcon} alt="threads icon" height={40} />
       </Link>
+      <Link to={"/my-library"}>
+        <img src={myLibraryIcon} alt="my library icon" height={40} />
+      </Link>
       <Link to={"/notifications"}>
         <img src={notificationsIcon} alt="notifications icon" height={40} />
       </Link>
       <Link to={"/upload"}>
         <img src={uploadIcon} alt="upload icon" height={40} />
       </Link>
-      <Link to={"/my-library"}>
-        <img src={myLibraryIcon} alt="my library icon" height={40} />
-      </Link>
+      
     </div>
   );
 };

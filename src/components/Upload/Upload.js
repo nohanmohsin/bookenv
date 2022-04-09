@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { db } from "../../firebase";
@@ -6,9 +6,10 @@ import { storage } from "../../firebase";
 import bookwall from "../../illustrations/bookwall.svg";
 
 const Upload = () => {
-
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState();
+  //used to remove selected file from file input after upload
+  const fileInputRef = useRef();
   //state for upload task
   const [uploadTask, setUploadTask] = useState();
   const formHandler = (e) => {
@@ -35,8 +36,9 @@ const Upload = () => {
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
               imageURL: data.volumeInfo.imageLinks.thumbnail,
-              reviewAdded: false
+              reviewAdded: false,
             });
+
             //uploading the file to storage after adding the data from the api to db
             const file = e.target[1].files[0];
             const storageRef = ref(storage, `files/${docRef.id}.pdf`);
@@ -45,7 +47,7 @@ const Upload = () => {
           } catch (err) {
             //no need to alert here cos the upload Task gets cancelled here
             //cancelling the upload because the book data couldn't be added to the db
-            uploadTask.cancel()
+            uploadTask.cancel();
             setLoading(false);
           }
         })
@@ -79,7 +81,7 @@ const Upload = () => {
               setLoading(false);
               break;
             //not alerting when the user has cancelled the upload
-            case 'storage/cancelled':
+            case "storage/cancelled":
               setLoading(false);
               break;
             default:
@@ -89,6 +91,10 @@ const Upload = () => {
         },
         //function for successful completion
         () => {
+          //removing file name from input label after upload
+          setFileName("");
+          //changing the value to remove the file that has finished being uploaded
+          fileInputRef.current.value = "";
           setLoading(false);
         }
       );
@@ -107,9 +113,22 @@ const Upload = () => {
           required
         />
         <label className="file-input-label">
-          <input type="file" className="input" id="file-upload" onChange={(e) => {
-            setFileName(e.target.files[0].name)
-          }} required />
+          <input
+            type="file"
+            className="input"
+            id="file-upload"
+            accept="application/pdf"
+            ref={fileInputRef}
+            onChange={(e) => {
+              if(e.target.files[0].name.includes("pdf")){
+                setFileName(e.target.files[0].name);
+              } else {
+                alert("Wrong File...Check again")
+
+              }
+            }}
+            required
+          />
           {fileName ? <>{fileName}</> : <>Upload the book here</>}
         </label>
         <div className="buttons-container">
