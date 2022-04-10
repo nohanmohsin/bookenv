@@ -1,12 +1,12 @@
 @use '../globals';
 main.pdf-renderer{
-    height: calc(100vh - globals.$margin-big);
+    height: 100vh;
     display: flex;
     .pdf-container{
         display: flex;
         flex-direction: column;
         width: 50%;
-        height: 95%;
+        height: 80%;
         margin: auto;
         overflow: scroll;
         
@@ -22,13 +22,14 @@ main.pdf-renderer{
     canvas{
         margin: 0 auto;
     }
-    button{
-        display: block;
+    aside{
+        display: flex;
+        flex-direction: column;
+        gap: globals.$margin-small;
         position: fixed;
-        top: 100px;
-        
+        top: globals.$margin-huge;
+        width: globals.$margin-big;
+
     }
-    button.next-page{
-        margin-left: 100px;
-    }
+    
 }

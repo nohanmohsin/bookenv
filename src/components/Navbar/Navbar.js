@@ -5,12 +5,12 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useLocation, Link } from "react-router-dom";
 import NavLinks from "./NavLinks";
 //pages to not show the navbar in
-const dontShow = ["/signup", "/signin", "/resetpass", "/upload"];
+const dontShow = ["/signup", "/signin", "/resetpass", "/upload", "/view"];
 const Navbar = () => {
   const location = useLocation().pathname;
   const user = auth.currentUser;
   const { logOut } = useAuth();
-  if (!dontShow.includes(location)) {
+  if (!dontShow.includes(location) && !location.startsWith("/view")) {
     return (
       <nav className="navbar">
         <img src={logo} alt="bookenv logo" height={40} />

@@ -24,15 +24,15 @@ const MyLibrary = () => {
     <main className="my-library navbar-included">
       {/* mapping through the db data */}
       {exampleData ? (
-        exampleData.map((data) => (
+        exampleData.map((shelf) => (
           <section className="shelf">
             <div className="headline-and-icons-container">
-              <h1>{data.name}</h1>
+              <h1>{shelf.name}</h1>
               <img src={addIcon} alt="" className="add-icon" width={45} />
             </div>
             {/* mapping through the books from the individual shelf we get from db data */}
             <div className="books">
-              {data.books.map((book) => (
+              {shelf.books.map((book) => (
                 <BookBasicDetails data={book} />
               ))}
             </div>

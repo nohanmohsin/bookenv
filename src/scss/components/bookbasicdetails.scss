@@ -4,7 +4,7 @@
   margin-right: globals.$margin;
   img {
     height: 14rem;
-    width: 9.75rem;
+    width: 9rem;
     border-radius: globals.$border-radius-small;
     object-position: 0px 0px;
     object-fit: cover;
@@ -16,8 +16,9 @@
     width: 90%;
     font-weight: 400;
   }
-  span:hover {
-    color: globals.$primary-color;
-    cursor: pointer;
-  }
+  
+}
+.book-basic-details:hover {
+  color: globals.$primary-color;
+  cursor: pointer;
 }
