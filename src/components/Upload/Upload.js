@@ -36,7 +36,8 @@ const Upload = () => {
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
               imageURL: data.volumeInfo.imageLinks.thumbnail,
-              reviewAdded: false,
+              //TODO: check reviews with docSnap.exists() instead
+              reviewAdded: false
             });
 
             //uploading the file to storage after adding the data from the api to db

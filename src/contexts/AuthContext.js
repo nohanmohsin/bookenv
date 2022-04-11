@@ -27,8 +27,7 @@ export function AuthProvider({ children }) {
       //adding the user data to the database
       const userDocRef= await setDoc(doc(db, "users", auth.currentUser.uid), {
         userName: auth.currentUser.displayName,
-        uid: auth.currentUser.uid,
-        bookHistory: []
+        uid: auth.currentUser.uid
       })
       //if the user is created successfully only then we navigate them to their news feed
       navigate('/')
