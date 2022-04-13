@@ -2,12 +2,15 @@
 main.pdf-renderer{
     height: 100vh;
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 globals.$margin;
     .pdf-container{
         display: flex;
         flex-direction: column;
-        width: 50%;
+        
         height: 80%;
-        margin: auto;
+        margin: 0 auto;
         overflow: scroll;
         
         &::-webkit-scrollbar{
@@ -19,17 +22,40 @@ main.pdf-renderer{
             display: none;
         }
     }
-    canvas{
-        margin: 0 auto;
+    
+    p{
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: globals.$margin;
+    }
+    img.close{
+        background-color: globals.$gray;
+        border-radius: 50%;
+        padding: 5px;
+        position: fixed;
+        top: globals.$margin;
+        //centering it based on the controls sidebar
+        left: calc(globals.$margin-big - 20px);
     }
     aside{
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: globals.$margin-small;
         position: fixed;
-        top: globals.$margin-huge;
+        top: 50%;
+        left: globals.$margin;
+        transform: translateY(-50%);
         width: globals.$margin-big;
+        background-color: globals.$gray;
+        border-radius: globals.$border-radius-small;
+        padding: globals.$margin-small 3px;
 
     }
-    
+    section.page-comments{
+        width: 30%;
+        position: absolute;
+        
+    }
 }

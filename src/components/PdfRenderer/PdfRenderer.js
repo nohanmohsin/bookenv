@@ -3,8 +3,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { Document, Page, pdfjs } from "react-pdf";
 import { auth, db, storage } from "../../firebase";
-import { arrayUnion, doc, collection, addDoc, getDoc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  collection,
+  addDoc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import Controls from "./Controls";
+import crossIcon from "../../icons/cross-icon.svg";
+import exampleFile from "../../pdf.pdf";
+import PageComments from "./PageComments";
 
 //idk why this exists tbh...it works tho...I aint touching this
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -40,29 +52,29 @@ const PdfRenderer = () => {
     }
   };
   useEffect(() => {
-    getDBData();
+    //getDBData();
     //making the pdf bigger according to the screen size
     if (window.innerWidth > 1280) {
       setPdfHeight(700);
     }
-    
+
     //gets the link of the file in firebase storage
-    getDownloadURL(storageRef)
-      .then((url) => {
-        //requesting the file from the storage
-        const xhr = new XMLHttpRequest();
-        xhr.responseType = "blob";
-        xhr.onload = async (event) => {
-          const blob = xhr.response;
-          //setting the file to the response
-          setFile(blob);
-        };
-        xhr.open("GET", url);
-        xhr.send();
-      })
-      .catch((error) => {
-        alert("sorry couldnt fetch the pdf for you at the moment");
-      });
+    // getDownloadURL(storageRef)
+    //   .then((url) => {
+    //     //requesting the file from the storage
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.responseType = "blob";
+    //     xhr.onload = async (event) => {
+    //       const blob = xhr.response;
+    //       //setting the file to the response
+    //       setFile(blob);
+    //     };
+    //     xhr.open("GET", url);
+    //     xhr.send();
+    //   })
+    //   .catch((error) => {
+    //     alert("sorry couldnt fetch the pdf for you at the moment");
+    //   });
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -88,13 +100,13 @@ const PdfRenderer = () => {
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);
-    const addBookRef = setDoc(bookDBRef, {
-      name: dbData.name,
-      ID: bookID,
-      imageURL: dbData.imageURL,
-      pagesRead: 0,
-      timeStamp: serverTimestamp()
-    })
+    // const addBookRef = setDoc(bookDBRef, {
+    //   name: dbData.name,
+    //   ID: bookID,
+    //   imageURL: dbData.imageURL,
+    //   pagesRead: 0,
+    //   timeStamp: serverTimestamp()
+    // })
   }
   function changePageBack() {
     if (pageNumber > 1) {
@@ -113,7 +125,7 @@ const PdfRenderer = () => {
     <main className="pdf-renderer">
       <div className="pdf-container">
         <Document
-          file={file}
+          file={exampleFile}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error()}
           className="pdf-doc"
@@ -125,22 +137,32 @@ const PdfRenderer = () => {
         {" "}
         Page {pageNumber} of {numPages}
       </p>
-      <button className="close" onClick={async () => {
-        //TODO: use onbeforeunload to save pagesread too
-        const updatePagesReadRef = await updateDoc(bookDBRef, {
-          pagesRead: pageNumber,
-          timeStamp: serverTimestamp()
-        })
-        navigate('/home');
-      }}>close</button>
+
+      <img
+        src={crossIcon}
+        alt=""
+        className="close"
+        onClick={async () => {
+          //TODO: use onbeforeunload to save pagesread too
+          const updatePagesReadRef = await updateDoc(bookDBRef, {
+            pagesRead: pageNumber,
+            timeStamp: serverTimestamp(),
+          });
+          navigate("/home");
+        }}
+        width={40}
+        height={40}
+      />
+
       {/* sorry 😭 it's 1 am */}
       <Controls
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         numPages={numPages}
         setScale={setScale}
-        fileId={fileName.slice(0, 21)}
+        fileId={bookID}
       />
+      <PageComments fileId={bookID}/>
     </main>
   );
 };

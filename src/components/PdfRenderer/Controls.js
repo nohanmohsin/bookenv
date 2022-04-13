@@ -1,6 +1,8 @@
 import React from "react";
 import { auth } from "../../firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import enlargeIcon from "../../icons/enlarge-icon.svg";
+import minimizeIcon from "../../icons/minimize-icon.svg";
 
 const Controls = ({
   pageNumber,
@@ -9,7 +11,6 @@ const Controls = ({
   setScale,
   fileId,
 }) => {
-  
   return (
     <aside className="control-btns">
       {pageNumber > 1 && (
@@ -28,26 +29,31 @@ const Controls = ({
           }}
           className="next-page"
         >
-          Next Page
+          next Page
         </button>
       )}
-      <button
+
+      <img
+        src={enlargeIcon}
+        alt=""
         onClick={() => {
           setScale((prevScale) => prevScale + 0.3);
         }}
-      >
-        scale
-      </button>
-      <button
+        className="enlarge"
+        width={30}
+      />
+
+      <img
+        src={minimizeIcon}
+        alt=""
         onClick={() => {
           setScale((prevScale) =>
             prevScale >= 1.3 ? prevScale - 0.3 : prevScale + 0
           );
         }}
-      >
-        Scale Down
-      </button>
-
+        className="minimize"
+        width={30}
+      />
     </aside>
   );
 };
