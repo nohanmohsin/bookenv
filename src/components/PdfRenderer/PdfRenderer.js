@@ -31,6 +31,7 @@ const PdfRenderer = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pdfHeight, setPdfHeight] = useState(500);
   const [scale, setScale] = useState(1.0);
+  const [orientation, setOrientation] = useState(true);
   //the pdf file that is going to be displayed
   const [file, setFile] = useState();
   let { fileName } = useParams();
@@ -130,7 +131,13 @@ const PdfRenderer = () => {
           onLoadError={console.error()}
           className="pdf-doc"
         >
-          <Page pageNumber={pageNumber} height={pdfHeight} scale={scale} />
+          {orientation ? (
+            <Page pageNumber={pageNumber} height={pdfHeight} scale={scale} />
+          ) : (
+            Array.apply(null, Array(numPages))
+              .map((x, i) => i + 1)
+              .map((page) => <Page pageNumber={page} height={pdfHeight} scale={scale}/>)
+          )}
         </Document>
       </div>
       <p>
@@ -161,8 +168,10 @@ const PdfRenderer = () => {
         numPages={numPages}
         setScale={setScale}
         fileId={bookID}
+        orientation={orientation}
+        setOrientation={setOrientation}
       />
-      <PageComments fileId={bookID}/>
+      <PageComments fileId={bookID} />
     </main>
   );
 };

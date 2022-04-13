@@ -1,8 +1,11 @@
 import React from "react";
 import { auth } from "../../firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import nextPageIcon from "../../icons/next-icon.svg";
 import enlargeIcon from "../../icons/enlarge-icon.svg";
 import minimizeIcon from "../../icons/minimize-icon.svg";
+import allPageIcon from "../../icons/all-page-icon.svg";
+import onePageIcon from "../../icons/one-page-icon.svg";
 
 const Controls = ({
   pageNumber,
@@ -10,27 +13,32 @@ const Controls = ({
   numPages,
   setScale,
   fileId,
+  orientation,
+  setOrientation,
 }) => {
   return (
     <aside className="control-btns">
       {pageNumber > 1 && (
-        <button
+        <img
+          src={nextPageIcon}
+          alt=""
+          //flipping the next Icon to be previous icon
+          style={{ transform: "scaleX(-1)" }}
           onClick={() => {
             setPageNumber((prevPageNumber) => prevPageNumber - 1);
           }}
-        >
-          Previous Page
-        </button>
+          width={30}
+        />
       )}
       {pageNumber < numPages && (
-        <button
+        <img
+          src={nextPageIcon}
+          alt=""
           onClick={() => {
             setPageNumber((prevPageNumber) => prevPageNumber + 1);
           }}
-          className="next-page"
-        >
-          next Page
-        </button>
+          width={30}
+        />
       )}
 
       <img
@@ -53,6 +61,15 @@ const Controls = ({
         }}
         className="minimize"
         width={30}
+      />
+
+      <img
+        src={orientation ? allPageIcon : onePageIcon}
+        alt=""
+        width={30}
+        onClick={() => {
+          setOrientation(!orientation);
+        }}
       />
     </aside>
   );
