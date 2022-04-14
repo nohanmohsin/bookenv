@@ -12,6 +12,7 @@ import {
   setDoc,
   updateDoc,
   serverTimestamp,
+  arrayRemove,
 } from "firebase/firestore";
 import Controls from "./Controls";
 import crossIcon from "../../icons/cross-icon.svg";
@@ -28,10 +29,10 @@ const PdfRenderer = () => {
   //number of total pages
   const [numPages, setNumPages] = useState(null);
   //currently opened page number
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [bookmarked, setBookmarked] = useState(false);
   const [pdfHeight, setPdfHeight] = useState(500);
   const [scale, setScale] = useState(1.0);
-  const [orientation, setOrientation] = useState(true);
   //the pdf file that is going to be displayed
   const [file, setFile] = useState();
   let { fileName } = useParams();
@@ -40,44 +41,78 @@ const PdfRenderer = () => {
   const userDBRef = doc(db, "users", auth.currentUser.uid);
   //used for adding the book to users read books history
   const bookDBRef = doc(db, `users/${auth.currentUser.uid}/books`, bookID);
+  //check for bookmark on the currently opened page
+
   //gets the data for currently active book from db
   const getDBData = async () => {
     //https://firebase.google.com/docs/firestore/query-data/get-data
     const docRef = doc(db, "books", bookID);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      setDBData(docSnap.data());
-      console.log(docSnap.data());
+      setDBData({...docSnap.data(), bookmarks: []});
     } else {
       navigate("/not-found");
     }
   };
+  const checkBookmark = () => {
+    console.log(pageNumber);
+    // console.log(dbData.bookmarks.includes(pageNumber + 1))
+    dbData.bookmarks.includes(pageNumber)
+      ? setBookmarked(true)
+      : setBookmarked(false)
+  };
+  const handleBookmark = async () => {
+    if (bookmarked) {
+      const pageIndex = dbData.bookmarks.indexOf(pageNumber);
+      await updateDoc(bookDBRef, {
+        bookmarks: arrayRemove(pageNumber)
+      });
+      dbData.bookmarks.splice(pageIndex);
+      checkBookmark();
+    } else {
+      await updateDoc(bookDBRef, {
+        bookmarks: arrayUnion(pageNumber),
+      });
+      dbData.bookmarks.push(pageNumber);
+      checkBookmark();
+      console.log(dbData.bookmarks);
+      console.log(bookmarked);
+    }
+  };
   useEffect(() => {
-    //getDBData();
+    getDBData();
     //making the pdf bigger according to the screen size
     if (window.innerWidth > 1280) {
       setPdfHeight(700);
     }
 
     //gets the link of the file in firebase storage
-    // getDownloadURL(storageRef)
-    //   .then((url) => {
-    //     //requesting the file from the storage
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.responseType = "blob";
-    //     xhr.onload = async (event) => {
-    //       const blob = xhr.response;
-    //       //setting the file to the response
-    //       setFile(blob);
-    //     };
-    //     xhr.open("GET", url);
-    //     xhr.send();
-    //   })
-    //   .catch((error) => {
-    //     alert("sorry couldnt fetch the pdf for you at the moment");
-    //   });
+    getDownloadURL(storageRef)
+      .then((url) => {
+        //requesting the file from the storage
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = async (event) => {
+          const blob = xhr.response;
+          //setting the file to the response
+          setFile(blob);
+        };
+        xhr.open("GET", url);
+        xhr.send();
+      })
+      .catch((error) => {
+        alert("sorry couldnt fetch the pdf for you at the moment");
+      });
+    
     // eslint-disable-next-line
   }, []);
+  //checking for bookmark every time page is changed
+  useEffect(() => {
+    if(pageNumber > 0){
+      checkBookmark();
+    }
+    
+  }, [pageNumber])
   useEffect(() => {
     function handleKeyDown(e) {
       switch (e.keyCode) {
@@ -98,26 +133,29 @@ const PdfRenderer = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   });
-  function onDocumentLoadSuccess({ numPages }) {
+  async function onDocumentLoadSuccess({ numPages }) {
+    const addBookRef = await setDoc(bookDBRef, {
+      name: dbData.name,
+      ID: bookID,
+      imageURL: dbData.imageURL,
+      pagesRead: 0,
+      timeStamp: serverTimestamp(),
+      bookmarks: [],
+    });
     setNumPages(numPages);
     setPageNumber(1);
-    // const addBookRef = setDoc(bookDBRef, {
-    //   name: dbData.name,
-    //   ID: bookID,
-    //   imageURL: dbData.imageURL,
-    //   pagesRead: 0,
-    //   timeStamp: serverTimestamp()
-    // })
   }
-  function changePageBack() {
+  async function changePageBack() {
     if (pageNumber > 1) {
       setPageNumber((prevPageNumber) => prevPageNumber - 1);
+      
     }
     return null;
   }
   function changePageNext() {
     if (pageNumber < numPages) {
       setPageNumber((prevPageNumber) => prevPageNumber + 1);
+      
     }
     return null;
   }
@@ -126,18 +164,12 @@ const PdfRenderer = () => {
     <main className="pdf-renderer">
       <div className="pdf-container">
         <Document
-          file={exampleFile}
+          file={file}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error()}
           className="pdf-doc"
         >
-          {orientation ? (
-            <Page pageNumber={pageNumber} height={pdfHeight} scale={scale} />
-          ) : (
-            Array.apply(null, Array(numPages))
-              .map((x, i) => i + 1)
-              .map((page) => <Page pageNumber={page} height={pdfHeight} scale={scale}/>)
-          )}
+          <Page pageNumber={pageNumber} height={pdfHeight} scale={scale} />
         </Document>
       </div>
       <p>
@@ -168,8 +200,9 @@ const PdfRenderer = () => {
         numPages={numPages}
         setScale={setScale}
         fileId={bookID}
-        orientation={orientation}
-        setOrientation={setOrientation}
+        bookmarked={bookmarked}
+        onBookmark={handleBookmark}
+        checkBookmark={checkBookmark}
       />
       <PageComments fileId={bookID} />
     </main>

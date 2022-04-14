@@ -4,8 +4,8 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import nextPageIcon from "../../icons/next-icon.svg";
 import enlargeIcon from "../../icons/enlarge-icon.svg";
 import minimizeIcon from "../../icons/minimize-icon.svg";
-import allPageIcon from "../../icons/all-page-icon.svg";
-import onePageIcon from "../../icons/one-page-icon.svg";
+
+import BookmarkIcon from "../../icons/BookmarkIcon";
 
 const Controls = ({
   pageNumber,
@@ -13,10 +13,11 @@ const Controls = ({
   numPages,
   setScale,
   fileId,
-  orientation,
-  setOrientation,
+  bookmarked,
+  onBookmark,
+  checkBookmark,
 }) => {
-  return (
+  return numPages ? (
     <aside className="control-btns">
       {pageNumber > 1 && (
         <img
@@ -63,16 +64,18 @@ const Controls = ({
         width={30}
       />
 
-      <img
-        src={orientation ? allPageIcon : onePageIcon}
+      {/* <img
+        src={bookmarkIcon}
         alt=""
         width={30}
-        onClick={() => {
-          setOrientation(!orientation);
-        }}
+        
+      /> */}
+      <BookmarkIcon
+        handleClick={onBookmark}
+        color={bookmarked ? "#ffd675" : "#ffffff"}
       />
     </aside>
-  );
+  ) : null;
 };
 
 export default Controls;
