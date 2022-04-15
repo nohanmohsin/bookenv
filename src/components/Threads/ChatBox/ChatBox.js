@@ -31,7 +31,7 @@ const ChatBox = ({ threadID }) => {
     //increasing msg query limit on scroll to the top
     if(e.target.scrollTop === 0){
       setMsgQueryLimit((prevLimit) => prevLimit + 50);
-      console.log('scrolled');
+      
     }
   }
   const sendMessage = async (e) => {

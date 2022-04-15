@@ -1,3 +1,4 @@
+//I am dumb
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
@@ -7,6 +8,7 @@ import {
   arrayUnion,
   doc,
   collection,
+  runTransaction,
   addDoc,
   getDoc,
   setDoc,
@@ -26,6 +28,7 @@ const PdfRenderer = () => {
   let navigate = useNavigate();
   //for the firebase data of the active book
   const [dbData, setDBData] = useState();
+  const [bookmarks, setBookmarks] = useState([]);
   //number of total pages
   const [numPages, setNumPages] = useState(null);
   //currently opened page number
@@ -39,7 +42,7 @@ const PdfRenderer = () => {
   const bookID = fileName.slice(0, 20);
   const storageRef = ref(storage, `files/${fileName}`);
   const userDBRef = doc(db, "users", auth.currentUser.uid);
-  //used for adding the book to users read books history
+  //used for adding and fetching the data of the current book
   const bookDBRef = doc(db, `users/${auth.currentUser.uid}/books`, bookID);
   //check for bookmark on the currently opened page
 
@@ -49,34 +52,35 @@ const PdfRenderer = () => {
     const docRef = doc(db, "books", bookID);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      setDBData({...docSnap.data(), bookmarks: []});
+      setDBData(docSnap.data());
     } else {
       navigate("/not-found");
     }
   };
   const checkBookmark = () => {
-    console.log(pageNumber);
-    // console.log(dbData.bookmarks.includes(pageNumber + 1))
-    dbData.bookmarks.includes(pageNumber)
-      ? setBookmarked(true)
-      : setBookmarked(false)
+    
+
+    bookmarks.includes(pageNumber) ? setBookmarked(true) : setBookmarked(false);
   };
   const handleBookmark = async () => {
     if (bookmarked) {
-      const pageIndex = dbData.bookmarks.indexOf(pageNumber);
+      const pageIndex = bookmarks.indexOf(pageNumber);
       await updateDoc(bookDBRef, {
-        bookmarks: arrayRemove(pageNumber)
+        bookmarks: arrayRemove(pageNumber),
       });
-      dbData.bookmarks.splice(pageIndex);
-      checkBookmark();
+      setBookmarks((prevBookmarks) => {
+        return prevBookmarks.filter((pageNum) => pageNum !== pageNumber);
+      });
+      //proof that I am a dumb bitch
+      //dbData.bookmarks.splice(pageIndex);
     } else {
       await updateDoc(bookDBRef, {
         bookmarks: arrayUnion(pageNumber),
       });
-      dbData.bookmarks.push(pageNumber);
-      checkBookmark();
-      console.log(dbData.bookmarks);
-      console.log(bookmarked);
+      setBookmarks((prevBookmarks) => {
+        return prevBookmarks ? [...prevBookmarks, pageNumber] : [pageNumber];
+      });
+
     }
   };
   useEffect(() => {
@@ -96,6 +100,9 @@ const PdfRenderer = () => {
           const blob = xhr.response;
           //setting the file to the response
           setFile(blob);
+          await updateDoc(userDBRef, {
+            bookHistory: arrayUnion(bookID)
+          })
         };
         xhr.open("GET", url);
         xhr.send();
@@ -103,16 +110,18 @@ const PdfRenderer = () => {
       .catch((error) => {
         alert("sorry couldnt fetch the pdf for you at the moment");
       });
-    
+
     // eslint-disable-next-line
   }, []);
   //checking for bookmark every time page is changed
   useEffect(() => {
-    if(pageNumber > 0){
+    if (pageNumber > 0) {
       checkBookmark();
     }
-    
-  }, [pageNumber])
+  }, [pageNumber]);
+  useEffect(() => {
+    checkBookmark();
+  }, [bookmarks])
   useEffect(() => {
     function handleKeyDown(e) {
       switch (e.keyCode) {
@@ -134,13 +143,22 @@ const PdfRenderer = () => {
     };
   });
   async function onDocumentLoadSuccess({ numPages }) {
-    const addBookRef = await setDoc(bookDBRef, {
-      name: dbData.name,
-      ID: bookID,
-      imageURL: dbData.imageURL,
-      pagesRead: 0,
-      timeStamp: serverTimestamp(),
-      bookmarks: [],
+    await runTransaction(db, async (transaction) => {
+      const bookExistence = await transaction.get(bookDBRef);
+      if (!bookExistence.exists()) {
+        //will add data if the book hasnt already been read
+        //doing this so that the pagesRead and bookmarks dont reset
+        const addBookRef = await transaction.set(bookDBRef, {
+          name: dbData.name,
+          ID: bookID,
+          imageURL: dbData.imageURL,
+          pagesRead: 0,
+          timeStamp: serverTimestamp(),
+          bookmarks: [],
+        });
+      }
+      //adding bookmarks data saved earlier
+      setBookmarks(bookExistence.data().bookmarks);
     });
     setNumPages(numPages);
     setPageNumber(1);
@@ -148,14 +166,12 @@ const PdfRenderer = () => {
   async function changePageBack() {
     if (pageNumber > 1) {
       setPageNumber((prevPageNumber) => prevPageNumber - 1);
-      
     }
     return null;
   }
   function changePageNext() {
     if (pageNumber < numPages) {
       setPageNumber((prevPageNumber) => prevPageNumber + 1);
-      
     }
     return null;
   }

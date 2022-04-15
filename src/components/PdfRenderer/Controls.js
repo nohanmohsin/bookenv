@@ -63,13 +63,6 @@ const Controls = ({
         className="minimize"
         width={30}
       />
-
-      {/* <img
-        src={bookmarkIcon}
-        alt=""
-        width={30}
-        
-      /> */}
       <BookmarkIcon
         handleClick={onBookmark}
         color={bookmarked ? "#ffd675" : "#ffffff"}

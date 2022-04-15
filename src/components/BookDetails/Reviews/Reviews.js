@@ -29,7 +29,6 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
       review: formValue,
       createdAt: serverTimestamp(),
     }).then(() => {
-      console.log("hi");
       updateDoc(doc(db, `books/${bookID}`), {
         reviewAdded: true,
       });
@@ -40,7 +39,6 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
   function OnInput() {
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";
-    console.log(this.style.height)
   }
   useEffect(() => {
     const getReviews = async () => {
@@ -57,7 +55,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
         }
         setReviews(resultsArray);
       } catch (err) {
-        console.log(err);
+        alert("Couldn't get the reviews at this moment");
       }
     };
     //getReviews();
@@ -76,7 +74,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
             value={formValue}
             onChange={(e) => {
               setFormValue(e.target.value);
-              OnInput()
+              OnInput();
             }}
             placeholder="Add a Review"
             maxLength={1000}

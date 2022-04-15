@@ -52,6 +52,10 @@ main.pdf-renderer{
         border-radius: globals.$border-radius-small;
         padding: globals.$margin-small 3px;
     }
+    svg{
+        width: 1.875rem;
+        height: 1.875rem;
+    }
     section.page-comments{
         width: 30%;
         position: absolute;
