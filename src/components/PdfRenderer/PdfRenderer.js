@@ -1,8 +1,8 @@
 //I am dumb
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
-import { Document, Page, pdfjs } from "react-pdf";
+
 import { auth, db, storage } from "../../firebase";
 import {
   arrayUnion,
@@ -16,9 +16,11 @@ import {
   serverTimestamp,
   arrayRemove,
 } from "firebase/firestore";
+import { Document, Page, pdfjs } from "react-pdf";
+
 import Controls from "./Controls";
 import crossIcon from "../../icons/cross-icon.svg";
-import exampleFile from "../../pdf.pdf";
+//import exampleFile from "../../pdf.pdf";
 import PageComments from "./PageComments";
 
 //idk why this exists tbh...it works tho...I aint touching this
@@ -38,6 +40,7 @@ const PdfRenderer = () => {
   const [scale, setScale] = useState(1.0);
   //the pdf file that is going to be displayed
   const [file, setFile] = useState();
+  const canvasRef = useRef();
   let { fileName } = useParams();
   const bookID = fileName.slice(0, 20);
   const storageRef = ref(storage, `files/${fileName}`);
@@ -121,6 +124,7 @@ const PdfRenderer = () => {
   }, [pageNumber]);
   useEffect(() => {
     checkBookmark();
+
   }, [bookmarks])
   useEffect(() => {
     function handleKeyDown(e) {
@@ -185,7 +189,7 @@ const PdfRenderer = () => {
           onLoadError={console.error()}
           className="pdf-doc"
         >
-          <Page pageNumber={pageNumber} height={pdfHeight} scale={scale} />
+          <Page pageNumber={pageNumber} height={pdfHeight} scale={scale} canvasRef={canvasRef}/>
         </Document>
       </div>
       <p>
@@ -215,10 +219,11 @@ const PdfRenderer = () => {
         setPageNumber={setPageNumber}
         numPages={numPages}
         setScale={setScale}
-        fileId={bookID}
+        fileID={bookID}
         bookmarked={bookmarked}
         onBookmark={handleBookmark}
         checkBookmark={checkBookmark}
+        canvas={canvasRef}
       />
       <PageComments fileId={bookID} />
     </main>

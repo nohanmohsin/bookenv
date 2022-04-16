@@ -1,22 +1,38 @@
 import React from "react";
 import { auth } from "../../firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import html2canvas from "html2canvas";
 import nextPageIcon from "../../icons/next-icon.svg";
 import enlargeIcon from "../../icons/enlarge-icon.svg";
 import minimizeIcon from "../../icons/minimize-icon.svg";
-
 import BookmarkIcon from "../../icons/BookmarkIcon";
+import downloadIcon from "../../icons/download-icon.svg";
+import { Link } from "react-router-dom";
 
 const Controls = ({
   pageNumber,
   setPageNumber,
   numPages,
   setScale,
-  fileId,
+  fileID,
   bookmarked,
   onBookmark,
   checkBookmark,
+  canvas,
 }) => {
+  const downloadImage = (blob) => {
+    const fakeLink = window.document.createElement("a");
+    fakeLink.style = "display:none;";
+    fakeLink.download = fileID;
+
+    fakeLink.href = blob;
+
+    document.body.appendChild(fakeLink);
+    fakeLink.click();
+    document.body.removeChild(fakeLink);
+
+    fakeLink.remove();
+  };
   return numPages ? (
     <aside className="control-btns">
       {pageNumber > 1 && (
@@ -66,6 +82,17 @@ const Controls = ({
       <BookmarkIcon
         handleClick={onBookmark}
         color={bookmarked ? "#ffd675" : "#ffffff"}
+      />
+      <img
+        src={downloadIcon}
+        alt=""
+        width={30}
+        className="download"
+        onClick={async () => {
+          const canvasData = await html2canvas(document.querySelector(".react-pdf__Page__canvas"));
+          const image = canvasData.toDataURL("'image/png");
+          downloadImage(image);
+        }}
       />
     </aside>
   ) : null;
