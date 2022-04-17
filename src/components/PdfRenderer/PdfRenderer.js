@@ -41,7 +41,7 @@ const PdfRenderer = () => {
   //the pdf file that is going to be displayed
   const [file, setFile] = useState();
   const canvasRef = useRef();
-  let { fileName } = useParams();
+  let { fileName, jumpPageNumber } = useParams();
   const bookID = fileName.slice(0, 20);
   const storageRef = ref(storage, `files/${fileName}`);
   const userDBRef = doc(db, "users", auth.currentUser.uid);
@@ -92,7 +92,7 @@ const PdfRenderer = () => {
     if (window.innerWidth > 1280) {
       setPdfHeight(700);
     }
-
+    
     //gets the link of the file in firebase storage
     getDownloadURL(storageRef)
       .then((url) => {
@@ -120,6 +120,9 @@ const PdfRenderer = () => {
   useEffect(() => {
     if (pageNumber > 0) {
       checkBookmark();
+      if(jumpPageNumber ){
+        jumpPageNumber > 0 && jumpPageNumber < numPages ? setPageNumber(jumpPageNumber) : navigate("/not-found")
+      }
     }
   }, [pageNumber]);
   useEffect(() => {

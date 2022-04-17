@@ -6,6 +6,7 @@ import nextPageIcon from "../../icons/next-icon.svg";
 import enlargeIcon from "../../icons/enlarge-icon.svg";
 import minimizeIcon from "../../icons/minimize-icon.svg";
 import BookmarkIcon from "../../icons/BookmarkIcon";
+import shareIcon from "../../icons/share-icon.svg";
 import downloadIcon from "../../icons/download-icon.svg";
 import { Link } from "react-router-dom";
 
@@ -83,6 +84,11 @@ const Controls = ({
         handleClick={onBookmark}
         color={bookmarked ? "#ffd675" : "#ffffff"}
       />
+      <img src={shareIcon} alt="" width={30} className="share" onClick={() => {
+        //TODO: change this to the hosted url when website is hosted
+        navigator.clipboard.writeText(`http://localhost:3000/view=${fileID}.pdf/page=${pageNumber}`)
+        alert("Link copied to clipboard")
+      }}/>
       <img
         src={downloadIcon}
         alt=""

@@ -40,6 +40,15 @@ function App() {
                 </PrivateRoute>
               }
             />
+            {/* rendering two routes for page query because v6 doesnt support optional parameters */}
+            <Route
+              path="/view=:fileName/page=:jumpPageNumber"
+              element={
+                <PrivateRoute>
+                  <PdfRenderer />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/view=:fileName"
               element={
