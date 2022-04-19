@@ -16,7 +16,7 @@ import {
   serverTimestamp,
   arrayRemove,
 } from "firebase/firestore";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page, Outline, pdfjs } from "react-pdf";
 
 import Controls from "./Controls";
 import crossIcon from "../../icons/cross-icon.svg";
@@ -61,8 +61,6 @@ const PdfRenderer = () => {
     }
   };
   const checkBookmark = () => {
-    
-
     bookmarks.includes(pageNumber) ? setBookmarked(true) : setBookmarked(false);
   };
   const handleBookmark = async () => {
@@ -83,7 +81,6 @@ const PdfRenderer = () => {
       setBookmarks((prevBookmarks) => {
         return prevBookmarks ? [...prevBookmarks, pageNumber] : [pageNumber];
       });
-
     }
   };
   useEffect(() => {
@@ -92,7 +89,7 @@ const PdfRenderer = () => {
     if (window.innerWidth > 1280) {
       setPdfHeight(700);
     }
-    
+
     //gets the link of the file in firebase storage
     getDownloadURL(storageRef)
       .then((url) => {
@@ -104,8 +101,8 @@ const PdfRenderer = () => {
           //setting the file to the response
           setFile(blob);
           await updateDoc(userDBRef, {
-            bookHistory: arrayUnion(bookID)
-          })
+            bookHistory: arrayUnion(bookID),
+          });
         };
         xhr.open("GET", url);
         xhr.send();
@@ -120,15 +117,16 @@ const PdfRenderer = () => {
   useEffect(() => {
     if (pageNumber > 0) {
       checkBookmark();
-      if(jumpPageNumber ){
-        jumpPageNumber > 0 && jumpPageNumber < numPages ? setPageNumber(jumpPageNumber) : navigate("/not-found")
+      if (jumpPageNumber) {
+        jumpPageNumber > 0 && jumpPageNumber < numPages
+          ? setPageNumber(jumpPageNumber)
+          : navigate("/not-found");
       }
     }
   }, [pageNumber]);
   useEffect(() => {
     checkBookmark();
-
-  }, [bookmarks])
+  }, [bookmarks]);
   useEffect(() => {
     function handleKeyDown(e) {
       switch (e.keyCode) {
@@ -190,12 +188,38 @@ const PdfRenderer = () => {
           file={file}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error()}
+          
           className="pdf-doc"
         >
-          <Page pageNumber={pageNumber} height={pdfHeight} scale={scale} canvasRef={canvasRef}/>
+          <Page
+            pageNumber={pageNumber}
+            height={pdfHeight}
+            scale={scale}
+            canvasRef={canvasRef}
+          />
         </Document>
       </div>
-      <p>
+      <section className="bookmarks">
+        <h3>Bookmarked Pages</h3>
+        {bookmarks ? (
+          <Document
+            file={file}
+            onLoadError={console.error()}
+            className="pdf-doc"
+          >
+            {bookmarks.map((bookmarkedPageNum) => {
+              console.log(bookmarkedPageNum);
+              return (
+                <div>
+                  <Page pageNumber={bookmarkedPageNum} height={100} renderAnnotationLayer={false} renderTextLayer={false} className="boo"/>
+                  <p>page {bookmarkedPageNum}</p>
+                </div>
+              );
+            })}
+          </Document>
+        ) : null}
+      </section>
+      <p className="page-number">
         {" "}
         Page {pageNumber} of {numPages}
       </p>

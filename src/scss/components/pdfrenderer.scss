@@ -23,12 +23,13 @@ main.pdf-renderer{
         }
     }
     
-    p{
+    p.page-number{
         position: fixed;
         left: 50%;
         transform: translateX(-50%);
         bottom: globals.$margin;
     }
+    
     img.close{
         background-color: globals.$gray;
         border-radius: 50%;
