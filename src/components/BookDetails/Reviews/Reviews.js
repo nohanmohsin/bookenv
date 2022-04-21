@@ -14,7 +14,7 @@ import Review from "./Review";
 
 const Reviews = ({ data, bookID, reviewAdded }) => {
   const textAreaRef = useRef();
-  textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+
   const [formValue, setFormValue] = useState("");
   const [reviews, setReviews] = useState([]);
   //users can only leave reviews if signed in
@@ -58,6 +58,9 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
         alert("Couldn't get the reviews at this moment");
       }
     };
+    if (user) {
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    }
     //getReviews();
   }, []);
   return (

@@ -1,5 +1,18 @@
 @use "./colors" as *;
 @use "./measurements-vars" as *;
+body::-webkit-scrollbar{
+  width: 10px;
+}
+body::-webkit-scrollbar-thumb{
+  border-radius: $border-radius-full;
+  background-color: $light-primary-color;
+}
+body::-webkit-scrollbar-track{
+  background: transparent;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: $primary-color; 
+}
 main.navbar-included{
   position: absolute;
   margin-top: 3.75rem;
