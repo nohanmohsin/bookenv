@@ -1,16 +1,19 @@
 @use '../globals';
 main.pdf-renderer{
     height: 100vh;
-    display: flex;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: 30% auto 30%;
     align-items: center;
     padding: 0 globals.$margin;
+    
     .pdf-container{
         display: flex;
         flex-direction: column;
+        grid-column-start: 2;
         
         height: 80%;
-        margin: 0 auto;
+        align-items: center;
+        justify-content: center;
         overflow: scroll;
         
         &::-webkit-scrollbar{
@@ -22,7 +25,20 @@ main.pdf-renderer{
             display: none;
         }
     }
-    
+    section.bookmarks{
+        margin-left: globals.$margin-big;
+        background-color: globals.$gray;
+        border-radius: globals.$border-radius-small;
+        .pdf-doc{
+            width: 100%;
+            overflow-x: scroll;
+            display: flex;
+            gap: globals.$margin-small;
+            canvas{
+                border-radius: globals.$border-radius-tiny;
+            }
+        }
+    }
     p.page-number{
         position: fixed;
         left: 50%;
@@ -58,8 +74,7 @@ main.pdf-renderer{
         height: 1.875rem;
     }
     section.page-comments{
-        width: 30%;
-        position: absolute;
-        
+        grid-column-start: 3;
+        margin-left: globals.$margin-big;
     }
 }

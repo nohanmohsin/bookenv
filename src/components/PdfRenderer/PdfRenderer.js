@@ -200,7 +200,7 @@ const PdfRenderer = () => {
         </Document>
       </div>
       <section className="bookmarks">
-        <h3>Bookmarked Pages</h3>
+        <h2>Bookmarked Pages</h2>
         {bookmarks ? (
           <Document
             file={file}
@@ -208,10 +208,10 @@ const PdfRenderer = () => {
             className="pdf-doc"
           >
             {bookmarks.map((bookmarkedPageNum) => {
-              console.log(bookmarkedPageNum);
+              
               return (
                 <div>
-                  <Page pageNumber={bookmarkedPageNum} height={100} renderAnnotationLayer={false} renderTextLayer={false} className="boo"/>
+                  <Page pageNumber={bookmarkedPageNum} height={100} renderAnnotationLayer={false} renderTextLayer={false} className="bookmarked-page"/>
                   <p>page {bookmarkedPageNum}</p>
                 </div>
               );
