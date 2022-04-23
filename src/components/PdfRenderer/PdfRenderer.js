@@ -21,7 +21,8 @@ import { Document, Page, Outline, pdfjs } from "react-pdf";
 import Controls from "./Controls";
 import crossIcon from "../../icons/cross-icon.svg";
 //import exampleFile from "../../pdf.pdf";
-import PageComments from "./PageComments";
+import PageComments from "./PageComments/PageComments";
+import Bookmarks from "./Bookmarks";
 
 //idk why this exists tbh...it works tho...I aint touching this
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -150,9 +151,10 @@ const PdfRenderer = () => {
   async function onDocumentLoadSuccess({ numPages }) {
     await runTransaction(db, async (transaction) => {
       const bookExistence = await transaction.get(bookDBRef);
-      if (!bookExistence.exists()) {
-        //will add data if the book hasnt already been read
-        //doing this so that the pagesRead and bookmarks dont reset
+      if (bookExistence.exists()) {
+        //adding bookmarks data saved earlier
+        setBookmarks(bookExistence.data().bookmarks);
+      } else {
         const addBookRef = await transaction.set(bookDBRef, {
           name: dbData.name,
           ID: bookID,
@@ -162,8 +164,11 @@ const PdfRenderer = () => {
           bookmarks: [],
         });
       }
-      //adding bookmarks data saved earlier
-      setBookmarks(bookExistence.data().bookmarks);
+      //will add data if the book hasnt already been read
+      //doing this so that the pagesRead and bookmarks dont reset
+      console.log(bookExistence.data())
+      console.log(bookID)
+      
     });
     setNumPages(numPages);
     setPageNumber(1);
@@ -196,29 +201,12 @@ const PdfRenderer = () => {
             height={pdfHeight}
             scale={scale}
             canvasRef={canvasRef}
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
           />
         </Document>
       </div>
-      <section className="bookmarks">
-        <h2>Bookmarked Pages</h2>
-        {bookmarks ? (
-          <Document
-            file={file}
-            onLoadError={console.error()}
-            className="pdf-doc"
-          >
-            {bookmarks.map((bookmarkedPageNum) => {
-              
-              return (
-                <div>
-                  <Page pageNumber={bookmarkedPageNum} height={100} renderAnnotationLayer={false} renderTextLayer={false} className="bookmarked-page"/>
-                  <p>page {bookmarkedPageNum}</p>
-                </div>
-              );
-            })}
-          </Document>
-        ) : null}
-      </section>
+
       <p className="page-number">
         {" "}
         Page {pageNumber} of {numPages}
@@ -252,7 +240,10 @@ const PdfRenderer = () => {
         checkBookmark={checkBookmark}
         canvas={canvasRef}
       />
-      <PageComments fileId={bookID} />
+      <div className="bookmarks-and-comments">
+        <Bookmarks bookmarkedPages={bookmarks} file={file} setPageNumber={setPageNumber}/>
+        <PageComments fileId={bookID} />
+      </div>
     </main>
   );
 };

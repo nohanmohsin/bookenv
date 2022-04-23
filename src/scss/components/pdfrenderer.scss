@@ -1,80 +1,138 @@
-@use '../globals';
-main.pdf-renderer{
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 30% auto 30%;
+@use "../globals";
+main.pdf-renderer {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 30% auto 30%;
+  align-items: center;
+  padding: 0 globals.$margin;
+
+  .pdf-container {
+    display: flex;
+    flex-direction: column;
+    grid-column-start: 2;
+
+    height: 80%;
     align-items: center;
-    padding: 0 globals.$margin;
-    
-    .pdf-container{
-        display: flex;
-        flex-direction: column;
-        grid-column-start: 2;
-        
-        height: 80%;
-        align-items: center;
-        justify-content: center;
-        overflow: scroll;
-        
-        &::-webkit-scrollbar{
-            display: none;
-        }
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-        .annotationLayer{
-            display: none;
-        }
+    overflow: scroll;
+    .pdf-doc {
+      display: flex;
+      background-color: globals.$gray;
+      align-items: center;
+      height: 100%;
     }
-    section.bookmarks{
-        margin-left: globals.$margin-big;
-        background-color: globals.$gray;
-        border-radius: globals.$border-radius-small;
-        .pdf-doc{
-            width: 100%;
-            overflow-x: scroll;
-            display: flex;
-            gap: globals.$margin-small;
-            canvas{
-                border-radius: globals.$border-radius-tiny;
-            }
-        }
+    &::-webkit-scrollbar {
+      display: none;
     }
-    p.page-number{
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: globals.$margin;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  p.page-number {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: globals.$margin;
+  }
+
+  img.close {
+    background-color: globals.$gray;
+    border-radius: 50%;
+    padding: 5px;
+    position: fixed;
+    top: globals.$margin;
+    //centering it based on the controls sidebar
+    left: calc(globals.$margin-big - 20px);
+  }
+  aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: globals.$margin-small;
+    position: fixed;
+    top: 50%;
+    left: globals.$margin;
+    transform: translateY(-50%);
+    width: globals.$margin-big;
+    background-color: globals.$gray;
+    border-radius: globals.$border-radius-small;
+    padding: globals.$margin-small 3px;
+  }
+  svg {
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+  .bookmarks-and-comments {
+    grid-column-start: 3;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: globals.$margin;
+    justify-content: center;
+    section {
+      margin-left: globals.$margin-big;
+      background-color: globals.$gray;
+      border-radius: globals.$border-radius-small;
+      padding: globals.$margin-small;
+      padding-right: 0;
     }
-    
-    img.close{
-        background-color: globals.$gray;
+  }
+
+  section.bookmarks {
+    .pdf-doc-bookmarks {
+      width: 100%;
+      overflow-x: auto;
+      display: flex;
+      gap: globals.$margin-small;
+      margin-top: globals.$margin-small;
+      canvas {
+        border-radius: globals.$border-radius-tiny;
+      }
+    }
+  }
+
+  section.page-comments {
+    overflow: auto;
+    form {
+      margin-top: globals.$margin-small;
+      display: flex;
+      align-items: center;
+      gap: globals.$margin-small;
+
+      overflow: auto;
+      padding-right: globals.$margin-small;
+      img {
         border-radius: 50%;
-        padding: 5px;
-        position: fixed;
-        top: globals.$margin;
-        //centering it based on the controls sidebar
-        left: calc(globals.$margin-big - 20px);
+      }
+      input {
+        width: 100%;
+        background-color: globals.$white;
+        color: globals.$black;
+        border: none;
+      }
+      input::placeholder {
+        color: globals.$black;
+      }
     }
-    aside{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .comment{
+        margin: globals.$margin-small 0;
+        display: grid;
+        grid-template-columns: auto auto;
         gap: globals.$margin-small;
-        position: fixed;
-        top: 50%;
-        left: globals.$margin;
-        transform: translateY(-50%);
-        width: globals.$margin-big;
-        background-color: globals.$gray;
-        border-radius: globals.$border-radius-small;
-        padding: globals.$margin-small 3px;
+        
+        img{
+            grid-column-start: 1;
+            border-radius: 50%;
+        }
+        span{
+            font-weight: 400;
+        }
+        span:hover{
+            color: globals.$primary-color
+        }
+        span,
+        p{
+            grid-column-start: 2;
+        }
     }
-    svg{
-        width: 1.875rem;
-        height: 1.875rem;
-    }
-    section.page-comments{
-        grid-column-start: 3;
-        margin-left: globals.$margin-big;
-    }
+  }
 }
