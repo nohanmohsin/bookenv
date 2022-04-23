@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import parse from 'html-react-parser'
 import Reviews from "./Reviews/Reviews";
 
 const BookDetails = () => {
@@ -28,21 +29,21 @@ const BookDetails = () => {
         name: "Name",
         review:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium vulputate nibh massa massa bibendum in enim dui cras. Tempus tellus id ac accumsan laoreet.",
-        avatar:
+        avatarURL:
           "https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo",
       },
       {
         name: "Name",
         review:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium vulputate nibh massa massa bibendum in enim dui cras. Tempus tellus id ac accumsan laoreet.",
-        avatar:
+        avatarURL:
           "https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo",
       },
       {
         name: "Name",
         review:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium vulputate nibh massa massa bibendum in enim dui cras. Tempus tellus id ac accumsan laoreet.",
-        avatar:
+        avatarURL:
           "https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo",
       },
     ],
@@ -89,7 +90,7 @@ const BookDetails = () => {
           </section>
           <section className="overview">
             <h2>OverView</h2>
-            <p>{data.description}</p>
+            <p>{parse(data.description)}</p>
           </section>
           <section className="more-books">
             <h2>More Like This</h2>

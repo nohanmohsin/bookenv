@@ -25,7 +25,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
     e.preventDefault();
     await addDoc(reviewsRef, {
       name: user.displayName,
-      photoURL: user.photoURL,
+      avatarURL: user.photoURL,
       review: formValue,
       createdAt: serverTimestamp(),
     }).then(() => {

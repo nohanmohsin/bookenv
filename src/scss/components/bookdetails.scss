@@ -14,6 +14,9 @@ main.book-details{
         
         img{
             height: 30.625rem;
+            width: 19.6875rem;
+            object-position: 0px 0px;
+            object-fit: cover;
             border-radius: globals.$border-radius-small;
         }
         .text-details{
