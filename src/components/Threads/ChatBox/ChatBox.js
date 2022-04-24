@@ -59,6 +59,7 @@ const ChatBox = ({ threadID }) => {
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           placeholder="say something nice"
+          autofocus
         />
       </form>
     </section>

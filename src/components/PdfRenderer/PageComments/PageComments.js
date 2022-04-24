@@ -1,6 +1,6 @@
 import React from "react";
 
-const PageComments = () => {
+const PageComments = ({pageNum, PageComments}) => {
   const exampleData = [
     {
       name: "name",

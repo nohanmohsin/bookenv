@@ -1,4 +1,3 @@
-//I am dumb
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
@@ -9,14 +8,17 @@ import {
   doc,
   collection,
   runTransaction,
-  addDoc,
+  
   getDoc,
-  setDoc,
+  getDocs,
   updateDoc,
   serverTimestamp,
   arrayRemove,
+  orderBy,
+  query,
+  limit,
 } from "firebase/firestore";
-import { Document, Page, Outline, pdfjs } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 
 import Controls from "./Controls";
 import crossIcon from "../../icons/cross-icon.svg";
@@ -36,9 +38,11 @@ const PdfRenderer = () => {
   const [numPages, setNumPages] = useState(null);
   //currently opened page number
   const [pageNumber, setPageNumber] = useState(0);
+  //for checking if the page is bookmarked or not
   const [bookmarked, setBookmarked] = useState(false);
   const [pdfHeight, setPdfHeight] = useState(500);
   const [scale, setScale] = useState(1.0);
+  const [pageComments, setPageComments] = useState([]);
   //the pdf file that is going to be displayed
   const [file, setFile] = useState();
   const canvasRef = useRef();
@@ -54,9 +58,23 @@ const PdfRenderer = () => {
   const getDBData = async () => {
     //https://firebase.google.com/docs/firestore/query-data/get-data
     const docRef = doc(db, "books", bookID);
+    const PageCommentQuery = query(
+      collection(db, `books/${bookID}/pagecomments`),
+      orderBy("createdAt"), limit(5)
+    );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
+      let pageCommentsDummy = [];
       setDBData(docSnap.data());
+      //you can't fetch data from collections in a transaction
+      const pageCommentsSnap = await getDocs(PageCommentQuery);
+      if (pageCommentsSnap.docs.length > 0) {
+        pageCommentsSnap.forEach((pageComment) => {
+          pageCommentsDummy.push(pageComment.data());
+        });
+        setPageComments(pageCommentsDummy);
+        
+      }
     } else {
       navigate("/not-found");
     }
@@ -66,15 +84,13 @@ const PdfRenderer = () => {
   };
   const handleBookmark = async () => {
     if (bookmarked) {
-      const pageIndex = bookmarks.indexOf(pageNumber);
       await updateDoc(bookDBRef, {
         bookmarks: arrayRemove(pageNumber),
       });
       setBookmarks((prevBookmarks) => {
         return prevBookmarks.filter((pageNum) => pageNum !== pageNumber);
       });
-      //proof that I am a dumb bitch
-      //dbData.bookmarks.splice(pageIndex);
+      
     } else {
       await updateDoc(bookDBRef, {
         bookmarks: arrayUnion(pageNumber),
@@ -109,7 +125,7 @@ const PdfRenderer = () => {
         xhr.send();
       })
       .catch((error) => {
-        alert("sorry couldnt fetch the pdf for you at the moment");
+        alert("sorry couldn't fetch the pdf for you at the moment");
       });
 
     // eslint-disable-next-line
@@ -155,7 +171,7 @@ const PdfRenderer = () => {
         //adding bookmarks data saved earlier
         setBookmarks(bookExistence.data().bookmarks);
       } else {
-        const addBookRef = await transaction.set(bookDBRef, {
+        await transaction.set(bookDBRef, {
           name: dbData.name,
           ID: bookID,
           imageURL: dbData.imageURL,
@@ -164,10 +180,8 @@ const PdfRenderer = () => {
           bookmarks: [],
         });
       }
-      //will add data if the book hasnt already been read
+      //will add data if the book hasn't already been read
       //doing this so that the pagesRead and bookmarks dont reset
-      console.log(bookExistence.data())
-      console.log(bookID)
       
     });
     setNumPages(numPages);
@@ -193,7 +207,6 @@ const PdfRenderer = () => {
           file={file}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error()}
-          
           className="pdf-doc"
         >
           <Page
@@ -218,7 +231,7 @@ const PdfRenderer = () => {
         className="close"
         onClick={async () => {
           //TODO: use onbeforeunload to save pagesread too
-          const updatePagesReadRef = await updateDoc(bookDBRef, {
+          await updateDoc(bookDBRef, {
             pagesRead: pageNumber,
             timeStamp: serverTimestamp(),
           });
@@ -241,8 +254,12 @@ const PdfRenderer = () => {
         canvas={canvasRef}
       />
       <div className="bookmarks-and-comments">
-        <Bookmarks bookmarkedPages={bookmarks} file={file} setPageNumber={setPageNumber}/>
-        <PageComments fileId={bookID} />
+        <Bookmarks
+          bookmarkedPages={bookmarks}
+          file={file}
+          setPageNumber={setPageNumber}
+        />
+        <PageComments pageNum={pageNumber} data={pageComments}/>
       </div>
     </main>
   );
