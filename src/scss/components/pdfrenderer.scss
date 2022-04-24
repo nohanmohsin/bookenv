@@ -91,7 +91,7 @@ main.pdf-renderer {
   }
 
   section.page-comments {
-    overflow: auto;
+    
     form {
       margin-top: globals.$margin-small;
       display: flex;
@@ -113,26 +113,30 @@ main.pdf-renderer {
         color: globals.$black;
       }
     }
-    .comment{
-        margin: globals.$margin-small 0;
-        display: grid;
-        grid-template-columns: auto auto;
-        gap: globals.$margin-small;
-        
-        img{
-            grid-column-start: 1;
-            border-radius: 50%;
-        }
-        span{
-            font-weight: 400;
-        }
-        span:hover{
-            color: globals.$primary-color
-        }
-        span,
-        p{
-            grid-column-start: 2;
-        }
+	.comments{
+		overflow: auto;
+	}
+    .comment {
+      margin: globals.$margin-small 0;
+      display: grid;
+      grid-template-columns: auto auto;
+      column-gap: globals.$margin-small;
+
+      img {
+        grid-column-start: 1;
+        border-radius: 50%;
+      }
+      span {
+        font-weight: 400;
+      }
+      span:hover {
+        color: globals.$primary-color;
+      }
+      span,
+      p {
+		margin-top: 5px;
+        grid-column-start: 2;
+      }
     }
   }
 }

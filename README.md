@@ -1,5 +1,7 @@
-# Bookenv
 <img align="left" width="20" src="https://cdn.discordapp.com/attachments/839151300523589642/964593795352129556/logo_2.png" style="margin-right: 15px;">
+
+# Bookenv
+
 
 ## _**A Place For Bookworms**_
 
@@ -53,14 +55,17 @@ I had a bad habit of avoiding the docs of any kind...if I ran into any sort of i
 
 I am using react-pdf to display the pdf and it was extremely hard for me to fetch the file from firebase storage in the correct encoding...I think this issue occurred because of my inexperience in working with files
 
-### 2. **cancelling upload task:**
+### 2. **firebase storage cors issue:**
+I had to do a little bit of google cloud configuring with google cloud cli...I've never done that...that's why I was a little concerned and I also encountered a few issues while configuring `cors.json` file...but I got there eventually
+
+### 3. **cancelling upload task:**
 
 this was a very easy fix but It took me I think a few days to come up with a solution...this simple problem made me think of quitting but thankfully I fixed it with the help of the lovely people from discord...turns out it was a scope related issue
 
-### 3. **navbar fixed display:**
+### 4. **navbar fixed display:**
 
 I had an embarrassingly hard time trying to fix my navbar at the top of my screen on scroll...I have sort of "fixed"(no pun intended) it...but it's far from an actual solution...I have found a really hacky way of getting the job done but it's gonna have to do for now
 
-### 4. **bookmarks:**
+### 5. **bookmarks:**
 
 this was a very recent issue I had to deal with...I had again a very hacky way of solving this issue...the code in `PdfRenderer.js` looks very weird because of this issue
