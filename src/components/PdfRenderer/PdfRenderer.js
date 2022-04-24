@@ -8,7 +8,6 @@ import {
   doc,
   collection,
   runTransaction,
-  
   getDoc,
   getDocs,
   updateDoc,
@@ -60,7 +59,8 @@ const PdfRenderer = () => {
     const docRef = doc(db, "books", bookID);
     const PageCommentQuery = query(
       collection(db, `books/${bookID}/pagecomments`),
-      orderBy("createdAt"), limit(5)
+      orderBy("createdAt"),
+      limit(5)
     );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -73,7 +73,6 @@ const PdfRenderer = () => {
           pageCommentsDummy.push(pageComment.data());
         });
         setPageComments(pageCommentsDummy);
-        
       }
     } else {
       navigate("/not-found");
@@ -90,7 +89,6 @@ const PdfRenderer = () => {
       setBookmarks((prevBookmarks) => {
         return prevBookmarks.filter((pageNum) => pageNum !== pageNumber);
       });
-      
     } else {
       await updateDoc(bookDBRef, {
         bookmarks: arrayUnion(pageNumber),
@@ -171,6 +169,8 @@ const PdfRenderer = () => {
         //adding bookmarks data saved earlier
         setBookmarks(bookExistence.data().bookmarks);
       } else {
+        //will add data if the book hasn't already been read
+        //doing this so that the pagesRead and bookmarks dont reset
         await transaction.set(bookDBRef, {
           name: dbData.name,
           ID: bookID,
@@ -180,9 +180,6 @@ const PdfRenderer = () => {
           bookmarks: [],
         });
       }
-      //will add data if the book hasn't already been read
-      //doing this so that the pagesRead and bookmarks dont reset
-      
     });
     setNumPages(numPages);
     setPageNumber(1);
@@ -259,7 +256,7 @@ const PdfRenderer = () => {
           file={file}
           setPageNumber={setPageNumber}
         />
-        <PageComments pageNum={pageNumber} data={pageComments}/>
+        <PageComments pageNum={pageNumber} data={pageComments} bookID={bookID}/>
       </div>
     </main>
   );
