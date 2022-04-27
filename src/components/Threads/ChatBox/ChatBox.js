@@ -12,24 +12,26 @@ import {
 
 import { db } from "../../../firebase";
 import Message from "./Message";
+import NoMessages from "./NoMessages";
 
 const ChatBox = ({ threadID }) => {
   const user = auth.currentUser;
   const dummy = useRef();
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState([]);
   //used to change the query limit of msgQuery on scroll
   const [msgQueryLimit, setMsgQueryLimit] = useState(50);
 
   const messagesRef = collection(db, `threads/${threadID}/messages`);
   const msgQuery = query(
     messagesRef,
-    orderBy("createdAt"),
+    orderBy("createdAt", "desc"),
     limit(msgQueryLimit)
   );
 
   const handleMessagesScroll = (e) => {
     //increasing msg query limit on scroll to the top
     if (e.target.scrollTop === 0) {
+      console.log('scrolled')
       setMsgQueryLimit((prevLimit) => prevLimit + 50);
     }
   };
@@ -42,11 +44,13 @@ const ChatBox = ({ threadID }) => {
       createdAt: serverTimestamp(),
     });
     e.target[0].value = "";
-    
   };
   useEffect(() => {
-    dummy.current.scrollIntoView({behavior: "smooth"});
-  }, [dummy.current]);
+    if(dummy.current){
+      
+      dummy.current.scrollIntoView();
+    }
+  }, [dummy]);
   useEffect(() => {
     const unsubscribe = onSnapshot(msgQuery, (querySnapshot) => {
       if (!querySnapshot.metadata.hasPendingWrites) {
@@ -54,17 +58,18 @@ const ChatBox = ({ threadID }) => {
         querySnapshot.forEach((doc) => {
           dummyArray.push(doc.data());
         });
-        setMessages(dummyArray);
+        setMessages(dummyArray.reverse());
         dummy.current.scrollIntoView();
       }
     });
+    console.log(threadID);
     return () => unsubscribe();
   }, []);
   return (
     <section className="chatbox">
-      <div className="messages-container" onScroll={handleMessagesScroll}>
-        {messages &&
-          messages.map((message) => (
+      {messages.length > 0 ? (
+        <div className="messages-container" onScroll={handleMessagesScroll}>
+          {messages.map((message) => (
             <Message
               name={message.name}
               message={message.msg}
@@ -72,8 +77,9 @@ const ChatBox = ({ threadID }) => {
               key={message.id}
             />
           ))}
-        <div ref={dummy}></div>
-      </div>
+          <div ref={dummy}></div>
+        </div>
+      ) : <NoMessages />}
       <form onSubmit={sendMessage}>
         <input placeholder="say something nice" />
       </form>
