@@ -40,7 +40,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* rendering two routes for page query because v6 doesnt support optional parameters */}
+            {/* rendering two routes for page query because v6 doesn't support optional parameters */}
             <Route
               path="/view=:fileName/page=:jumpPageNumber"
               element={
@@ -77,7 +77,7 @@ function App() {
             <Route path="/:bookID" element={<BookDetails />} />
             <Route path="/search=:searchQuery" element={<SearchPage />} />
             <Route
-              path="/threads"
+              path="/threads/id=:threadID"
               element={
                 <PrivateRoute>
                   <Threads />

@@ -16,6 +16,7 @@ const PageComments = ({ pageNum, data, bookID }) => {
       createdAt: serverTimestamp(),
     });
     setCommentContent("");
+    alert("Comment Added!")
   };
   const filteredData = data.filter((comment) => comment.pageNum === pageNum);
   return (

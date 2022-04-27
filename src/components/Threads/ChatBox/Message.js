@@ -1,8 +1,7 @@
 import React from "react";
 
-const Message = ({ message, createdAt }) => {
-  const name = "alu bhau";
-  const date = new Date(createdAt * 1000);
+const Message = ({ name, message, createdAt }) => {
+  const date = new Date(createdAt.seconds * 1000);
   const formattedDate = date.toJSON().slice(0, 10);
   return (
     <div className="message">

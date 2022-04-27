@@ -171,7 +171,7 @@ const PdfRenderer = () => {
       } else {
         //will add data if the book hasn't already been read
         //doing this so that the pagesRead and bookmarks dont reset
-        await transaction.set(bookDBRef, {
+        transaction.set(bookDBRef, {
           name: dbData.name,
           ID: bookID,
           imageURL: dbData.imageURL,

@@ -1,3 +1,51 @@
+@use '../globals';
 main.thread-page{
     width: 100%;
+    section.chatbox{
+        height: calc(100vh - globals.$margin-big);
+        padding: 0 globals.$margin;
+        
+        .messages-container{
+            width: 100%;
+            height: 80%;
+            padding: 0 globals.$margin;
+            overflow-y: scroll;
+            span{
+                width: 100%;
+            }
+        }
+        .message{
+            display: flex;
+            gap: globals.$margin-small;
+            margin: globals.$margin 0;
+            img{
+                border-radius: globals.$border-radius-full;
+            }
+            h3{
+                display: inline;
+                font-size: 1rem;
+        
+            }
+            span{
+                font-size: 0.85rem;
+                font-weight: 500;
+                margin-left: calc(globals.$margin-small - 8px);
+                color: globals.$gray;
+            }
+            p{
+                margin: calc(globals.$margin-small - 3px) 0;
+            }
+        }
+        form{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: globals.$black;
+            width: auto;
+        }
+        input{
+            width: 100%;
+            margin: 0 auto;
+        }
+    }
 }
