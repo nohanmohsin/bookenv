@@ -31,7 +31,7 @@ const ChatBox = ({ threadID }) => {
   const handleMessagesScroll = (e) => {
     //increasing msg query limit on scroll to the top
     if (e.target.scrollTop === 0) {
-      console.log('scrolled')
+      
       setMsgQueryLimit((prevLimit) => prevLimit + 50);
     }
   };
@@ -53,6 +53,7 @@ const ChatBox = ({ threadID }) => {
   }, [dummy]);
   useEffect(() => {
     const unsubscribe = onSnapshot(msgQuery, (querySnapshot) => {
+      //using serverTimestamp() will result in 2 writes to the db
       if (!querySnapshot.metadata.hasPendingWrites) {
         let dummyArray = [];
         querySnapshot.forEach((doc) => {
@@ -62,7 +63,7 @@ const ChatBox = ({ threadID }) => {
         dummy.current.scrollIntoView();
       }
     });
-    console.log(threadID);
+    
     return () => unsubscribe();
   }, []);
   return (

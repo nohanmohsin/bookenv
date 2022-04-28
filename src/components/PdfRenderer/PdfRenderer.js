@@ -168,6 +168,7 @@ const PdfRenderer = () => {
       if (bookExistence.exists()) {
         //adding bookmarks data saved earlier
         setBookmarks(bookExistence.data().bookmarks);
+        
       } else {
         //will add data if the book hasn't already been read
         //doing this so that the pagesRead and bookmarks dont reset

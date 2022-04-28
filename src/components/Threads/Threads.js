@@ -18,7 +18,7 @@ const Threads = () => {
       }
     };
     checkExistence()
-    console.log('hmm')
+    
   }, []);
   return (
     <main className="thread-page navbar-included">
