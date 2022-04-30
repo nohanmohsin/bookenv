@@ -1,32 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+  writeBatch,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 
 const Sidebar = () => {
+  const [joinedThreads, setJoinedThreads] = useState([]);
   let navigate = useNavigate();
-  const joinedThreads = [
-    {
-      name: "zafar iqbal",
-      id: "w22q8Ny4sMxSwzx2ZyuW",
-    },
-    {
-      name: "zafar iqbal",
-      id: "w22q8Ny4sMxSwzx2ZyuW",
-    },
-    {
-      name: "zafar iqbal",
-      id: "w22q8Ny4sMxSwzx2ZyuW",
-    },
-  ];
+  const user = auth.currentUser;
+  useEffect(() => {
+    const getJoinedThreads = async () => {
+      const joinedThreadsRef = await getDoc(doc(db, "users", user.uid));
+      console.log(joinedThreadsRef.data().threads);
+      setJoinedThreads(joinedThreadsRef.data().threads);
+    };
+    getJoinedThreads();
+  }, []);
+  
   const makeThread = async (e) => {
     e.preventDefault();
+
     const threadRef = await addDoc(collection(db, "threads"), {
       name: e.target[0].value,
       createdAt: serverTimestamp(),
     });
 
+    const userThreadRef = updateDoc(doc(db, "users", user.uid), {
+      threads: arrayUnion({
+        name: e.target[0].value,
+        id: threadRef.id,
+      }),
+    });
     navigate(`/threads/id=${threadRef.id}`);
     //very hacky solution
     window.location.reload();
