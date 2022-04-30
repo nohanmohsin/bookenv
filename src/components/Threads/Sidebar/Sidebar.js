@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import {
   addDoc,
   arrayUnion,
@@ -27,15 +26,24 @@ const Sidebar = () => {
 
   const joinThread = async (e) => {
     e.preventDefault();
-    const checkThread = await getDoc(doc(db, "threads", e.target[0].value));
+    let threadID = e.target[0].value;
+    if (e.target[0].value.startsWith("http://localhost:3000/threads/id=")) {
+      threadID = e.target[0].value.substr(
+        e.target[0].value.indexOf("id=") + 3,
+        20
+      );
+    }
+    const checkThread = await getDoc(doc(db, "threads", threadID));
+
     if (checkThread.exists()) {
-      
       const userThreadRef = await updateDoc(doc(db, "users", user.uid), {
         threads: arrayUnion({
           name: checkThread.data().name,
           id: checkThread.id,
         }),
       });
+      e.target[0].value = "";
+      
     } else {
       alert("invalid link or ID");
     }
@@ -67,13 +75,16 @@ const Sidebar = () => {
       <div className="joined-threads">
         {joinedThreads.length > 0 ? (
           joinedThreads.map((thread) => (
-            <Link
-              to={`/threads/id=${thread.id}`}
+            //Link wouldn't work in this scenario
+            <div
+              className="thread"
+              onClick={() => {
+                navigate(`/threads/id=${thread.id}`);
+                window.location.reload();
+              }}
             >
-              <div className="thread">
-                <h3>{thread.name}</h3>
-              </div>
-            </Link>
+              <h3>{thread.name}</h3>
+            </div>
           ))
         ) : (
           <h3>No Threads Joined...Join a thread now</h3>
