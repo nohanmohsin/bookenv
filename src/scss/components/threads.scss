@@ -3,6 +3,7 @@ main.thread-page{
     display: flex;
     width: 100%;
     height: calc(100vh - globals.$margin-big);
+    gap: globals.$margin;
     padding: 0 globals.$margin;
     aside{
         display: flex;
@@ -25,7 +26,7 @@ main.thread-page{
             padding: 0 globals.$margin-small;
             width: 100%;
             height: 2.5rem;
-            border-radius: globals.$border-radius-small;
+            border-radius: globals.$border-radius-tiny;
         }
         .thread:hover{
             color: globals.$secondary-color;
@@ -44,7 +45,6 @@ main.thread-page{
         flex-direction: column;
         height: 100%;
         width: 100%;
-        padding: 0 globals.$margin;
         padding-bottom: globals.$margin-small;
         .messages-container{
             width: 100%;
@@ -87,6 +87,13 @@ main.thread-page{
         input{
             width: 100%;
             margin: 0 auto;
+        }
+    }
+    .no-messages{
+        height: 100%;
+        text-align: center;
+        h1{
+            margin: auto 0;
         }
     }
 }

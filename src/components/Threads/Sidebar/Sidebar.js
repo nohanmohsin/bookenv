@@ -8,7 +8,6 @@ import {
   getDoc,
   serverTimestamp,
   updateDoc,
-  writeBatch,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../../firebase";
@@ -25,7 +24,23 @@ const Sidebar = () => {
     };
     getJoinedThreads();
   }, []);
-  
+
+  const joinThread = async (e) => {
+    e.preventDefault();
+    const checkThread = await getDoc(doc(db, "threads", e.target[0].value));
+    if (checkThread.exists()) {
+      
+      const userThreadRef = await updateDoc(doc(db, "users", user.uid), {
+        threads: arrayUnion({
+          name: checkThread.data().name,
+          id: checkThread.id,
+        }),
+      });
+    } else {
+      alert("invalid link or ID");
+    }
+  };
+
   const makeThread = async (e) => {
     e.preventDefault();
 
@@ -40,17 +55,21 @@ const Sidebar = () => {
         id: threadRef.id,
       }),
     });
+
     navigate(`/threads/id=${threadRef.id}`);
     //very hacky solution
     window.location.reload();
   };
+
   return (
     <aside className="threads-sidebar">
       <h2>Joined Threads</h2>
       <div className="joined-threads">
         {joinedThreads.length > 0 ? (
           joinedThreads.map((thread) => (
-            <Link to={`/threads/id=${thread.id}`}>
+            <Link
+              to={`/threads/id=${thread.id}`}
+            >
               <div className="thread">
                 <h3>{thread.name}</h3>
               </div>
@@ -60,15 +79,25 @@ const Sidebar = () => {
           <h3>No Threads Joined...Join a thread now</h3>
         )}
       </div>
-      <form onSubmit={makeThread}>
+      <form onSubmit={makeThread} className="make-thread">
         <input
           type="text"
           placeholder="Enter the name of the Thread"
+          minLength={20}
           required
         />
         <button className="make-thread" type="submit">
           Make New Thread
         </button>
+      </form>
+      <form className="join-thread" onSubmit={joinThread}>
+        <input
+          type="text"
+          placeholder="Enter Link or the ID of the Thread"
+          minLength={20}
+          required
+        />
+        <button type="submit">Join Thread</button>
       </form>
     </aside>
   );
