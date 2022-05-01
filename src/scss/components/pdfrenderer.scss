@@ -84,9 +84,16 @@ main.pdf-renderer {
       display: flex;
       gap: globals.$margin-small;
       margin-top: globals.$margin-small;
+      text-align: center;
+      div:hover{
+        color: globals.$secondary-color;
+        cursor: pointer;
+      }
       canvas {
+        margin-bottom: globals.$margin-small;
         border-radius: globals.$border-radius-tiny;
       }
+      
     }
   }
 
@@ -130,11 +137,11 @@ main.pdf-renderer {
         font-weight: 400;
       }
       span:hover {
-        color: globals.$primary-color;
+        color: globals.$secondary-color;
       }
       span,
       p {
-		margin-top: 5px;
+		    margin-top: 5px;
         grid-column-start: 2;
       }
     }

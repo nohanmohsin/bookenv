@@ -1,6 +1,6 @@
 @use "../globals";
 .book-basic-details {
-  width: fit-content;
+  width: min-content;
   margin-right: globals.$margin;
   img {
     height: 14rem;
@@ -11,14 +11,16 @@
   }
 
   span {
-    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     margin-top: calc(globals.$margin-small - 5px);
     width: 90%;
     font-weight: 400;
   }
-  
 }
 .book-basic-details:hover {
-  color: globals.$primary-color;
+  color: globals.$secondary-color;
   cursor: pointer;
 }
