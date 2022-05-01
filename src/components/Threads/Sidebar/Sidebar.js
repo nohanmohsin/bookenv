@@ -8,18 +8,37 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 
 const Sidebar = () => {
   const [joinedThreads, setJoinedThreads] = useState([]);
+  let { threadID } = useParams();
   let navigate = useNavigate();
   const user = auth.currentUser;
   useEffect(() => {
     const getJoinedThreads = async () => {
       const joinedThreadsRef = await getDoc(doc(db, "users", user.uid));
-      console.log(joinedThreadsRef.data().threads);
-      setJoinedThreads(joinedThreadsRef.data().threads);
+      const threadsDummy = joinedThreadsRef.data().threads;
+      setJoinedThreads(threadsDummy);
+      //checking if the threadID provided in the link is in joined threads
+      const checkExistence = threadsDummy.some(
+        (thread) => thread.id === threadID
+      );
+      //if not adding it to joined threads
+      if (!checkExistence) {
+        const threadRef = await getDoc(doc(db, "threads", threadID));
+        setJoinedThreads((prevThreads) => [
+          ...prevThreads,
+          { name: threadRef.data().name, id: threadRef.id },
+        ]);
+        const userThreadRef = await updateDoc(doc(db, "users", user.uid), {
+          threads: arrayUnion({
+            name: threadRef.data().name,
+            id: threadRef.id,
+          }),
+        });
+      }
     };
     getJoinedThreads();
   }, []);
@@ -43,7 +62,11 @@ const Sidebar = () => {
         }),
       });
       e.target[0].value = "";
-      
+      //storing newly joined thread without reloading
+      setJoinedThreads((prevThreads) => [
+        ...prevThreads,
+        { name: checkThread.data().name, id: checkThread.id },
+      ]);
     } else {
       alert("invalid link or ID");
     }
