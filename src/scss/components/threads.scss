@@ -9,14 +9,11 @@ main.thread-page{
         display: flex;
         flex-direction: column;
         gap: globals.$margin;
-        width: 30%;
+        width: 40%;
         height: 100%;
         padding: globals.$margin-small 0;
         
         .joined-threads{
-            display: flex;
-            flex-direction: column;
-            gap: globals.$margin-small;
             height: 100%;
             overflow: auto;
         }
@@ -27,6 +24,7 @@ main.thread-page{
             width: 100%;
             height: 2.5rem;
             border-radius: globals.$border-radius-tiny;
+            margin-bottom: globals.$margin-small;
         }
         .thread:hover{
             color: globals.$secondary-color;
