@@ -84,6 +84,14 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/threads"
+              element={
+                <PrivateRoute>
+                  <Threads />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </div>
       </AuthProvider>

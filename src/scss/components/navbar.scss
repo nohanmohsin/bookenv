@@ -17,6 +17,11 @@
         color: globals.$primary-color;
     }
     input{
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
         height: 2.5rem;
         width: 30rem;
         background-color: globals.$white;

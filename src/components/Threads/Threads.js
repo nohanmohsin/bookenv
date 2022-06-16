@@ -23,7 +23,7 @@ const Threads = () => {
   return (
     <main className="thread-page navbar-included">
       <Sidebar />
-      <ChatBox threadID={threadID} />
+      {threadID ? <ChatBox threadID={threadID} /> : <p>idk</p>}
     </main>
   );
 };

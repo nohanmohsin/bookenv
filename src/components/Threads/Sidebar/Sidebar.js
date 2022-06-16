@@ -13,10 +13,12 @@ import { auth, db } from "../../../firebase";
 
 const Sidebar = () => {
   const [joinedThreads, setJoinedThreads] = useState([]);
+  
   let { threadID } = useParams();
   let navigate = useNavigate();
   const user = auth.currentUser;
   useEffect(() => {
+    
     const getJoinedThreads = async () => {
       const joinedThreadsRef = await getDoc(doc(db, "users", user.uid));
       const threadsDummy = joinedThreadsRef.data().threads;
@@ -25,7 +27,7 @@ const Sidebar = () => {
       const checkExistence = threadsDummy.some(
         (thread) => thread.id === threadID
       );
-      //if not adding it to joined threads
+      //if not, adding it to joined threads
       if (!checkExistence) {
         const threadRef = await getDoc(doc(db, "threads", threadID));
         setJoinedThreads((prevThreads) => [
@@ -39,8 +41,15 @@ const Sidebar = () => {
           }),
         });
       }
+      
+      //to prevent adding the active class multiple times
+      if(!document.getElementById(threadID).classList.contains('active')){
+        //setting the active class to the currently active thread div in sidebar
+        document.getElementById(threadID).className += " active";
+      }
     };
     getJoinedThreads();
+
   }, []);
 
   const joinThread = async (e) => {
@@ -101,9 +110,11 @@ const Sidebar = () => {
             //Link wouldn't work in this scenario
             <div
               className="thread"
+              id={thread.id}
               onClick={() => {
                 navigate(`/threads/id=${thread.id}`);
                 window.location.reload();
+                
               }}
             >
               <h3>{thread.name}</h3>
