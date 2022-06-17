@@ -11,10 +11,8 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 
-const Sidebar = () => {
+const Sidebar = ({threadID}) => {
   const [joinedThreads, setJoinedThreads] = useState([]);
-  
-  let { threadID } = useParams();
   let navigate = useNavigate();
   const user = auth.currentUser;
   useEffect(() => {
@@ -113,8 +111,8 @@ const Sidebar = () => {
               id={thread.id}
               onClick={() => {
                 navigate(`/threads/id=${thread.id}`);
+                localStorage.setItem('lastVisitedThread', JSON.stringify(thread.id))
                 window.location.reload();
-                
               }}
             >
               <h3>{thread.name}</h3>

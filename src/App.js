@@ -77,7 +77,7 @@ function App() {
             <Route path="/:bookID" element={<BookDetails />} />
             <Route path="/search=:searchQuery" element={<SearchPage />} />
             <Route
-              path="/threads/id=:threadID"
+              path="/threads/id=:linkThreadID"
               element={
                 <PrivateRoute>
                   <Threads />

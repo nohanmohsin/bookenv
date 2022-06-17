@@ -6,24 +6,28 @@ import ChatBox from "./ChatBox/ChatBox";
 import Sidebar from "./Sidebar/Sidebar";
 
 const Threads = () => {
-  let { threadID } = useParams();
+  const lastThreadID = JSON.parse(localStorage.getItem('lastVisitedThread'))
+  let { linkThreadID } = useParams();
   let navigate = useNavigate();
   useEffect(() => {
     const checkExistence = async () => {
-      const checkThread = await getDoc(doc(db, "threads", threadID));
+      const checkThread = await getDoc(doc(db, "threads", linkThreadID));
       if (checkThread.exists()) {
         return;
       } else {
         navigate("/not-found")
       }
     };
-    checkExistence()
-    
+    if(linkThreadID){
+      checkExistence()
+    } else {
+      navigate(`/threads/id=${lastThreadID}`)
+    }
   }, []);
   return (
     <main className="thread-page navbar-included">
-      <Sidebar />
-      {threadID ? <ChatBox threadID={threadID} /> : <p>idk</p>}
+      <Sidebar threadID={linkThreadID ? linkThreadID : lastThreadID}/>
+      {linkThreadID ? <ChatBox threadID={linkThreadID} /> : <p>Loading...</p>}
     </main>
   );
 };

@@ -15,6 +15,7 @@ import Message from "./Message";
 import NoMessages from "./NoMessages";
 
 const ChatBox = ({ threadID }) => {
+  
   const user = auth.currentUser;
   const dummy = useRef();
   const [messages, setMessages] = useState([]);
