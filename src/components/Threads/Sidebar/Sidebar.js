@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   addDoc,
   arrayUnion,
@@ -11,12 +11,14 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 
-const Sidebar = ({threadID}) => {
+const Sidebar = ({ threadID }) => {
   const [joinedThreads, setJoinedThreads] = useState([]);
+  //these refs are used for dialogs
+  const makeThreadRef = useRef();
+  const joinThreadRef = useRef();
   let navigate = useNavigate();
   const user = auth.currentUser;
   useEffect(() => {
-    
     const getJoinedThreads = async () => {
       const joinedThreadsRef = await getDoc(doc(db, "users", user.uid));
       const threadsDummy = joinedThreadsRef.data().threads;
@@ -39,15 +41,14 @@ const Sidebar = ({threadID}) => {
           }),
         });
       }
-      
+
       //to prevent adding the active class multiple times
-      if(!document.getElementById(threadID).classList.contains('active')){
+      if (!document.getElementById(threadID).classList.contains("active")) {
         //setting the active class to the currently active thread div in sidebar
         document.getElementById(threadID).className += " active";
       }
     };
     getJoinedThreads();
-
   }, []);
 
   const joinThread = async (e) => {
@@ -74,9 +75,12 @@ const Sidebar = ({threadID}) => {
         ...prevThreads,
         { name: checkThread.data().name, id: checkThread.id },
       ]);
+      
     } else {
       alert("invalid link or ID");
+
     }
+    joinThreadRef.current.close();
   };
 
   const makeThread = async (e) => {
@@ -93,7 +97,7 @@ const Sidebar = ({threadID}) => {
         id: threadRef.id,
       }),
     });
-
+    makeThreadRef.current.close();
     navigate(`/threads/id=${threadRef.id}`);
     //very hacky solution
     window.location.reload();
@@ -111,7 +115,10 @@ const Sidebar = ({threadID}) => {
               id={thread.id}
               onClick={() => {
                 navigate(`/threads/id=${thread.id}`);
-                localStorage.setItem('lastVisitedThread', JSON.stringify(thread.id))
+                localStorage.setItem(
+                  "lastVisitedThread",
+                  JSON.stringify(thread.id)
+                );
                 window.location.reload();
               }}
             >
@@ -122,26 +129,32 @@ const Sidebar = ({threadID}) => {
           <h3>No Threads Joined...Join a thread now</h3>
         )}
       </div>
-      <form onSubmit={makeThread} className="make-thread">
-        <input
-          type="text"
-          placeholder="Enter the name of the Thread"
-          minLength={20}
-          required
-        />
-        <button className="make-thread" type="submit">
-          Make New Thread
-        </button>
-      </form>
-      <form className="join-thread" onSubmit={joinThread}>
-        <input
-          type="text"
-          placeholder="Enter Link or the ID of the Thread"
-          minLength={20}
-          required
-        />
-        <button type="submit">Join Thread</button>
-      </form>
+      <dialog className="make-thread-dialog" ref={makeThreadRef}>
+        <form onSubmit={makeThread} className="make-thread" method="dialog">
+          <input
+            type="text"
+            placeholder="Enter the name of the Thread"
+            
+            required
+          />
+          <button className="make-thread" type="submit">
+            Make New Thread
+          </button>
+        </form>
+      </dialog>
+      <button className="open-make-thread" onClick={() => makeThreadRef.current.showModal()}>Make New Thread</button>
+      <dialog className="join-thread-dialog" ref={joinThreadRef}>
+        <form className="join-thread" onSubmit={joinThread} method="dialog">
+          <input
+            type="text"
+            placeholder="Enter Link or the ID of the Thread"
+            minLength={20}
+            required
+          />
+          <button type="submit">Join Thread</button>
+        </form>
+      </dialog>
+      <button className="open-join-thread" onClick={() => joinThreadRef.current.showModal()}>Join a Thread</button>
     </aside>
   );
 };

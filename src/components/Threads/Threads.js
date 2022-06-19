@@ -6,11 +6,13 @@ import ChatBox from "./ChatBox/ChatBox";
 import Sidebar from "./Sidebar/Sidebar";
 
 const Threads = () => {
+  //last visited thread
   const lastThreadID = JSON.parse(localStorage.getItem('lastVisitedThread'))
   let { linkThreadID } = useParams();
   let navigate = useNavigate();
   useEffect(() => {
     const checkExistence = async () => {
+      //checking the link thread id only because last visited thread will always be valid
       const checkThread = await getDoc(doc(db, "threads", linkThreadID));
       if (checkThread.exists()) {
         return;
@@ -21,6 +23,7 @@ const Threads = () => {
     if(linkThreadID){
       checkExistence()
     } else {
+
       navigate(`/threads/id=${lastThreadID}`)
     }
   }, []);
