@@ -35,15 +35,7 @@ main.thread-page{
             color: globals.$secondary-color;
             background-color: globals.$gray;
         }
-        dialog{
-            background-color: globals.$black;
-            border: 0;
-            border-radius: globals.$border-radius-small;
-            padding: globals.$margin;
-        }
-        dialog::backdrop{
-            background-color: rgba(255, 213, 115, 0.3);
-        }
+        
         form{
             height: 20%;
             width: max-content;

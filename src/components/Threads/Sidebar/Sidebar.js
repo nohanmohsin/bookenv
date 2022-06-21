@@ -75,10 +75,8 @@ const Sidebar = ({ threadID }) => {
         ...prevThreads,
         { name: checkThread.data().name, id: checkThread.id },
       ]);
-      
     } else {
       alert("invalid link or ID");
-
     }
     joinThreadRef.current.close();
   };
@@ -134,7 +132,6 @@ const Sidebar = ({ threadID }) => {
           <input
             type="text"
             placeholder="Enter the name of the Thread"
-            
             required
           />
           <button className="make-thread" type="submit">
@@ -142,7 +139,7 @@ const Sidebar = ({ threadID }) => {
           </button>
         </form>
       </dialog>
-      <button className="open-make-thread" onClick={() => makeThreadRef.current.showModal()}>Make New Thread</button>
+
       <dialog className="join-thread-dialog" ref={joinThreadRef}>
         <form className="join-thread" onSubmit={joinThread} method="dialog">
           <input
@@ -154,9 +151,21 @@ const Sidebar = ({ threadID }) => {
           <button type="submit">Join Thread</button>
         </form>
       </dialog>
-      <button className="open-join-thread" onClick={() => joinThreadRef.current.showModal()}>Join a Thread</button>
+      <div className="open-dialogs">
+        <button
+          className="open-make-thread"
+          onClick={() => makeThreadRef.current.showModal()}
+        >
+          Make New Thread
+        </button>
+        <button
+          className="open-join-thread"
+          onClick={() => joinThreadRef.current.showModal()}
+        >
+          Join a Thread
+        </button>
+      </div>
     </aside>
   );
 };
-
 export default Sidebar;
