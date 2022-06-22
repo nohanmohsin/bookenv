@@ -144,7 +144,7 @@ const Sidebar = ({ threadID }) => {
         <form className="join-thread" onSubmit={joinThread} method="dialog">
           <input
             type="text"
-            placeholder="Enter Link or the ID of the Thread"
+            placeholder="Enter the link or the ID of the thread"
             minLength={20}
             required
           />
