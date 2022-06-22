@@ -34,7 +34,7 @@ const Sidebar = ({ threadID }) => {
           ...prevThreads,
           { name: threadRef.data().name, id: threadRef.id },
         ]);
-        const userThreadRef = await updateDoc(doc(db, "users", user.uid), {
+        await updateDoc(doc(db, "users", user.uid), {
           threads: arrayUnion({
             name: threadRef.data().name,
             id: threadRef.id,
