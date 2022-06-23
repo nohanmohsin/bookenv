@@ -1,5 +1,14 @@
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { auth, db } from "../../firebase";
 import addIcon from "../../icons/add-icon.svg";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
@@ -13,44 +22,48 @@ const MyLibrary = () => {
   const makeShelfRef = useRef();
   const makeShelf = async (e) => {
     e.preventDefault();
-    
-    const bookCheckRef = await getDoc(doc(db, "books", e.target[1].value));
-    e.target[1].value = ""
-    if (bookCheckRef.exists()) {
-      
-      const userUpdateRef = await updateDoc(doc(db, "users", user.uid), {
-        libData: [
-          {
-            shelfName: e.target[0].value,
-            books: arrayUnion({
-              imageURL: bookCheckRef.imageURL,
-              name: bookCheckRef.name,
-              id: bookCheckRef.id,
-            }),
-          },
-        ],
-      });
+    console.log(e.target[1].value);
+    const bookCheckSnap = await getDoc(doc(db, "books", e.target[1].value));
+    e.target[1].value = "";
+    if (bookCheckSnap.exists()) {
+      await addDoc(
+        collection(db, `users/${user.uid}/libData`),
+        {
+          shelfName: e.target[0].value,
+          books: arrayUnion({
+            imageURL: bookCheckSnap.data().imageURL,
+            name: bookCheckSnap.data().name,
+            id: bookCheckSnap.id,
+          }),
+        }
+      );
       setLibData((prevShelves) => [
         ...prevShelves,
         {
           shelfName: e.target[0].value,
-          books: arrayUnion({
-            imageURL: bookCheckRef.imageURL,
-            name: bookCheckRef.name,
-            id: bookCheckRef.id,
-          }),
+          books: [
+            {
+              imageURL: bookCheckSnap.data().imageURL,
+              name: bookCheckSnap.data().name,
+              id: bookCheckSnap.id,
+            },
+          ],
         },
       ]);
     } else {
-      alert("Wrong ID of book")
+      alert("Wrong ID of book");
     }
-    makeShelfRef.current.close()
+    makeShelfRef.current.close();
   };
   useEffect(() => {
     const getlibData = async () => {
-      const userDataRef = await getDoc(doc(db, "users", user.uid));
-      if (userDataRef.data().libData) {
-        setLibData(userDataRef.data().libData);
+      const libDataSnap = await getDocs(collection(db, `users/${user.uid}/libData`));
+      let libDataDummy = [];
+      if (libDataSnap.docs.length > 0) {
+        libDataSnap.forEach((shelf) => {
+          libDataDummy.push(shelf.data())
+        })
+        setLibData(libDataDummy);
       }
       setDisabled(false);
       return;
@@ -70,10 +83,13 @@ const MyLibrary = () => {
         <>
           <h1>Your Library</h1>
           <p>
-            You have {libData.length} {libData > 1 ? "shelves" : "shelf"} and{" "}
-            {bookCount} books in here
+            You have {libData.length} {libData > 1 ? "shelves" : "shelf"} and{" "} {bookCount}
+            {bookCount > 1 ? "books" : "book"} books in here
           </p>
-          <button className="make-shelf" onClick={() => makeShelfRef.current.showModal()}>
+          <button
+            className="make-shelf"
+            onClick={() => makeShelfRef.current.showModal()}
+          >
             Make a Shelf
           </button>
           {libData.map((shelf) => (
@@ -85,7 +101,9 @@ const MyLibrary = () => {
               {/* mapping through the books from the individual shelf we get from db data */}
               <div className="books">
                 {shelf.books.map((book) => (
-                  <BookBasicDetails data={book} />
+                  <Link to={`/${book.id}`}>
+                    <BookBasicDetails data={book} />
+                  </Link>
                 ))}
               </div>
             </section>
