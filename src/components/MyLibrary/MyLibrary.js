@@ -22,21 +22,18 @@ const MyLibrary = () => {
   const makeShelfRef = useRef();
   const makeShelf = async (e) => {
     e.preventDefault();
-    console.log(e.target[1].value);
+
     const bookCheckSnap = await getDoc(doc(db, "books", e.target[1].value));
     e.target[1].value = "";
     if (bookCheckSnap.exists()) {
-      await addDoc(
-        collection(db, `users/${user.uid}/libData`),
-        {
-          shelfName: e.target[0].value,
-          books: arrayUnion({
-            imageURL: bookCheckSnap.data().imageURL,
-            name: bookCheckSnap.data().name,
-            id: bookCheckSnap.id,
-          }),
-        }
-      );
+      await addDoc(collection(db, `users/${user.uid}/libData`), {
+        shelfName: e.target[0].value,
+        books: arrayUnion({
+          imageURL: bookCheckSnap.data().imageURL,
+          name: bookCheckSnap.data().name,
+          id: bookCheckSnap.id,
+        }),
+      });
       setLibData((prevShelves) => [
         ...prevShelves,
         {
@@ -57,12 +54,14 @@ const MyLibrary = () => {
   };
   useEffect(() => {
     const getlibData = async () => {
-      const libDataSnap = await getDocs(collection(db, `users/${user.uid}/libData`));
+      const libDataSnap = await getDocs(
+        collection(db, `users/${user.uid}/libData`)
+      );
       let libDataDummy = [];
       if (libDataSnap.docs.length > 0) {
         libDataSnap.forEach((shelf) => {
-          libDataDummy.push(shelf.data())
-        })
+          libDataDummy.push(shelf.data());
+        });
         setLibData(libDataDummy);
       }
       setDisabled(false);
@@ -81,17 +80,23 @@ const MyLibrary = () => {
 
       {libData.length > 0 ? (
         <>
-          <h1>Your Library</h1>
-          <p>
-            You have {libData.length} {libData > 1 ? "shelves" : "shelf"} and{" "} {bookCount}
-            {bookCount > 1 ? "books" : "book"} books in here
-          </p>
-          <button
-            className="make-shelf"
-            onClick={() => makeShelfRef.current.showModal()}
-          >
-            Make a Shelf
-          </button>
+          <div className="title">
+            <div>
+              <h1>Your Library</h1>
+              <p>
+                You have {libData.length} {libData > 1 ? "shelves" : "shelf"}{" "}
+                and {bookCount}
+                {bookCount > 1 ? "books" : "book"} books in here
+              </p>
+            </div>
+            <button
+              className="make-shelf"
+              onClick={() => makeShelfRef.current.showModal()}
+            >
+              Make a Shelf
+            </button>
+          </div>
+
           {libData.map((shelf) => (
             <section className="shelf">
               <div className="headline-and-icons-container">

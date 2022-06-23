@@ -4,6 +4,19 @@ main.my-library{
     position: absolute;
     width: 100%;
     padding: 0 globals.$margin;
+    .title{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: globals.$margin;
+        h1{
+            margin-bottom: globals.$margin-small;
+        }
+        button{
+            margin-right: 0;
+        }
+    }
     section.shelf{
         margin-top: globals.$margin-big;
         .headline-and-icons-container{
