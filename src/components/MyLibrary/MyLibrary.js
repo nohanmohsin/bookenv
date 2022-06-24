@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
@@ -19,15 +20,49 @@ const MyLibrary = () => {
   const [bookCount, setBookCount] = useState(0);
   const [libData, setLibData] = useState([]);
   const [disabled, setDisabled] = useState(true);
+  //used for adding books
+  const [shelfID, setShelfID] = useState();
+  const addBookRef = useRef();
   const makeShelfRef = useRef();
+  const addBook = async (e) => {
+    e.preventDefault();
+    const bookID = e.target[0].value;
+    const bookSnap = await getDoc(doc(db, "books", bookID));
+    if (bookSnap.exists()) {
+      await updateDoc(doc(db, `users/${user.uid}/libData/${shelfID}`), {
+        books: arrayUnion({
+          imageURL: bookSnap.data().imageURL,
+          name: bookSnap.data().name,
+          id: bookSnap.id,
+        }),
+      });
+      setLibData((prevShelves) =>
+        //getting the shelf in which the book is being added
+        prevShelves
+          .find((shelf) => shelf.shelfID === shelfID)
+          //adding book data to that shelf
+          .books.push({
+            imageURL: bookSnap.data().imageURL,
+            name: bookSnap.data().name,
+            id: bookSnap.id,
+          })
+      );
+    } else {
+      alert("wrong id of book");
+    }
+    addBookRef.current.close();
+  };
   const makeShelf = async (e) => {
     e.preventDefault();
-
+    //TODO: check for links of books entered in the second input
     const bookCheckSnap = await getDoc(doc(db, "books", e.target[1].value));
     e.target[1].value = "";
     if (bookCheckSnap.exists()) {
-      await addDoc(collection(db, `users/${user.uid}/libData`), {
+      //using this because I need the id of the shelf for adding books
+      const shelfDocRef = doc(collection(db, `users/${user.uid}/libData`));
+      await setDoc(shelfDocRef, {
         shelfName: e.target[0].value,
+        shelfID: shelfDocRef.id,
         books: arrayUnion({
           imageURL: bookCheckSnap.data().imageURL,
           name: bookCheckSnap.data().name,
@@ -38,6 +73,7 @@ const MyLibrary = () => {
         ...prevShelves,
         {
           shelfName: e.target[0].value,
+          shelfID: shelfDocRef.id,
           books: [
             {
               imageURL: bookCheckSnap.data().imageURL,
@@ -71,7 +107,10 @@ const MyLibrary = () => {
   }, []);
   useEffect(() => {
     let dummyCount = 0;
-    libData.map((shelf) => (dummyCount += shelf.books.length));
+    console.log(libData);
+    if(libData.length > 0){
+      libData.map((shelf) => (dummyCount += shelf.books.length));
+    }
     setBookCount(dummyCount);
   }, [libData]);
   return (
@@ -85,8 +124,8 @@ const MyLibrary = () => {
               <h1>Your Library</h1>
               <p>
                 You have {libData.length} {libData > 1 ? "shelves" : "shelf"}{" "}
-                and {bookCount}
-                {bookCount > 1 ? "books" : "book"} books in here
+                and {bookCount}{" "}
+                {bookCount > 1 ? "books" : "book"} in here
               </p>
             </div>
             <button
@@ -101,7 +140,16 @@ const MyLibrary = () => {
             <section className="shelf">
               <div className="headline-and-icons-container">
                 <h1>{shelf.shelfName}</h1>
-                <img src={addIcon} alt="" className="add-icon" width={45} />
+                <img
+                  src={addIcon}
+                  alt=""
+                  className="add-icon"
+                  width={45}
+                  onClick={() => {
+                    addBookRef.current.showModal();
+                    setShelfID(shelf.shelfID);
+                  }}
+                />
               </div>
               {/* mapping through the books from the individual shelf we get from db data */}
               <div className="books">
@@ -129,6 +177,12 @@ const MyLibrary = () => {
           </button>
         </div>
       )}
+      <dialog className="add-book" ref={addBookRef}>
+        <form method="dialog" className="add-book-info" onSubmit={addBook}>
+          <input type="text" placeholder="Enter the id of the book" />
+          <button type="submit">Add Book</button>
+        </form>
+      </dialog>
       <dialog className="make-shelf" ref={makeShelfRef}>
         <form className="make-shelf-info" method="dialog" onSubmit={makeShelf}>
           <input type="text" placeholder="Enter the name of the Shelf" />
