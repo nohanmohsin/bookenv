@@ -26,7 +26,10 @@ const MyLibrary = () => {
   const makeShelfRef = useRef();
   const addBook = async (e) => {
     e.preventDefault();
-    const bookID = e.target[0].value;
+    let bookID = e.target[0].value;
+    if (e.target[0].value.startsWith("http://localhost:3000/")) {
+      bookID = e.target[0].value.slice(-20);
+    }
     const bookSnap = await getDoc(doc(db, "books", bookID));
     if (bookSnap.exists()) {
       await updateDoc(doc(db, `users/${user.uid}/libData/${shelfID}`), {
@@ -36,17 +39,18 @@ const MyLibrary = () => {
           id: bookSnap.id,
         }),
       });
-      setLibData((prevShelves) =>
-        //getting the shelf in which the book is being added
-        prevShelves
-          .find((shelf) => shelf.shelfID === shelfID)
-          //adding book data to that shelf
-          .books.push({
-            imageURL: bookSnap.data().imageURL,
-            name: bookSnap.data().name,
-            id: bookSnap.id,
-          })
-      );
+      const newShelves = [...libData];
+
+      newShelves
+        //finding the index of that shelf
+        .find((shelf) => shelf.shelfID === shelfID)
+        //adding the book to that shelf
+        .books.push({
+          imageURL: bookSnap.data().imageURL,
+          name: bookSnap.data().name,
+          id: bookSnap.id,
+        });
+      setLibData(newShelves);
     } else {
       alert("wrong id of book");
     }
@@ -55,7 +59,11 @@ const MyLibrary = () => {
   const makeShelf = async (e) => {
     e.preventDefault();
     //TODO: check for links of books entered in the second input
-    const bookCheckSnap = await getDoc(doc(db, "books", e.target[1].value));
+    let bookID = e.target[1].value;
+    if (e.target[1].value.startsWith("http://localhost:3000/")) {
+      bookID = e.target[1].value.slice(-20);
+    }
+    const bookCheckSnap = await getDoc(doc(db, "books", bookID));
     e.target[1].value = "";
     if (bookCheckSnap.exists()) {
       //using this because I need the id of the shelf for adding books
@@ -70,7 +78,6 @@ const MyLibrary = () => {
         }),
       });
       setLibData((prevShelves) => [
-        ...prevShelves,
         {
           shelfName: e.target[0].value,
           shelfID: shelfDocRef.id,
@@ -82,6 +89,7 @@ const MyLibrary = () => {
             },
           ],
         },
+        ...prevShelves,
       ]);
     } else {
       alert("Wrong ID of book");
@@ -108,7 +116,7 @@ const MyLibrary = () => {
   useEffect(() => {
     let dummyCount = 0;
     console.log(libData);
-    if(libData.length > 0){
+    if (libData.length > 0) {
       libData.map((shelf) => (dummyCount += shelf.books.length));
     }
     setBookCount(dummyCount);
@@ -123,8 +131,8 @@ const MyLibrary = () => {
             <div>
               <h1>Your Library</h1>
               <p>
-                You have {libData.length} {libData > 1 ? "shelves" : "shelf"}{" "}
-                and {bookCount}{" "}
+                You have {libData.length}{" "}
+                {libData.length > 1 ? "shelves" : "shelf"} and {bookCount}{" "}
                 {bookCount > 1 ? "books" : "book"} in here
               </p>
             </div>
@@ -179,14 +187,22 @@ const MyLibrary = () => {
       )}
       <dialog className="add-book" ref={addBookRef}>
         <form method="dialog" className="add-book-info" onSubmit={addBook}>
-          <input type="text" placeholder="Enter the id of the book" />
+          <input type="text" placeholder="Enter the id of the book" required />
           <button type="submit">Add Book</button>
         </form>
       </dialog>
       <dialog className="make-shelf" ref={makeShelfRef}>
         <form className="make-shelf-info" method="dialog" onSubmit={makeShelf}>
-          <input type="text" placeholder="Enter the name of the Shelf" />
-          <input type="text" placeholder="Enter the link of the first book" />
+          <input
+            type="text"
+            placeholder="Enter the name of the Shelf"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Enter the link of the first book"
+            required
+          />
           <button type="submit">Make Shelf</button>
         </form>
       </dialog>

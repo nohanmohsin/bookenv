@@ -57,6 +57,7 @@ const Sidebar = ({ threadID }) => {
     if (e.target[0].value.startsWith("http://localhost:3000/threads/id=")) {
       threadID = e.target[0].value.substr(
         e.target[0].value.indexOf("id=") + 3,
+        //there are 20 characters in every id
         20
       );
     }
