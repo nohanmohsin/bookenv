@@ -1,5 +1,6 @@
 import {
   addDoc,
+  arrayRemove,
   arrayUnion,
   collection,
   doc,
@@ -31,6 +32,8 @@ const MyLibrary = () => {
       bookID = e.target[0].value.slice(-20);
     }
     const bookSnap = await getDoc(doc(db, "books", bookID));
+    //TODO: check for duplicates in books array
+    //duplicates wouldn't be in database but they will display in the website without reload
     if (bookSnap.exists()) {
       await updateDoc(doc(db, `users/${user.uid}/libData/${shelfID}`), {
         books: arrayUnion({
@@ -55,6 +58,20 @@ const MyLibrary = () => {
       alert("wrong id of book");
     }
     addBookRef.current.close();
+  };
+  const removeBook = async (shelfID, bookData) => {
+    await updateDoc(doc(db, `users/${user.uid}/libData/${shelfID}`), {
+      books: arrayRemove({
+        imageURL: bookData.imageURL,
+        name: bookData.name,
+        id: bookData.id,
+      }),
+    });
+    const newShelves = [...libData];
+    const activeShelf = newShelves.find((shelf) => shelf.shelfID === shelfID);
+    const newBooks = activeShelf.books.filter(book => book.id !== bookData.id);
+    newShelves.find((shelf) => shelf.shelfID === shelfID).books = newBooks;
+    setLibData(newShelves);
   };
   const makeShelf = async (e) => {
     e.preventDefault();
@@ -162,9 +179,17 @@ const MyLibrary = () => {
               {/* mapping through the books from the individual shelf we get from db data */}
               <div className="books">
                 {shelf.books.map((book) => (
-                  <Link to={`/${book.id}`}>
-                    <BookBasicDetails data={book} />
-                  </Link>
+                  <div className="book-container">
+                    <button
+                      className="remove-book"
+                      onClick={() => removeBook(shelf.shelfID, book)}
+                    >
+                      remove
+                    </button>
+                    <Link to={`/${book.id}`}>
+                      <BookBasicDetails data={book} />
+                    </Link>
+                  </div>
                 ))}
               </div>
             </section>
