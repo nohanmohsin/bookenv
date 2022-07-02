@@ -180,15 +180,13 @@ const MyLibrary = () => {
               <div className="books">
                 {shelf.books.map((book) => (
                   <div className="book-container">
-                    <button
-                      className="remove-book"
-                      onClick={() => removeBook(shelf.shelfID, book)}
-                    >
-                      remove
-                    </button>
                     <Link to={`/${book.id}`}>
                       <BookBasicDetails data={book} />
                     </Link>
+                    <div
+                      className="remove-book"
+                      onClick={() => removeBook(shelf.shelfID, book)}
+                    ></div>
                   </div>
                 ))}
               </div>

@@ -1,53 +1,76 @@
-@use '../globals';
+@use "../globals";
 
-main.my-library{
-    position: absolute;
+main.my-library {
+  position: absolute;
+  width: 100%;
+  padding: 0 globals.$margin;
+  .title {
+    display: flex;
     width: 100%;
-    padding: 0 globals.$margin;
-    .title{
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: globals.$margin;
-        h1{
-            margin-bottom: globals.$margin-small;
-        }
-        button{
-            margin-right: 0;
-        }
+    justify-content: space-between;
+    align-items: center;
+    margin-top: globals.$margin;
+    h1 {
+      margin-bottom: globals.$margin-small;
     }
-    section.shelf{
-        margin-top: globals.$margin-big;
-        .headline-and-icons-container{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: globals.$margin;
-        }
+    button {
+      margin-right: 0;
     }
-    img.add-icon{
-        padding: 5px;
+  }
+  section.shelf {
+    margin-top: globals.$margin-big;
+    .headline-and-icons-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: globals.$margin;
     }
-    img.add-icon:hover{
-        padding: 5px;
-        border-radius: globals.$border-radius-tiny;
-        background-color: globals.$gray;
+  }
+  img.add-icon {
+    padding: 5px;
+  }
+  img.add-icon:hover {
+    padding: 5px;
+    border-radius: globals.$border-radius-tiny;
+    background-color: globals.$gray;
+  }
+  .books {
+    display: flex;
+    gap: globals.$margin;
+    .book-container {
+      position: relative;
+      margin-right: globals.$margin;
     }
-    .books{
-        display: flex;
-        gap: globals.$margin;
+    .book-basic-details {
+      margin-right: 0;
     }
-    .no-shelves{
-        display: flex;
-        //because parent has margin top
-        margin-top: -3.75rem;
-        height: 100vh;
-        width: 100%;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: globals.$margin-big;
+    .book-container a:hover ~ .remove-book {
+      display: block;
     }
+    .remove-book {
+      width: globals.$margin;
+      height: globals.$margin;
+      background-color: globals.$white;
+      border-radius: 50%;
+      position: absolute;
+      left: auto;
+      right: -5px;
+      top: -5px;
+      border: 4px solid globals.$black;
+      box-sizing: content-box;
+      display: none;
+    }
+  }
+  .no-shelves {
+    display: flex;
+    //because parent has margin top
+    margin-top: -3.75rem;
+    height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: globals.$margin-big;
+  }
 }
