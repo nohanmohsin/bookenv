@@ -40,6 +40,7 @@ dialog{
   border: 0;
   border-radius: $border-radius-small;
   padding: $margin;
+  color: $white
 }
 dialog::backdrop{
   background-color: rgba(255, 213, 115, 0.2);

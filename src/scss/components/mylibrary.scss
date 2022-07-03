@@ -40,7 +40,6 @@ main.my-library {
     gap: globals.$margin;
     .book-container {
       position: relative;
-      margin-right: globals.$margin;
     }
     .book-basic-details {
       margin-right: 0;
@@ -60,6 +59,22 @@ main.my-library {
       border: 4px solid globals.$black;
       box-sizing: content-box;
       display: none;
+      text-align: center;
+      .presentation{
+        width: calc(globals.$margin - 5px);
+        height: 5px;
+        background-color: globals.$black;
+        border-radius: globals.$border-radius-full;
+        margin: 0 auto;
+        margin-top: calc(50% - 2.5px);
+      }
+    }
+    dialog.confirm-removal{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: globals.$margin;
     }
   }
   .no-shelves {

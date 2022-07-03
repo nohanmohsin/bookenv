@@ -25,6 +25,7 @@ const MyLibrary = () => {
   const [shelfID, setShelfID] = useState();
   const addBookRef = useRef();
   const makeShelfRef = useRef();
+  const confirmRemovalRef = useRef();
   const addBook = async (e) => {
     e.preventDefault();
     let bookID = e.target[0].value;
@@ -60,6 +61,13 @@ const MyLibrary = () => {
     addBookRef.current.close();
   };
   const removeBook = async (shelfID, bookData) => {
+    //doing this before db update to prevent button spamming
+    const newShelves = [...libData];
+    const activeShelf = newShelves.find((shelf) => shelf.shelfID === shelfID);
+    const newBooks = activeShelf.books.filter(book => book.id !== bookData.id);
+    newShelves.find((shelf) => shelf.shelfID === shelfID).books = newBooks;
+    setLibData(newShelves);
+    confirmRemovalRef.current.close();
     await updateDoc(doc(db, `users/${user.uid}/libData/${shelfID}`), {
       books: arrayRemove({
         imageURL: bookData.imageURL,
@@ -67,11 +75,6 @@ const MyLibrary = () => {
         id: bookData.id,
       }),
     });
-    const newShelves = [...libData];
-    const activeShelf = newShelves.find((shelf) => shelf.shelfID === shelfID);
-    const newBooks = activeShelf.books.filter(book => book.id !== bookData.id);
-    newShelves.find((shelf) => shelf.shelfID === shelfID).books = newBooks;
-    setLibData(newShelves);
   };
   const makeShelf = async (e) => {
     e.preventDefault();
@@ -185,8 +188,12 @@ const MyLibrary = () => {
                     </Link>
                     <div
                       className="remove-book"
-                      onClick={() => removeBook(shelf.shelfID, book)}
-                    ></div>
+                      onClick={() => confirmRemovalRef.current.showModal()}
+                    ><div className="presentation"></div></div>
+                    <dialog className="confirm-removal" ref={confirmRemovalRef}>
+                      <h2>Are you sure you want to remove this book?</h2>
+                      <button onClick={() => removeBook(shelf.shelfID, book)}>Confirm</button>
+                    </dialog>
                   </div>
                 ))}
               </div>
