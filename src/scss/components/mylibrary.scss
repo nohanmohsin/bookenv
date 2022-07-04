@@ -17,6 +17,13 @@ main.my-library {
       margin-right: 0;
     }
   }
+  dialog.confirm-removal .info-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: globals.$margin;
+  }
   section.shelf {
     margin-top: globals.$margin-big;
     .headline-and-icons-container {
@@ -69,13 +76,7 @@ main.my-library {
         margin-top: calc(50% - 2.5px);
       }
     }
-    dialog.confirm-removal{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: globals.$margin;
-    }
+    
   }
   .no-shelves {
     display: flex;
