@@ -10,10 +10,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+
 import { auth, db } from "../../firebase";
-import addIcon from "../../icons/add-icon.svg";
-import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
+
+import Shelf from "./Shelf";
 
 const MyLibrary = () => {
   const user = auth.currentUser;
@@ -85,10 +85,9 @@ const MyLibrary = () => {
       const updatedShelves = newShelves.filter(
         (shelf) => shelf.shelfID !== shelfID
       );
-      console.log(shelfID);
-      console.log(updatedShelves);
       setLibData(updatedShelves);
       confirmRemovalRef.current.close();
+      await deleteDoc(doc(db, `users/${user.uid}/libData`, shelfID));
     }
   };
   const makeShelf = async (e) => {
@@ -185,40 +184,7 @@ const MyLibrary = () => {
           </div>
 
           {libData.map((shelf) => (
-            <section className="shelf">
-              <div className="headline-and-icons-container">
-                <h1>{shelf.shelfName}</h1>
-                <img
-                  src={addIcon}
-                  alt=""
-                  className="add-icon"
-                  width={45}
-                  onClick={() => {
-                    addBookRef.current.showModal();
-                    setShelfID(shelf.shelfID);
-                  }}
-                />
-              </div>
-              {/* mapping through the books from the individual shelf we get from db data */}
-              <div className="books">
-                {shelf.books.map((book) => (
-                  <div className="book-container">
-                    <Link to={`/${book.id}`}>
-                      <BookBasicDetails data={book} />
-                    </Link>
-                    <div
-                      className="remove-book"
-                      onClick={() => {
-                        setShelfID(shelf.shelfID);
-                        setBookData(book);
-                      }}
-                    >
-                      <div className="presentation"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+            <Shelf shelf={shelf} setShelfID={setShelfID} setBookData={setBookData} addBookRef={addBookRef}/>
           ))}
         </>
       ) : (
