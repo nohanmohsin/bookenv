@@ -15,6 +15,7 @@ import NotFound from "./components/NotFound/NotFound";
 import Threads from "./components/Threads/Threads";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import MyLibrary from "./components/MyLibrary/MyLibrary";
+import UserInfo from "./components/UserInfo/UserInfo";
 
 function App() {
   return (
@@ -92,6 +93,11 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="/userID=:uid" element={
+              <PrivateRoute>
+                <UserInfo />
+              </PrivateRoute>
+            }/>
           </Routes>
         </div>
       </AuthProvider>

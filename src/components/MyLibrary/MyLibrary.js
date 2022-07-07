@@ -104,7 +104,6 @@ const MyLibrary = () => {
 
   const makeShelf = async (e) => {
     e.preventDefault();
-    //TODO: check for links of books entered in the second input
     let bookID = e.target[1].value;
     if (e.target[1].value.startsWith("http://localhost:3000/")) {
       bookID = e.target[1].value.slice(-20);
