@@ -17,7 +17,7 @@ main.my-library {
       margin-right: 0;
     }
   }
-  dialog.confirm-removal .info-container{
+  dialog.confirm-removal .info-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +33,20 @@ main.my-library {
       width: 100%;
       margin-bottom: globals.$margin;
     }
+    .icons img {
+      display: inline-block;
+      padding: 5px;
+    }
+    .icons img:hover {
+      padding: 5px;
+      border-radius: globals.$border-radius-tiny;
+      background-color: globals.$gray;
+    }
+    .icons img.trash-icon{
+      margin-left: globals.$margin-small
+    }
   }
+
   img.add-icon {
     padding: 5px;
   }
@@ -67,7 +80,7 @@ main.my-library {
       box-sizing: content-box;
       display: none;
       text-align: center;
-      .presentation{
+      .presentation {
         width: calc(globals.$margin - 5px);
         height: 5px;
         background-color: globals.$black;
@@ -76,7 +89,6 @@ main.my-library {
         margin-top: calc(50% - 2.5px);
       }
     }
-    
   }
   .no-shelves {
     display: flex;

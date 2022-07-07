@@ -1,23 +1,30 @@
 import React from "react";
 import addIcon from "../../icons/add-icon.svg";
+import trashIcon from "../../icons/trash-can-icon.svg";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
 import { Link } from "react-router-dom";
 
-const Shelf = ({ shelf, setShelfID, setBookData, addBookRef }) => {
+const Shelf = ({ shelf, setShelfID, setBookData, addBookRef, shelfConfirmRemovalRef }) => {
   return (
     <section className="shelf">
       <div className="headline-and-icons-container">
         <h1>{shelf.shelfName}</h1>
-        <img
-          src={addIcon}
-          alt=""
-          className="add-icon"
-          width={45}
-          onClick={() => {
-            addBookRef.current.showModal();
+        <div className="icons">
+          <img
+            src={addIcon}
+            alt=""
+            className="add-icon"
+            width={45}
+            onClick={() => {
+              addBookRef.current.showModal();
+              setShelfID(shelf.shelfID);
+            }}
+          />
+          <img src={trashIcon} alt="" className="trash-icon" width={45} onClick={() => {
+            shelfConfirmRemovalRef.current.showModal();
             setShelfID(shelf.shelfID);
-          }}
-        />
+          }}/>
+        </div>
       </div>
       {/* mapping through the books from the individual shelf we get from db data */}
       <div className="books">

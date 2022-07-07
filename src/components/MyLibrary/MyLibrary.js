@@ -21,13 +21,13 @@ const MyLibrary = () => {
   const [bookCount, setBookCount] = useState(0);
   const [libData, setLibData] = useState([]);
   const [disabled, setDisabled] = useState(true);
-  //used for adding books
   const [shelfID, setShelfID] = useState();
   //used for getting currently active book data
   const [bookData, setBookData] = useState();
   const addBookRef = useRef();
   const makeShelfRef = useRef();
-  const confirmRemovalRef = useRef();
+  const bookConfirmRemovalRef = useRef();
+  const shelfConfirmRemovalRef = useRef();
   const addBook = async (e) => {
     e.preventDefault();
     let bookID = e.target[0].value;
@@ -73,7 +73,7 @@ const MyLibrary = () => {
       //doing this before db update to prevent button spamming
       newShelves.find((shelf) => shelf.shelfID === shelfID).books = newBooks;
       setLibData(newShelves);
-      confirmRemovalRef.current.close();
+      bookConfirmRemovalRef.current.close();
       await updateDoc(doc(db, `users/${user.uid}/libData/${shelfID}`), {
         books: arrayRemove({
           imageURL: bookData.imageURL,
@@ -82,14 +82,26 @@ const MyLibrary = () => {
         }),
       });
     } else {
+      //instead of removing the last book and having an empty shelf we're just gonna delete the shelf
+      const newShelves = [...libData];
       const updatedShelves = newShelves.filter(
         (shelf) => shelf.shelfID !== shelfID
       );
       setLibData(updatedShelves);
-      confirmRemovalRef.current.close();
+      bookConfirmRemovalRef.current.close();
       await deleteDoc(doc(db, `users/${user.uid}/libData`, shelfID));
     }
   };
+  const removeShelf = async () => {
+    const newShelves = [...libData];
+    const updatedShelves = newShelves.filter(
+      (shelf) => shelf.shelfID !== shelfID
+    );
+    setLibData(updatedShelves);
+    shelfConfirmRemovalRef.current.close();
+    await deleteDoc(doc(db, `users/${user.uid}/libData`, shelfID));
+  };
+
   const makeShelf = async (e) => {
     e.preventDefault();
     //TODO: check for links of books entered in the second input
@@ -157,7 +169,7 @@ const MyLibrary = () => {
   }, [libData]);
   useEffect(() => {
     if (bookData) {
-      confirmRemovalRef.current.showModal();
+      bookConfirmRemovalRef.current.showModal();
     }
   }, [bookData]);
   return (
@@ -184,7 +196,13 @@ const MyLibrary = () => {
           </div>
 
           {libData.map((shelf) => (
-            <Shelf shelf={shelf} setShelfID={setShelfID} setBookData={setBookData} addBookRef={addBookRef}/>
+            <Shelf
+              shelf={shelf}
+              setShelfID={setShelfID}
+              setBookData={setBookData}
+              addBookRef={addBookRef}
+              shelfConfirmRemovalRef={shelfConfirmRemovalRef}
+            />
           ))}
         </>
       ) : (
@@ -202,7 +220,10 @@ const MyLibrary = () => {
           </button>
         </div>
       )}
-      <dialog className="confirm-removal" ref={confirmRemovalRef}>
+      <dialog
+        className="confirm-removal book-confirm-removal"
+        ref={bookConfirmRemovalRef}
+      >
         <div className="info-container">
           <h2>Are you sure you want to remove this book?</h2>
           <button onClick={removeBook}>Confirm</button>
@@ -228,6 +249,15 @@ const MyLibrary = () => {
           />
           <button type="submit">Make Shelf</button>
         </form>
+      </dialog>
+      <dialog
+        className="confirm-removal shelf-confirm-removal"
+        ref={shelfConfirmRemovalRef}
+      >
+        <div className="info-container">
+          <h2>Are you sure you want to remove this shelf?</h2>
+          <button onClick={removeShelf}>Confirm</button>
+        </div>
       </dialog>
     </main>
   );
