@@ -1,0 +1,14 @@
+@use '../globals';
+main.user-info{
+    width: 100%;
+    section.username-and-avatar{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: globals.$margin;
+        margin-top: globals.$margin;
+        img{
+            border-radius: 50%;
+        }
+    }
+}

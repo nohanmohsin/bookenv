@@ -1,11 +1,12 @@
 import React from "react";
 
 const Review = ({ review }) => {
+  console.log(review)
   return (
     <div className="review">
       <div className="img-and-name-container">
         <img
-          src={review.photoURL}
+          src={review.avatarURL}
           alt=""
           width={48}
           height={48}

@@ -7,6 +7,7 @@ import {
   addDoc,
   getDocs,
   updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 
 import { db } from "../../../firebase";
@@ -33,10 +34,17 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
         reviewAdded: true,
       });
     });
+    await updateDoc(doc(db, `users/${user.uid}`), {
+      reviews: arrayUnion({
+        bookID: bookID,
+        comment: formValue
+      })
+    })
     setFormValue("");
   };
   //used for textarea dynamic height change
   function OnInput() {
+    console.log(this.style)
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";
   }
@@ -61,7 +69,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
     if (user) {
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
     }
-    //getReviews();
+    getReviews();
   }, []);
   return (
     <section className="reviews">
@@ -82,7 +90,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
             placeholder="Add a Review"
             maxLength={1000}
           />
-          <button type="submit">submit</button>
+          <button type="submit">Submit</button>
         </form>
       ) : null}
 

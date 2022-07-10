@@ -1,4 +1,4 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { auth, db } from "../../../firebase";
 
@@ -15,6 +15,7 @@ const PageComments = ({ pageNum, data, bookID }) => {
       pageNum: pageNum,
       createdAt: serverTimestamp(),
     });
+    
     setCommentContent("");
     alert("Comment Added!")
   };

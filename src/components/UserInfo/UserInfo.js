@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
+import Review from "../BookDetails/Reviews/Review";
 
 const UserInfo = () => {
   const [userData, setUserData] = useState();
@@ -46,6 +47,7 @@ const UserInfo = () => {
       <section className="username-and-avatar">
         <img
           src="https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo"
+          width={300}
           alt=""
         />
         <h1>{userData.userName}</h1>
@@ -54,13 +56,20 @@ const UserInfo = () => {
         <>
           <section className="recent-reads">
             <h2>Recent Reads</h2>
-            {
-              recentReads.map((book) => <Link to={`/${book.ID}`}><BookBasicDetails data={book}/></Link>)
-            }
+            {recentReads.map((book) => (
+              <Link to={`/${book.ID}`}>
+                <BookBasicDetails data={book} />
+              </Link>
+            ))}
           </section>
-          <section className="recent-comments">
-
-          </section>
+          {userData.reviews.length > 0 ? (
+            <section className="recent-reviews">
+              <h2>Recent Reviews</h2>
+              {<Review review={userData.reviews[userData.reviews.length - 1]}/>}
+            </section>
+          ) : (
+            <></>
+          )}
         </>
       ) : (
         <></>
