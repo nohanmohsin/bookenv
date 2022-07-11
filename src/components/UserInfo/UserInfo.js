@@ -1,4 +1,5 @@
 import {
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -6,34 +7,38 @@ import {
   limit,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { db } from "../../firebase";
+import { auth, db } from "../../firebase";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
 import Review from "../BookDetails/Reviews/Review";
+import addIcon from "../../icons/add-icon.svg";
+import AddFavBookDialog from "./AddFavBookDialog";
 
 const UserInfo = () => {
   const [userData, setUserData] = useState();
-  const [recentReads, setRecentReads] = useState();
+  const [allBooks, setAllBooks] = useState([]);
   let { uid } = useParams();
+  const user = auth.currentUser;
+  const addFavBookRef = useRef();
   useEffect(() => {
     const getUserData = async () => {
       const userSnap = await getDoc(doc(db, `users/${uid}`));
       if (userSnap.exists()) {
         const recentBooksQuery = query(
           collection(db, `users/${uid}/books`),
-          orderBy("timeStamp"),
-          limit(3)
+          orderBy("timeStamp")
         );
-        const recentBooksSnap = await getDocs(recentBooksQuery);
+        const allBooksSnap = await getDocs(recentBooksQuery);
 
-        if (recentBooksSnap) {
-          let recentBooksDummy = [];
-          recentBooksSnap.forEach((book) => {
-            recentBooksDummy.push(book.data());
+        if (allBooksSnap) {
+          let allBooksDummy = [];
+          allBooksSnap.forEach((book) => {
+            allBooksDummy.push(book.data());
           });
-          setRecentReads(recentBooksDummy);
+          setAllBooks(allBooksDummy);
         }
         setUserData(userSnap.data());
       } else {
@@ -52,20 +57,25 @@ const UserInfo = () => {
         />
         <h1>{userData.userName}</h1>
       </section>
-      {recentReads.length > 0 ? (
+
+      {allBooks.length > 0 ? (
         <>
           <section className="recent-reads">
             <h2>Recent Reads</h2>
-            {recentReads.map((book) => (
+            {allBooks.slice(-3).map((book) => (
               <Link to={`/${book.ID}`}>
                 <BookBasicDetails data={book} />
               </Link>
             ))}
           </section>
-          {userData.reviews.length > 0 ? (
+          {userData.reviews ? (
             <section className="recent-reviews">
               <h2>Recent Reviews</h2>
-              {<Review review={userData.reviews[userData.reviews.length - 1]}/>}
+              {
+                <Review
+                  review={userData.reviews[userData.reviews.length - 1]}
+                />
+              }
             </section>
           ) : (
             <></>
@@ -74,6 +84,35 @@ const UserInfo = () => {
       ) : (
         <></>
       )}
+      {userData.favBooks ? (
+        <section className="favourite-books">
+          <h2>Favourite Books</h2>
+          {userData.uid === user.uid ? (
+            <img
+              src={addIcon}
+              alt=""
+              onClick={() => addFavBookRef.current.showModal()}
+            />
+          ) : (
+            <></>
+          )}
+          {userData.favBooks.map((book) => (
+            <Link to={`/${book.ID}`}>
+              <BookBasicDetails data={book} />
+            </Link>
+          ))}
+        </section>
+      ) : userData.uid === auth.currentUser.uid ? (
+        <div className="add-fav-books">
+          <h2> You do not have any favourite books</h2>
+          <button onClick={() => addFavBookRef.current.showModal()}>
+            Add a Book
+          </button>
+        </div>
+      ) : (
+        <h2>This user does not have any favourite books</h2>
+      )}
+      <AddFavBookDialog addFavBookRef={addFavBookRef} userData={userData} allBooks={allBooks}/>
     </main>
   ) : (
     <p>Loading...</p>

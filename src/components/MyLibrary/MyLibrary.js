@@ -160,7 +160,7 @@ const MyLibrary = () => {
   }, []);
   useEffect(() => {
     let dummyCount = 0;
-    console.log(libData);
+    
     if (libData.length > 0) {
       libData.map((shelf) => (dummyCount += shelf.books.length));
     }

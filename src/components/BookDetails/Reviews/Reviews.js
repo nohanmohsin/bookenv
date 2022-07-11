@@ -36,15 +36,18 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
     });
     await updateDoc(doc(db, `users/${user.uid}`), {
       reviews: arrayUnion({
-        bookID: bookID,
-        comment: formValue
-      })
-    })
+        name: user.displayName,
+        avatarURL: user.photoURL,
+        review: formValue,
+        
+        bookID: bookID
+      }),
+    });
     setFormValue("");
   };
   //used for textarea dynamic height change
   function OnInput() {
-    console.log(this.style)
+    
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";
   }
@@ -84,6 +87,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
             ref={textAreaRef}
             value={formValue}
             onChange={(e) => {
+              e.preventDefault();
               setFormValue(e.target.value);
               OnInput();
             }}

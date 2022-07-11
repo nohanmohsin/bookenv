@@ -54,4 +54,42 @@ main.book-details{
             width: 90%;
         }
     }
+    section.reviews{
+        margin-top: globals.$margin-huge;
+        margin-bottom: globals.$margin-big;
+        h2{
+            display: flex;
+            align-items: center;
+            div{
+                display: inline-block;
+                height: calc(globals.$margin-big - globals.$margin-small);
+                width: 3px;
+                background-color: globals.$primary-color;
+                
+                margin: 0 globals.$margin-small;
+            }
+        }
+        textarea{
+            width: 100%;
+            line-height: 1;
+            overflow-y: hidden;
+        }
+        .review{
+            display: flex;
+            flex-direction: column;
+            margin: globals.$margin 0;
+            .img-and-name-container{
+                display: flex;
+                align-items: center;
+            }
+            img{
+                border-radius: 50%;
+                
+            }
+    
+            p{
+                width: 80%;
+            }
+        }
+    }
 }
