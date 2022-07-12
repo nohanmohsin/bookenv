@@ -31,7 +31,7 @@ const AddFavBookDialog = ({ addFavBookRef, userData, allBooks }) => {
   };
   return (
     <dialog className="add-fav-book" ref={addFavBookRef}>
-      <div name="book-selection">
+      <div className="book-selection">
         {userData.favBooks 
           ? favExcludedBooks.length > 0 ? favExcludedBooks.map((book) => (
               <BookOption

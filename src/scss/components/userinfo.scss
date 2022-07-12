@@ -30,4 +30,47 @@ main.user-info{
             }
         }
     }
+    section.favourite-books{
+    }
+    dialog.add-fav-book{
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        gap: globals.$margin;
+        align-items: center;
+
+        .book-selection{
+            display: flex;
+            flex-direction: column;
+            gap: globals.$margin-small;
+            padding: globals.$margin-small 0;
+            height: globals.$margin-huge;
+            overflow-y: scroll;
+        }
+        .book-option{
+            width: 30rem;
+            display: flex;
+            gap: 10px;
+            padding: globals.$margin-small;
+            align-items: center;
+            border-radius: globals.$border-radius-tiny;
+            img{
+                height: 3.5rem;
+                width: 2.25rem;
+                border-radius: 3px;
+                object-position: 0px 0px;
+                object-fit: cover;
+            }
+
+        }
+        .book-option:hover{
+            cursor: pointer;
+            color: globals.$secondary-color;
+        }
+        .book-option.selected{
+            color: globals.$secondary-color;
+            background-color: globals.$gray;
+        }
+        
+    }
 }
