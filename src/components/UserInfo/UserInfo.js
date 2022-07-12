@@ -15,7 +15,7 @@ import { auth, db } from "../../firebase";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
 import Review from "../BookDetails/Reviews/Review";
 import addIcon from "../../icons/add-icon.svg";
-import AddFavBookDialog from "./AddFavBookDialog";
+import AddFavBookDialog from "./AddFavBookDialog/AddFavBookDialog";
 
 const UserInfo = () => {
   const [userData, setUserData] = useState();
@@ -80,39 +80,48 @@ const UserInfo = () => {
           ) : (
             <></>
           )}
+          {userData.favBooks ? (
+            <section className="favourite-books">
+              <h2>Favourite Books</h2>
+              {userData.uid === user.uid ? (
+                <img
+                  src={addIcon}
+                  alt=""
+                  onClick={() => addFavBookRef.current.showModal()}
+                />
+              ) : (
+                <></>
+              )}
+              {allBooks
+                //getting the favourite books from all reads
+                .filter((book) => userData.favBooks.includes(book.ID))
+                //then iterating through them
+                .map((book) => (
+                  <Link to={`/${book.ID}`}>
+                    <BookBasicDetails data={book} />
+                  </Link>
+                ))}
+            </section>
+          ) : userData.uid === auth.currentUser.uid ? (
+            <div className="add-fav-books">
+              <h2> You do not have any favourite books</h2>
+              <button onClick={() => addFavBookRef.current.showModal()}>
+                Add a Book
+              </button>
+            </div>
+          ) : (
+            <h2>This user does not have any favourite books</h2>
+          )}
         </>
       ) : (
-        <></>
+        <h1 className="no-books">This user has not read any books</h1>
       )}
-      {userData.favBooks ? (
-        <section className="favourite-books">
-          <h2>Favourite Books</h2>
-          {userData.uid === user.uid ? (
-            <img
-              src={addIcon}
-              alt=""
-              onClick={() => addFavBookRef.current.showModal()}
-            />
-          ) : (
-            <></>
-          )}
-          {userData.favBooks.map((book) => (
-            <Link to={`/${book.ID}`}>
-              <BookBasicDetails data={book} />
-            </Link>
-          ))}
-        </section>
-      ) : userData.uid === auth.currentUser.uid ? (
-        <div className="add-fav-books">
-          <h2> You do not have any favourite books</h2>
-          <button onClick={() => addFavBookRef.current.showModal()}>
-            Add a Book
-          </button>
-        </div>
-      ) : (
-        <h2>This user does not have any favourite books</h2>
-      )}
-      <AddFavBookDialog addFavBookRef={addFavBookRef} userData={userData} allBooks={allBooks}/>
+
+      <AddFavBookDialog
+        addFavBookRef={addFavBookRef}
+        userData={userData}
+        allBooks={allBooks}
+      />
     </main>
   ) : (
     <p>Loading...</p>
