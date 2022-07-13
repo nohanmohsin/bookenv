@@ -79,31 +79,33 @@ const UserInfo = () => {
 
       {allBooks.length > 0 ? (
         <>
-          <section className="recent-reads">
-            <h2>Recent Reads</h2>
-            <div className="books">
-              {allBooks.slice(-3).map((book) => (
-                <Link to={`/${book.ID}`}>
-                  <BookBasicDetails data={book} />
-                </Link>
-              ))}
-            </div>
-          </section>
-          {userData.reviews ? (
-            <section className="recent-reviews">
-              <h2>Recent Reviews</h2>
-              {
-                <Review
-                  review={userData.reviews[userData.reviews.length - 1]}
-                />
-              }
+          <div className="recent-reads-and-reviews-container">
+            <section className="recent-reads">
+              <h2 className="description-headline">Recent Reads</h2>
+              <div className="books">
+                {allBooks.slice(-3).map((book) => (
+                  <Link to={`/${book.ID}`}>
+                    <BookBasicDetails data={book} />
+                  </Link>
+                ))}
+              </div>
             </section>
-          ) : (
-            <></>
-          )}
+            {userData.reviews ? (
+              <section className="recent-reviews">
+                <h2 className="description-headline">Recent Reviews</h2>
+                {
+                  <Review
+                    review={userData.reviews[userData.reviews.length - 1]}
+                  />
+                }
+              </section>
+            ) : (
+              <></>
+            )}
+          </div>
           {userData.favBooks ? (
             <section className="favourite-books">
-              <h2>Favourite Books</h2>
+              <h2 className="description-headline">Favourite Books</h2>
               {userData.uid === user.uid && (
                 <img
                   src={addIcon}

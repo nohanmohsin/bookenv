@@ -6,28 +6,36 @@ main.user-info{
         display: flex;
         gap: globals.$margin;
     }
+    .book-basic-details {
+        margin-right: 0;
+    }
+    h2.description-headline{
+        margin-bottom: globals.$margin-small;
+    }
     section.username-and-avatar{
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: globals.$margin;
         margin-top: globals.$margin;
+        margin-bottom: globals.$margin-huge;
         img{
             border-radius: 50%;
         }
     }
     section.recent-reviews{
+        grid-column-start: 3;
         .review{
             display: flex;
             flex-direction: column;
             margin: globals.$margin 0;
+            
             .img-and-name-container{
                 display: flex;
                 align-items: center;
             }
             img{
                 border-radius: 50%;
-                
             }
     
             p{
@@ -35,15 +43,18 @@ main.user-info{
             }
         }
     }
+    .recent-reads-and-reviews-container{
+        display: grid;
+        grid-template-columns: 30% auto 30%;
+        
+        margin: globals.$margin 0;
+    }
     section.favourite-books{
         
         .book-container a:hover ~ .remove-book {
             display: block;
         
         }
-        .book-basic-details {
-            margin-right: 0;
-          }
         .book-container{
             position: relative;
         }
