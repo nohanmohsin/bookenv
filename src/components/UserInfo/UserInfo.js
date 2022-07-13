@@ -16,8 +16,8 @@ import { Link, useParams } from "react-router-dom";
 import { auth, db } from "../../firebase";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
 import Review from "../BookDetails/Reviews/Review";
-import addIcon from "../../icons/add-icon.svg";
 import AddFavBookDialog from "./AddFavBookDialog/AddFavBookDialog";
+import FavouriteBooks from "./FavouriteBooks";
 
 const UserInfo = () => {
   const [userData, setUserData] = useState();
@@ -25,23 +25,7 @@ const UserInfo = () => {
   let { uid } = useParams();
   const user = auth.currentUser;
   const addFavBookRef = useRef();
-  const removeFavBook = async (bookID) => {
-    const newUserData = userData;
-    if (userData.favBooks.length > 1) {
-      await updateDoc(doc(db, `users/${uid}`), {
-        favBooks: arrayRemove(bookID),
-      });
 
-      newUserData.favBooks.filter((favBook) => favBook !== bookID);
-      setUserData(newUserData);
-    } else {
-      await updateDoc(doc(db, `users/${uid}`), {
-        favBooks: deleteField(),
-      });
-      delete newUserData.favBooks;
-      setUserData(newUserData);
-    }
-  };
   useEffect(() => {
     const getUserData = async () => {
       const userSnap = await getDoc(doc(db, `users/${uid}`));
@@ -103,48 +87,12 @@ const UserInfo = () => {
               <></>
             )}
           </div>
-          {userData.favBooks ? (
-            <section className="favourite-books">
-              <h2 className="description-headline">Favourite Books</h2>
-              {userData.uid === user.uid && (
-                <img
-                  src={addIcon}
-                  alt=""
-                  onClick={() => addFavBookRef.current.showModal()}
-                />
-              )}
-              <div className="books">
-                {allBooks
-                  //getting the favourite books from all reads
-                  .filter((book) => userData.favBooks.includes(book.ID))
-                  //then iterating through them
-                  .map((book) => (
-                    <div className="book-container">
-                      <Link to={`/${book.ID}`}>
-                        <BookBasicDetails data={book} />
-                      </Link>
-                      {userData.uid === auth.currentUser.uid && (
-                        <div
-                          className="remove-book"
-                          onClick={() => removeFavBook(book.ID)}
-                        >
-                          <div className="presentation"></div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-              </div>
-            </section>
-          ) : userData.uid === auth.currentUser.uid ? (
-            <div className="add-fav-books">
-              <h2> You do not have any favourite books</h2>
-              <button onClick={() => addFavBookRef.current.showModal()}>
-                Add a Book
-              </button>
-            </div>
-          ) : (
-            <h2>This user does not have any favourite books</h2>
-          )}
+          <FavouriteBooks
+            userData={userData}
+            setUserData={setUserData}
+            allBooks={allBooks}
+            addFavBookRef={addFavBookRef}
+          />
         </>
       ) : (
         <h1 className="no-books">This user has not read any books</h1>
