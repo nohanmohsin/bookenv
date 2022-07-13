@@ -1,6 +1,8 @@
 import {
+  arrayRemove,
   arrayUnion,
   collection,
+  deleteField,
   doc,
   getDoc,
   getDocs,
@@ -23,6 +25,23 @@ const UserInfo = () => {
   let { uid } = useParams();
   const user = auth.currentUser;
   const addFavBookRef = useRef();
+  const removeFavBook = async (bookID) => {
+    const newUserData = userData;
+    if (userData.favBooks.length > 1) {
+      await updateDoc(doc(db, `users/${uid}`), {
+        favBooks: arrayRemove(bookID),
+      });
+
+      newUserData.favBooks.filter((favBook) => favBook !== bookID);
+      setUserData(newUserData);
+    } else {
+      await updateDoc(doc(db, `users/${uid}`), {
+        favBooks: deleteField(),
+      });
+      delete newUserData.favBooks;
+      setUserData(newUserData);
+    }
+  };
   useEffect(() => {
     const getUserData = async () => {
       const userSnap = await getDoc(doc(db, `users/${uid}`));
@@ -62,11 +81,13 @@ const UserInfo = () => {
         <>
           <section className="recent-reads">
             <h2>Recent Reads</h2>
-            {allBooks.slice(-3).map((book) => (
-              <Link to={`/${book.ID}`}>
-                <BookBasicDetails data={book} />
-              </Link>
-            ))}
+            <div className="books">
+              {allBooks.slice(-3).map((book) => (
+                <Link to={`/${book.ID}`}>
+                  <BookBasicDetails data={book} />
+                </Link>
+              ))}
+            </div>
           </section>
           {userData.reviews ? (
             <section className="recent-reviews">
@@ -83,24 +104,34 @@ const UserInfo = () => {
           {userData.favBooks ? (
             <section className="favourite-books">
               <h2>Favourite Books</h2>
-              {userData.uid === user.uid ? (
+              {userData.uid === user.uid && (
                 <img
                   src={addIcon}
                   alt=""
                   onClick={() => addFavBookRef.current.showModal()}
                 />
-              ) : (
-                <></>
               )}
-              {allBooks
-                //getting the favourite books from all reads
-                .filter((book) => userData.favBooks.includes(book.ID))
-                //then iterating through them
-                .map((book) => (
-                  <Link to={`/${book.ID}`}>
-                    <BookBasicDetails data={book} />
-                  </Link>
-                ))}
+              <div className="books">
+                {allBooks
+                  //getting the favourite books from all reads
+                  .filter((book) => userData.favBooks.includes(book.ID))
+                  //then iterating through them
+                  .map((book) => (
+                    <div className="book-container">
+                      <Link to={`/${book.ID}`}>
+                        <BookBasicDetails data={book} />
+                      </Link>
+                      {userData.uid === auth.currentUser.uid && (
+                        <div
+                          className="remove-book"
+                          onClick={() => removeFavBook(book.ID)}
+                        >
+                          <div className="presentation"></div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
             </section>
           ) : userData.uid === auth.currentUser.uid ? (
             <div className="add-fav-books">
