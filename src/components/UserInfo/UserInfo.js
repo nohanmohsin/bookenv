@@ -17,13 +17,13 @@ import { auth, db } from "../../firebase";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
 import Review from "../BookDetails/Reviews/Review";
 import AddFavBookDialog from "./AddFavBookDialog/AddFavBookDialog";
+import BasicUserData from "./BasicUserData";
 import FavouriteBooks from "./FavouriteBooks";
 
 const UserInfo = () => {
   const [userData, setUserData] = useState();
   const [allBooks, setAllBooks] = useState([]);
   let { uid } = useParams();
-  const user = auth.currentUser;
   const addFavBookRef = useRef();
 
   useEffect(() => {
@@ -52,14 +52,7 @@ const UserInfo = () => {
   }, []);
   return userData ? (
     <main className="user-info navbar-included">
-      <section className="username-and-avatar">
-        <img
-          src="https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo"
-          width={300}
-          alt=""
-        />
-        <h1>{userData.userName}</h1>
-      </section>
+      <BasicUserData userData={userData}/>
 
       {allBooks.length > 0 ? (
         <>

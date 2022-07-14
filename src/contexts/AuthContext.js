@@ -18,11 +18,11 @@ export function AuthProvider({ children }) {
   let navigate = useNavigate();
   function signup(username, email, password) {
     createUserWithEmailAndPassword(auth, email, password)
-
-    //changing the display name of the user after creating user
     .then(async (res) => {
+    //changing the display name and photourl of the user after creating user
       await updateProfile(auth.currentUser, {
-        displayName: username ? username : res.user.uid
+        displayName: username ? username : res.user.uid,
+        photoURL: 'https://cdn.discordapp.com/attachments/839151300523589642/997168842113548438/user-pfp-icon.png'
       })
       //adding the user data to the database
       const userDocRef= await setDoc(doc(db, "users", auth.currentUser.uid), {

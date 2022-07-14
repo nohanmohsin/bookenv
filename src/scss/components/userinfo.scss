@@ -21,6 +21,21 @@ main.user-info{
         margin-bottom: globals.$margin-huge;
         img{
             border-radius: 50%;
+            position: relative;
+        }
+        .overlay{
+            width: 18.75rem;
+            height: 18.75rem;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 44;
+            cursor: pointer;
+        }
+        .overlay:hover{
+            background-color: globals.$light-primary-color;
+        }
+        input[type="file"]{
+            display: none;
         }
     }
     section.recent-reviews{
