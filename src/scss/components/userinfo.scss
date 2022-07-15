@@ -22,6 +22,10 @@ main.user-info{
         img{
             border-radius: 50%;
             position: relative;
+            object-fit: cover;
+            object-position: 0 0;
+            width: 18.75rem;
+            height: 18.75rem;
         }
         .overlay{
             width: 18.75rem;
@@ -30,6 +34,7 @@ main.user-info{
             position: absolute;
             z-index: 44;
             cursor: pointer;
+            
         }
         .overlay:hover{
             background-color: globals.$light-primary-color;
