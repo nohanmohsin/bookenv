@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
       const userDocRef= await setDoc(doc(db, "users", auth.currentUser.uid), {
         userName: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
+        avatarURL: 'https://cdn.discordapp.com/attachments/839151300523589642/997168842113548438/user-pfp-icon.png',
         threads: []
       })
       //if the user is created successfully only then we navigate them to their news feed
