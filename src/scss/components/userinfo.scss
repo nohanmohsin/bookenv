@@ -42,6 +42,18 @@ main.user-info{
         input[type="file"]{
             display: none;
         }
+        h1[contenteditable="true"]:hover{
+            background-color: transparent;
+            border: 2px solid globals.$gray;
+            padding: 2px;
+            border-radius: globals.$border-radius-small;
+        }
+        h1[contenteditable="true"]:focus{
+            outline: none;
+            border: 2px solid globals.$gray;
+            padding: 2px;
+            border-radius: globals.$border-radius-small;
+        }
     }
     section.recent-reviews{
         grid-column-start: 3;

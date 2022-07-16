@@ -25,7 +25,11 @@ const UserInfo = () => {
   const [allBooks, setAllBooks] = useState([]);
   let { uid } = useParams();
   const addFavBookRef = useRef();
-
+  useEffect(() => {
+    if (userData) {
+      console.log(userData.userName);
+    }
+  }, [userData]);
   useEffect(() => {
     const getUserData = async () => {
       const userSnap = await getDoc(doc(db, `users/${uid}`));
@@ -52,7 +56,7 @@ const UserInfo = () => {
   }, []);
   return userData ? (
     <main className="user-info navbar-included">
-      <BasicUserData userData={userData}/>
+      <BasicUserData userData={userData} setUserData={setUserData} />
 
       {allBooks.length > 0 ? (
         <>
