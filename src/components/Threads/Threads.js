@@ -7,7 +7,7 @@ import Sidebar from "./Sidebar/Sidebar";
 
 const Threads = () => {
   //last visited thread
-  const lastThreadID = JSON.parse(localStorage.getItem('lastVisitedThread'))
+  const lastThreadID = JSON.parse(localStorage.getItem("lastVisitedThread"));
   let { linkThreadID } = useParams();
   let navigate = useNavigate();
   useEffect(() => {
@@ -17,19 +17,20 @@ const Threads = () => {
       if (checkThread.exists()) {
         return;
       } else {
-        navigate("/not-found")
+        navigate("/not-found");
       }
     };
-    if(linkThreadID){
-      checkExistence()
+    if (linkThreadID) {
+      checkExistence();
     } else {
-
-      navigate(`/threads/id=${lastThreadID}`)
+      if (lastThreadID) {
+        navigate(`/threads/id=${lastThreadID}`);
+      }
     }
   }, []);
   return (
     <main className="thread-page navbar-included">
-      <Sidebar threadID={linkThreadID ? linkThreadID : lastThreadID}/>
+      <Sidebar threadID={linkThreadID ? linkThreadID : lastThreadID} />
       {linkThreadID ? <ChatBox threadID={linkThreadID} /> : <p>Loading...</p>}
     </main>
   );

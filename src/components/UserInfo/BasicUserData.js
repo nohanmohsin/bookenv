@@ -1,5 +1,5 @@
 import { doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import { auth, db, storage } from "../../firebase";
 
@@ -12,16 +12,35 @@ const BasicUserData = ({ userData, setUserData }) => {
       const fileExtension = avatarFile.name.split(".")[1];
       const fileSize = avatarFile.size / 1024 / 1024;
       const storageRef = ref(storage, `avatars/${fileName}.${fileExtension}`);
-
-      if (fileSize > 3) {
+      const oldAvatarRef = ref(
+        storage,
+        `avatars/${avatar.substring(
+          avatar.indexOf("avatars%2F") + 10,
+          avatar.indexOf("?")
+        )}`
+      );
+      if (fileSize <= 3) {
+        if (sessionStorage.avatarUpdateCounter === 3) {
+          alert(
+            "you have already updated your avatar 3 times. You can change it again 30 minutes later"
+          );
+          return;
+        }
+        deleteObject(oldAvatarRef)
         await uploadBytesResumable(storageRef, avatarFile);
         const newAvatarURL = await getDownloadURL(storageRef);
         await updateDoc(doc(db, `users/${userData.uid}`), {
           avatarURL: newAvatarURL,
         });
         setAvatar(newAvatarURL);
+        if (sessionStorage.avatarUpdateCounter) {
+          sessionStorage.avatarUpdateCounter =
+            Number(sessionStorage.avatarUpdateCounter) + 1;
+        } else {
+          sessionStorage.avatarUpdateCounter = 1;
+        }
       } else {
-        alert('your file cannot exceed 3MB');
+        alert("your file cannot exceed 3MB");
       }
     }
   };
