@@ -10,24 +10,30 @@ const BasicUserData = ({ userData, setUserData }) => {
       const avatarFile = e.target.files[0];
       const fileName = crypto.randomUUID();
       const fileExtension = avatarFile.name.split(".")[1];
+      const fileSize = avatarFile.size / 1024 / 1024;
       const storageRef = ref(storage, `avatars/${fileName}.${fileExtension}`);
-      await uploadBytesResumable(storageRef, avatarFile);
-      const newAvatarURL = await getDownloadURL(storageRef);
-      await updateDoc(doc(db, `users/${userData.uid}`), {
-        avatarURL: newAvatarURL,
-      });
-      setAvatar(newAvatarURL);
+
+      if (fileSize > 3) {
+        await uploadBytesResumable(storageRef, avatarFile);
+        const newAvatarURL = await getDownloadURL(storageRef);
+        await updateDoc(doc(db, `users/${userData.uid}`), {
+          avatarURL: newAvatarURL,
+        });
+        setAvatar(newAvatarURL);
+      } else {
+        alert('your file cannot exceed 3MB');
+      }
     }
   };
   const changeUserName = async (e) => {
     const newUserName = e.currentTarget.textContent;
-    if(newUserName !== userData.userName){
+    if (newUserName !== userData.userName) {
       await updateDoc(doc(db, `users/${userData.uid}`), {
-        userName: newUserName
+        userName: newUserName,
       });
-      setUserData({...userData, userName: newUserName})
+      setUserData({ ...userData, userName: newUserName });
     }
-  }
+  };
   return (
     <section className="username-and-avatar">
       <img src={avatar} width={300} alt="" onClick={changeAvatar} />
@@ -51,6 +57,26 @@ const BasicUserData = ({ userData, setUserData }) => {
       <h1
         contentEditable={userData.uid === auth.currentUser.uid ? true : false}
         onBlur={changeUserName}
+        onKeyDown={(e) => {
+          let allowedKeys = false;
+          allowedKeys =
+            e.key === "Backspace" /* BACKSPACE */ ||
+            e.key === "Escape" /* END */ ||
+            e.key === "PageUp" /* HOME */ ||
+            e.key === "ArrowLeft" /* LEFT */ ||
+            e.key === "ArrowUp" /* UP */ ||
+            e.key === "ArrowRight" /* RIGHT*/ ||
+            e.key === "ArrowDown" /* DOWN */ ||
+            e.key === "Delete" /* DEL*/ ||
+            (e.ctrlKey === true && e.key === "A") /* CTRL + A */ ||
+            (e.ctrlKey === true && e.key === "X") /* CTRL + X */ ||
+            (e.ctrlKey === true && e.key === "C") /* CTRL + C */ ||
+            (e.ctrlKey === true && e.key === "V") /* CTRL + V */ ||
+            (e.ctrlKey === true && e.key === "Z") /* CTRL + Z */;
+          if (!allowedKeys && e.currentTarget.textContent.length >= 30) {
+            e.preventDefault();
+          }
+        }}
       >
         {userData.userName}
       </h1>

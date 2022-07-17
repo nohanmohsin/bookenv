@@ -31,7 +31,7 @@ const Signup = () => {
     <main className="signup">
       <h1>Create an Account</h1>
       <form className="signup-form" onSubmit={handleSubmit}>
-        <input type="text" className="signup-input" placeholder="Username" ref={usernameRef}/>
+        <input type="text" className="signup-input" placeholder="Username" ref={usernameRef} maxLength={30}/>
         <input
           className="signup-input"
           type="text"
