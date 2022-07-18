@@ -1,3 +1,4 @@
+import { updateProfile } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
@@ -12,6 +13,13 @@ const BasicUserData = ({ userData, setUserData }) => {
       const fileExtension = avatarFile.name.split(".")[1];
       const fileSize = avatarFile.size / 1024 / 1024;
       const storageRef = ref(storage, `avatars/${fileName}.${fileExtension}`);
+      let avatarUpdateCounter = JSON.parse(localStorage.getItem('avatarUpdateCounter'));
+      let avatarUpdateTimer = JSON.parse(localStorage.getItem('avatarUpdateTimer'));
+      //checking if user has ratelimiting engaged and has passed the wait time limit
+      if(avatarUpdateTimer - Date.now() / (1000 * 60) > 30 && avatarUpdateCounter === 3){
+        //resetting the counter after time limit is reached
+        avatarUpdateCounter = 0;
+      }
       const oldAvatarRef = ref(
         storage,
         `avatars/${avatar.substring(
@@ -19,8 +27,11 @@ const BasicUserData = ({ userData, setUserData }) => {
           avatar.indexOf("?")
         )}`
       );
+
       if (fileSize <= 3) {
-        if (sessionStorage.avatarUpdateCounter === 3) {
+        if (avatarUpdateCounter === 3) {
+          //starting a new timer after user reaches limit
+          localStorage.setItem('avatarUpdateTimer', JSON.stringify(Date.now() / (1000 * 60)))
           alert(
             "you have already updated your avatar 3 times. You can change it again 30 minutes later"
           );
@@ -33,11 +44,14 @@ const BasicUserData = ({ userData, setUserData }) => {
           avatarURL: newAvatarURL,
         });
         setAvatar(newAvatarURL);
-        if (sessionStorage.avatarUpdateCounter) {
-          sessionStorage.avatarUpdateCounter =
-            Number(sessionStorage.avatarUpdateCounter) + 1;
+        await updateProfile(auth.currentUser, {
+          photoURL: newAvatarURL
+        })
+        if (avatarUpdateCounter) {
+          avatarUpdateCounter += 1;
+          localStorage.setItem("avatarUpdateCounter", avatarUpdateCounter)
         } else {
-          sessionStorage.avatarUpdateCounter = 1;
+          localStorage.setItem("avatarUpdateCounter", JSON.stringify(1))
         }
       } else {
         alert("your file cannot exceed 3MB");

@@ -82,7 +82,7 @@ main.user-info{
         margin: globals.$margin 0;
     }
     section.favourite-books{
-        
+        margin-bottom: globals.$margin;
         .book-container a:hover ~ .remove-book {
             display: block;
         
