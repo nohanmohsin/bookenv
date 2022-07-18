@@ -2,13 +2,29 @@
 main.search-page{
     margin-top: globals.$margin-big;
     padding-left: globals.$margin;
-    .book-results{
+    section.book-results, 
+    section.user-results{
         margin-top: globals.$margin;
-        h2{
-            margin-bottom: globals.$margin-small;
-        }
     }
-    .book-results-container{
+    h2{
+        margin-bottom: globals.$margin-small;
+    }
+    .results-container{
         display: flex;
+        gap: globals.$margin;
+    }
+    .user-res{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: globals.$margin;
+        img{
+            border-radius: 50%;
+            position: relative;
+            object-fit: cover;
+            object-position: 0 0;
+            width: globals.$margin-huge;
+            height: globals.$margin-huge;
+        }
     }
 }
