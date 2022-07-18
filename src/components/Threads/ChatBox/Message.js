@@ -1,18 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const Message = ({ name, message, createdAt }) => {
+const Message = ({ name, uid, photoURL, message, createdAt }) => {
   const date = new Date(createdAt.seconds * 1000);
   const formattedDate = date.toJSON().slice(0, 10);
   return (
     <div className="message">
-      <img
-        src="https://cdn.discordapp.com/avatars/751699113049063496/4f462f58a83d59fd25608a8585c7e9e9.webp?size=48"
-        width={48}
-        height={48}
-        alt="user pfp"
-      />
+      <Link to={`/userID=${uid}`}>
+        <img
+          src={photoURL}
+          width={48}
+          height={48}
+          alt="user pfp"
+        />
+      </Link>
       <div className="text-container">
-        <h3>{name}</h3>
+        <Link to={`/userID=${uid}`}>
+          <h3>{name}</h3>
+        </Link>
         <span>{formattedDate}</span>
         <p>{message}</p>
       </div>

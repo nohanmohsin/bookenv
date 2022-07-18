@@ -77,6 +77,7 @@ const BasicUserData = ({ userData, setUserData }) => {
             onClick={() => {
               document.getElementById("avatarInput").click();
             }}
+            title="Change avatar"
           ></div>
           <input
             type="file"

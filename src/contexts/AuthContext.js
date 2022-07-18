@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 const AuthContext = React.createContext();
 
@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
         photoURL: 'https://cdn.discordapp.com/attachments/839151300523589642/997168842113548438/user-pfp-icon.png'
       })
       //adding the user data to the database
-      const userDocRef= await setDoc(doc(db, "users", auth.currentUser.uid), {
+      await setDoc(doc(db, "users", auth.currentUser.uid), {
         userName: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
         avatarURL: 'https://cdn.discordapp.com/attachments/839151300523589642/997168842113548438/user-pfp-icon.png',

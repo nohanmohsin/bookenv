@@ -40,6 +40,7 @@ const ChatBox = ({ threadID }) => {
     e.preventDefault();
     await addDoc(messagesRef, {
       name: user.displayName,
+      uid: user.uid,
       photoURL: user.photoURL,
       msg: e.target[0].value,
       createdAt: serverTimestamp(),
@@ -74,6 +75,8 @@ const ChatBox = ({ threadID }) => {
           {messages.map((message) => (
             <Message
               name={message.name}
+              uid={message.uid}
+              photoURL={message.photoURL}
               message={message.msg}
               createdAt={message.createdAt}
               key={message.id}
