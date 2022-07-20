@@ -116,7 +116,12 @@ const PdfRenderer = () => {
           //setting the file to the response
           setFile(blob);
           await updateDoc(userDBRef, {
-            bookHistory: arrayUnion(bookID),
+            bookHistory: arrayUnion({
+              name: dbData.name,
+              id: bookID,
+              genres: dbData.genres,
+              imageURL: dbData.imageURL,
+            }),
           });
         };
         xhr.open("GET", url);

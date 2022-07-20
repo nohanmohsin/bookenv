@@ -1,10 +1,15 @@
 import React from 'react';
+import { auth } from '../../../firebase';
 
 const NewsFeed = () => {
+
     return (
         <main className="home navbar-included">
-            <h1>No Posts Here Currently :(</h1>
-            <p>try searching a few books or threads</p>
+            <section className="user-info">
+                <img src={auth.currentUser.photoURL} alt="" />
+                <h2>{auth.currentUser.displayName}</h2>
+                <button>Update Profile</button>
+            </section>
         </main>
     );
 };
