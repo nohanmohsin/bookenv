@@ -5,6 +5,13 @@ main.home{
     height: 100%;
     display: grid;
     grid-template-columns: 25% auto;
+    gap: globals.$margin-big;
+    h2{
+        margin-bottom: globals.$margin-small;
+    }
+    .books{
+        display: flex;
+    }
     section.user-info{
         grid-column-start: 1;
         height: fit-content;
@@ -30,5 +37,8 @@ main.home{
             
             margin-right: 0;
         }
+    }
+    section.continue-reading{
+        grid-column-start: 2;
     }
 }
