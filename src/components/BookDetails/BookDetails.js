@@ -78,7 +78,7 @@ const BookDetails = () => {
                 {data.pageCount} pages • {data.publishDate}
               </span>
               <div className="genres-container">
-                {data.genres.split(" / ").map((genre) => (
+                {data.genres.map((genre) => (
                   <div className="genre">{genre}</div>
                 ))}
               </div>

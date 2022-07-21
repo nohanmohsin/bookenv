@@ -115,14 +115,6 @@ const PdfRenderer = () => {
           const blob = xhr.response;
           //setting the file to the response
           setFile(blob);
-          await updateDoc(userDBRef, {
-            bookHistory: arrayUnion({
-              name: dbData.name,
-              id: bookID,
-              genres: dbData.genres,
-              imageURL: dbData.imageURL,
-            }),
-          });
         };
         xhr.open("GET", url);
         xhr.send();
@@ -182,6 +174,8 @@ const PdfRenderer = () => {
           ID: bookID,
           imageURL: dbData.imageURL,
           pagesRead: 0,
+          completed: false,
+          genres: dbData.genres,
           timeStamp: serverTimestamp(),
           bookmarks: [],
         });
@@ -236,6 +230,7 @@ const PdfRenderer = () => {
           //TODO: use onbeforeunload to save pagesread too
           await updateDoc(bookDBRef, {
             pagesRead: pageNumber,
+            completed: pageNumber === numPages ? true : false,
             timeStamp: serverTimestamp(),
           });
           navigate("/home");

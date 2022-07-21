@@ -31,7 +31,7 @@ const Upload = () => {
               //used for searching(half text search)
               nameIndices: data.volumeInfo.title.split(" "),
               author: data.volumeInfo.authors,
-              genres: data.volumeInfo.categories[0],
+              genres: data.volumeInfo.categories[0].split(" / "),
               publishDate: data.volumeInfo.publishedDate,
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
