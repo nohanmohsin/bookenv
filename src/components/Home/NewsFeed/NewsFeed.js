@@ -21,7 +21,9 @@ const NewsFeed = () => {
       )
       .pop();
   }
-
+  useEffect(() => {
+    console.log(otherBooks)
+  }, [otherBooks])
   useEffect(() => {
     const getRecommendationData = async () => {
       let resultsArray = [];
@@ -52,9 +54,17 @@ const NewsFeed = () => {
           !resultsArray.some((resBook) => resBook.ID === book.id) &&
           recResultsArray.push({ ...book.data(), ID: book.id })
       );
+      sessionStorage.setItem("recBooks", JSON.stringify(recResultsArray));
       setRecBooks(recResultsArray);
       const newUploadsDocs = await getDocs(
         query(collection(db, "books"), orderBy("uploadTime"), limit(10))
+      );
+      sessionStorage.setItem(
+        "otherBooks",
+        JSON.stringify({
+          ...otherBooks,
+          newUploads: newUploadsDocs.docs.map((book) => book.data()),
+        })
       );
       setOtherBooks((prevOtherBooks) => {
         prevOtherBooks = {
@@ -64,8 +74,12 @@ const NewsFeed = () => {
         return prevOtherBooks;
       });
     };
-    
-    getRecommendationData();
+    if (sessionStorage.getItem("otherBooks")) {
+      setOtherBooks(JSON.parse(sessionStorage.getItem("otherBooks")));
+      setRecBooks(JSON.parse(sessionStorage.getItem("recBooks")));
+    } else {
+      getRecommendationData();
+    }
   }, []);
   return (
     <main className="home navbar-included">

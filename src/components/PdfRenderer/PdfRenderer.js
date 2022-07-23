@@ -233,6 +233,7 @@ const PdfRenderer = () => {
             completed: pageNumber === numPages ? true : false,
             timeStamp: serverTimestamp(),
           });
+          sessionStorage.clear()
           navigate("/home");
         }}
         width={40}
