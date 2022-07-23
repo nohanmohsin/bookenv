@@ -1,12 +1,17 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../../firebase";
-import { Link } from "react-router-dom";
-import BookBasicDetails from "../../BookBasicDetails/BookBasicDetails";
 import RecSection from "./RecSection";
 
 const NewsFeed = () => {
-  const [recBooks, setRecBooks] = useState();
+  const [recBooks, setRecBooks] = useState([]);
   const [otherBooks, setOtherBooks] = useState();
   function mode(arr) {
     return arr
@@ -28,8 +33,12 @@ const NewsFeed = () => {
       );
       const userBookDocs = await getDocs(userBooksDBRef);
       userBookDocs.forEach((book) => resultsArray.push(book.data()));
+      //setting data for uncompleted books
+      setOtherBooks({
+        ...otherBooks,
+        continueReading: resultsArray.filter((res) => res.completed === false),
+      });
       resultsArray.forEach((result) => genres.push(...result.genres));
-
       const favGenre = mode(genres);
       const recBooksDocs = await getDocs(
         query(
@@ -43,12 +52,19 @@ const NewsFeed = () => {
           !resultsArray.some((resBook) => resBook.ID === book.id) &&
           recResultsArray.push({ ...book.data(), ID: book.id })
       );
-      setOtherBooks({
-        ...otherBooks,
-        continueReading: resultsArray.filter((res) => res.completed === false),
-      });
       setRecBooks(recResultsArray);
+      const newUploadsDocs = await getDocs(
+        query(collection(db, "books"), orderBy("uploadTime"), limit(10))
+      );
+      setOtherBooks((prevOtherBooks) => {
+        prevOtherBooks = {
+          ...prevOtherBooks,
+          newUploads: newUploadsDocs.docs.map((book) => book.data()),
+        };
+        return prevOtherBooks;
+      });
     };
+    
     getRecommendationData();
   }, []);
   return (
@@ -58,13 +74,26 @@ const NewsFeed = () => {
         <h2>{auth.currentUser.displayName}</h2>
         <button>Update Profile</button>
       </section>
-      <section className="rec-books">
-        <RecSection booksDataArr={recBooks} title={"Recommended Books"} />
-      </section>
+      {recBooks.length > 0 && (
+        <section className="rec-books">
+          {
+            <RecSection
+              booksDataArr={recBooks.length > 0 && recBooks}
+              title={"Recommended Books"}
+            />
+          }
+        </section>
+      )}
       <section className="continue-reading">
         <RecSection
           booksDataArr={otherBooks && otherBooks.continueReading}
           title={"Continue Reading"}
+        />
+      </section>
+      <section className="new-uploads">
+        <RecSection
+          booksDataArr={otherBooks && otherBooks.newUploads}
+          title={"New Uploads"}
         />
       </section>
     </main>

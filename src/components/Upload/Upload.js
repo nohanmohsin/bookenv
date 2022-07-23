@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { db } from "../../firebase";
 import { storage } from "../../firebase";
@@ -37,7 +37,8 @@ const Upload = () => {
               description: data.volumeInfo.description,
               imageURL: data.volumeInfo.imageLinks.thumbnail,
               //TODO: check reviews with docSnap.exists() instead
-              reviewAdded: false
+              reviewAdded: false,
+              uploadTime: serverTimestamp()
             });
 
             //uploading the file to storage after adding the data from the api to db
