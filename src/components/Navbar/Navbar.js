@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useLocation, Link } from "react-router-dom";
 import NavLinks from "./NavLinks";
 //pages to not show the navbar in
-const dontShow = ["/signup", "/signin", "/resetpass", "/upload", "/view"];
+const dontShow = ["/signup", "/signin", "/resetpass", "/view"];
 const Navbar = () => {
   const location = useLocation().pathname;
   const user = auth.currentUser;
@@ -32,7 +32,7 @@ const Navbar = () => {
             <>
               <Link to="/account">
                 <img
-                  src="https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo"
+                  src={auth.currentUser.photoURL}
                   alt=""
                   width={48}
                 />

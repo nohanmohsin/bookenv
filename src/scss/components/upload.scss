@@ -1,6 +1,11 @@
 @use '../globals';
 main.upload{
     display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    margin-top: 0;
+    gap: globals.$margin;
     form.upload-form{
         width: 50%;
         height: 100vh;
@@ -9,6 +14,9 @@ main.upload{
         justify-content: center;
         align-items: baseline;
         flex-direction: column;
+        h1{
+            margin-bottom: globals.$margin-small;
+        }
         input.gbooks-link,
         label{
             margin-top: globals.$margin-small;
@@ -17,14 +25,18 @@ main.upload{
             align-items: center;
         }
         label{
+            justify-content: center;
             color: globals.$light-white;
+            img{
+                width: globals.$margin-small;
+            }
         }
         input[type="file"]{
             display: none;
         }
         .buttons-container{
             display: flex;
-            margin-top: 3.75rem;
+            margin-top: globals.$margin;
             button{
                 display: block;
                 margin-top: 0;
@@ -33,6 +45,7 @@ main.upload{
         }
     }
     img.bookwall{
-        width: 50%;
+        margin-top: globals.$margin-big;
+        height: 200%;
     }
 }

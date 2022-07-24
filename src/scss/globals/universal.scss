@@ -15,7 +15,7 @@
 }
 main.navbar-included{
   position: absolute;
-  margin-top: 3.75rem;
+  margin-top: calc($margin-big + $margin);
 }
 a{
   color: $white;

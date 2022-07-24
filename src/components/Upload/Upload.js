@@ -3,6 +3,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { db } from "../../firebase";
 import { storage } from "../../firebase";
+import addIcon from "../../icons/add-icon.svg";
 import bookwall from "../../illustrations/bookwall.svg";
 
 const Upload = () => {
@@ -103,7 +104,7 @@ const Upload = () => {
     }
   }, [uploadTask]);
   return (
-    <main className="upload">
+    <main className="upload navbar-included">
       <form onSubmit={formHandler} className="upload-form">
         <h1>
           Add a new book for <br /> Everyone to read!
@@ -132,6 +133,7 @@ const Upload = () => {
             required
           />
           {fileName ? <>{fileName}</> : <>Upload the book here</>}
+          <img src={addIcon} alt="" />
         </label>
         <div className="buttons-container">
           <button disabled={loading} type="submit" className="upload">
