@@ -59,22 +59,15 @@ const NewsFeed = () => {
       const newUploadsDocs = await getDocs(
         query(collection(db, "books"), orderBy("uploadTime"), limit(10))
       );
-      sessionStorage.setItem(
-        "otherBooks",
-        JSON.stringify({
-          ...otherBooks,
-          newUploads: newUploadsDocs.docs.map((book) => book.data()),
-        })
-      );
       setOtherBooks((prevOtherBooks) => {
-        prevOtherBooks = {
+        const newOtherBooks = {
           ...prevOtherBooks,
           newUploads: newUploadsDocs.docs.map((book) => book.data()),
         };
-        return prevOtherBooks;
+        return newOtherBooks;
       });
     };
-    if (sessionStorage.getItem("otherBooks")) {
+    if (JSON.parse(sessionStorage.getItem("otherBooks")).newUploads && JSON.parse(sessionStorage.getItem("otherBooks")).continueReading) {
       setOtherBooks(JSON.parse(sessionStorage.getItem("otherBooks")));
       setRecBooks(JSON.parse(sessionStorage.getItem("recBooks")));
     } else {

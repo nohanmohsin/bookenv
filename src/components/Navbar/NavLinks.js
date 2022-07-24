@@ -1,26 +1,31 @@
 import React from "react";
-import homeIcon from "../../icons/home-icon.svg";
-import threadsIcon from "../../icons/threads-icon.svg";
-import uploadIcon from "../../icons/upload-icon.svg";
-import myLibraryIcon from "../../icons/bookshelf-icon.svg";
-import { Link } from "react-router-dom";
+import { ReactComponent as HomeIcon } from "../../icons/home-icon.svg";
+import { ReactComponent as ThreadsIcon } from "../../icons/threads-icon.svg";
+import { ReactComponent as UploadIcon } from "../../icons/upload-icon.svg";
+import { ReactComponent as MyLibraryIcon } from "../../icons/bookshelf-icon.svg";
+import { Link, useLocation } from "react-router-dom";
 
 const NavLinks = () => {
+  const { pathname } = useLocation();
+
   return (
     <div className="navlinks">
-      <Link to={"/home"}>
-        <img src={homeIcon} alt="home icon" height={40} />
+      <Link to={"/home"} className={(pathname === "/" || pathname === "/home") && "active"}>
+        <HomeIcon
+          fill={pathname === "/" || pathname === "/home" ? "#ffd675" : "#fff"}
+        />
       </Link>
-      <Link to={"/threads"}>
-        <img src={threadsIcon} alt="threads icon" height={40} />
+      <Link to={"/threads"} className={pathname.startsWith("/threads") && "active"}>
+        <ThreadsIcon
+          fill={pathname.startsWith("/threads") ? "#ffd675" : "#fff"}
+        />
       </Link>
-      <Link to={"/my-library"}>
-        <img src={myLibraryIcon} alt="my library icon" height={40} />
+      <Link to={"/my-library"} className={pathname === "/my-library" && "active"}>
+        <MyLibraryIcon fill={pathname === "/my-library" ? "#ffd675" : "#fff"} />
       </Link>
-      <Link to={"/upload"}>
-        <img src={uploadIcon} alt="upload icon" height={40} />
+      <Link to={"/upload"} className={pathname === "/upload" && "active"}>
+        <UploadIcon fill={pathname === "/upload" ? "#ffd675" : "#fff"} />
       </Link>
-      
     </div>
   );
 };

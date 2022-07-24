@@ -40,8 +40,20 @@
     .navlinks{
         display: flex;
         gap: globals.$margin-big;
-        img{
-            background-color: transparent;
+        height: 100%;
+        a{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+        }
+        a.active{
+            border-bottom: 1px solid globals.$primary-color
+        }
+        svg{
+            width: 40px;
+            height: 40px;
         }
     }
     .login-btn-parent{
