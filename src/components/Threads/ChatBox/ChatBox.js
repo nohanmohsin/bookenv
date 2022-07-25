@@ -8,27 +8,39 @@ import {
   serverTimestamp,
   onSnapshot,
   addDoc,
+  arrayRemove,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
-
+import {ReactComponent as ThreadLeaveIcon} from "../../../icons/leave-thread-icon.svg";
 import { db } from "../../../firebase";
 import Message from "./Message";
 import NoMessages from "./NoMessages";
+import { useNavigate } from "react-router-dom";
 
-const ChatBox = ({ threadID }) => {
+const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
   
   const user = auth.currentUser;
   const dummy = useRef();
   const [messages, setMessages] = useState([]);
   //used to change the query limit of msgQuery on scroll
   const [msgQueryLimit, setMsgQueryLimit] = useState(50);
-
+  let navigate = useNavigate();
   const messagesRef = collection(db, `threads/${threadID}/messages`);
   const msgQuery = query(
     messagesRef,
     orderBy("createdAt", "desc"),
     limit(msgQueryLimit)
   );
-
+  
+  const leaveThread = async () => {
+    await updateDoc(doc(db, "users", user.uid), {threads: arrayRemove({id: threadID, name: threadData.name})});
+    const nextThreadID = joinedThreads[joinedThreads.findIndex(thread => thread.id === threadID) - 1].id;
+    console.log(nextThreadID);
+    setJoinedThreads(prevThreads => {return prevThreads.filter(thread => thread.id !== threadID)})
+    
+    navigate(`/threads/id=${nextThreadID}`)
+  }
   const handleMessagesScroll = (e) => {
     //increasing msg query limit on scroll to the top
     if (e.target.scrollTop === 0) {
@@ -70,6 +82,7 @@ const ChatBox = ({ threadID }) => {
   }, []);
   return (
     <section className="chatbox">
+      <header><h1>{threadData && threadData.name}</h1> <ThreadLeaveIcon onClick={leaveThread}/></header>
       {messages.length > 0 ? (
         <div className="messages-container" onScroll={handleMessagesScroll}>
           {messages.map((message) => (

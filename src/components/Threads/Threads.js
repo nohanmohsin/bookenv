@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import ChatBox from "./ChatBox/ChatBox";
@@ -8,6 +8,8 @@ import Sidebar from "./Sidebar/Sidebar";
 const Threads = () => {
   //last visited thread
   const lastThreadID = JSON.parse(localStorage.getItem("lastVisitedThread"));
+  const [threadData, setThreadData] = useState();
+  const [joinedThreads, setJoinedThreads] = useState([]);
   let { linkThreadID } = useParams();
   let navigate = useNavigate();
   useEffect(() => {
@@ -15,6 +17,7 @@ const Threads = () => {
       //checking the link thread id only because last visited thread will always be valid
       const checkThread = await getDoc(doc(db, "threads", linkThreadID));
       if (checkThread.exists()) {
+        setThreadData(checkThread.data());
         return;
       } else {
         navigate("/not-found");
@@ -30,8 +33,12 @@ const Threads = () => {
   }, []);
   return (
     <main className="thread-page navbar-included">
-      <Sidebar threadID={linkThreadID ? linkThreadID : lastThreadID} />
-      {linkThreadID ? <ChatBox threadID={linkThreadID} /> : <p>Loading...</p>}
+      <Sidebar threadID={linkThreadID ? linkThreadID : lastThreadID} joinedThreads={joinedThreads} setJoinedThreads={setJoinedThreads}/>
+      {linkThreadID ? (
+        <ChatBox threadID={linkThreadID} threadData={threadData} joinedThreads={joinedThreads} setJoinedThreads={setJoinedThreads}/>
+      ) : (
+        <p>Loading...</p>
+      )}
     </main>
   );
 };

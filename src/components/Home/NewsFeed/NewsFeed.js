@@ -67,7 +67,7 @@ const NewsFeed = () => {
         return newOtherBooks;
       });
     };
-    if (JSON.parse(sessionStorage.getItem("otherBooks")).newUploads && JSON.parse(sessionStorage.getItem("otherBooks")).continueReading) {
+    if (JSON.parse(sessionStorage.getItem("otherBooks"))) {
       setOtherBooks(JSON.parse(sessionStorage.getItem("otherBooks")));
       setRecBooks(JSON.parse(sessionStorage.getItem("recBooks")));
     } else {

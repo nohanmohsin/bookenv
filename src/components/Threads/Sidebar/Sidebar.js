@@ -11,8 +11,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 
-const Sidebar = ({ threadID }) => {
-  const [joinedThreads, setJoinedThreads] = useState([]);
+const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
   //these refs are used for dialogs
   const makeThreadRef = useRef();
   const joinThreadRef = useRef();
