@@ -48,10 +48,19 @@ main.book-details{
     section.more-books{
         display: inline-block;
         width: 50%;
+        h2{
+            margin-bottom: globals.$margin
+        }
     }
     section.overview{
         p{
             width: 90%;
+        }
+    }
+    section.more-books{
+        height: 100%;
+        .books{
+            display: flex;
         }
     }
     section.reviews{

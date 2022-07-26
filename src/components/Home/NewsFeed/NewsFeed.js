@@ -22,9 +22,6 @@ const NewsFeed = () => {
       .pop();
   }
   useEffect(() => {
-    console.log(otherBooks)
-  }, [otherBooks])
-  useEffect(() => {
     const getRecommendationData = async () => {
       let resultsArray = [];
       let recResultsArray = [];

@@ -12,14 +12,13 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import {ReactComponent as ThreadLeaveIcon} from "../../../icons/leave-thread-icon.svg";
+import { ReactComponent as ThreadLeaveIcon } from "../../../icons/leave-thread-icon.svg";
 import { db } from "../../../firebase";
 import Message from "./Message";
 import NoMessages from "./NoMessages";
 import { useNavigate } from "react-router-dom";
 
 const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
-  
   const user = auth.currentUser;
   const dummy = useRef();
   const [messages, setMessages] = useState([]);
@@ -32,19 +31,26 @@ const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
     orderBy("createdAt", "desc"),
     limit(msgQueryLimit)
   );
-  
+
   const leaveThread = async () => {
-    await updateDoc(doc(db, "users", user.uid), {threads: arrayRemove({id: threadID, name: threadData.name})});
-    const nextThreadID = joinedThreads[joinedThreads.findIndex(thread => thread.id === threadID) - 1].id;
+    await updateDoc(doc(db, "users", user.uid), {
+      threads: arrayRemove({ id: threadID, name: threadData.name }),
+    });
+    const nextThreadID =
+      joinedThreads[
+        joinedThreads.findIndex((thread) => thread.id === threadID) - 1
+      ].id;
     console.log(nextThreadID);
-    setJoinedThreads(prevThreads => {return prevThreads.filter(thread => thread.id !== threadID)})
-    
-    navigate(`/threads/id=${nextThreadID}`)
-  }
+    setJoinedThreads((prevThreads) => {
+      return prevThreads.filter((thread) => thread.id !== threadID);
+    });
+    navigate(`/threads/id=${nextThreadID}`);
+    //very hacky solution
+    window.location.reload();
+  };
   const handleMessagesScroll = (e) => {
     //increasing msg query limit on scroll to the top
     if (e.target.scrollTop === 0) {
-      
       setMsgQueryLimit((prevLimit) => prevLimit + 50);
     }
   };
@@ -60,8 +66,7 @@ const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
     e.target[0].value = "";
   };
   useEffect(() => {
-    if(dummy.current){
-      
+    if (dummy.current) {
       dummy.current.scrollIntoView();
     }
   }, [dummy]);
@@ -77,12 +82,15 @@ const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
         dummy.current.scrollIntoView();
       }
     });
-    
+
     return () => unsubscribe();
   }, []);
   return (
     <section className="chatbox">
-      <header><h1>{threadData && threadData.name}</h1> <ThreadLeaveIcon onClick={leaveThread}/></header>
+      <header>
+        <h1>{threadData && threadData.name}</h1>{" "}
+        <ThreadLeaveIcon onClick={leaveThread} />
+      </header>
       {messages.length > 0 ? (
         <div className="messages-container" onScroll={handleMessagesScroll}>
           {messages.map((message) => (
@@ -97,7 +105,9 @@ const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
           ))}
           <div ref={dummy}></div>
         </div>
-      ) : <NoMessages />}
+      ) : (
+        <NoMessages />
+      )}
       <form onSubmit={sendMessage}>
         <input placeholder="say something nice" />
       </form>

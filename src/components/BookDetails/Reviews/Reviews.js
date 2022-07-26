@@ -13,7 +13,7 @@ import {
 import { db } from "../../../firebase";
 import Review from "./Review";
 
-const Reviews = ({ data, bookID, reviewAdded }) => {
+const Reviews = ({ bookID, reviewAdded }) => {
   const textAreaRef = useRef();
 
   const [formValue, setFormValue] = useState("");
@@ -79,7 +79,7 @@ const Reviews = ({ data, bookID, reviewAdded }) => {
       <h2>
         Reviews
         <div className="presentation"></div>
-        {data.length}
+        {reviews.length}
       </h2>
       {user ? (
         <form onSubmit={submitReview}>
