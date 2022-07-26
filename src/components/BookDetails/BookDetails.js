@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   collection,
   doc,
@@ -33,11 +33,18 @@ const BookDetails = () => {
           limit(3)
         )
       );
-      setMoreBooks(moreBooksSnap.docs.map(book => {return {...book.data(), ID: book.id}}))
-      console.log(moreBooksSnap.docs);
+      setMoreBooks(
+        moreBooksSnap.docs.map((book) => {
+          return { ...book.data(), ID: book.id };
+        })
+      );
+      
     } else {
       navigate("/not-found");
     }
+  };
+  const scrollToReviews = () => {
+    document.getElementById("reviews").scrollIntoView({ behavior: "smooth" });
   };
   useEffect(() => {
     getData();
@@ -62,16 +69,21 @@ const BookDetails = () => {
                 ))}
               </div>
               <div className="buttons-container">
-                <button className="read-now">Read Now</button>
-                <span>Write a review</span>
+                <Link to={`/view=${bookID}.pdf`}>
+                  <button className="read-now">Read Now</button>
+                </Link>
+                <span onClick={scrollToReviews}>Write a review</span>
               </div>
             </div>
           </section>
-          <section className="overview">
-            <h2>Overview</h2>
-            <p>{parse(data.description)}</p>
-          </section>
-          <MoreLikeThis moreBooks={moreBooks}/>
+          <div className="flex-container">
+            <section className="overview">
+              <h2>Overview</h2>
+              <p>{parse(data.description)}</p>
+            </section>
+            <MoreLikeThis moreBooks={moreBooks} />
+          </div>
+
           <Reviews bookID={bookID} reviewAdded={data.reviewAdded} />
         </>
       ) : (

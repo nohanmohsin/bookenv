@@ -40,7 +40,7 @@ const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
       joinedThreads[
         joinedThreads.findIndex((thread) => thread.id === threadID) - 1
       ].id;
-    console.log(nextThreadID);
+    
     setJoinedThreads((prevThreads) => {
       return prevThreads.filter((thread) => thread.id !== threadID);
     });

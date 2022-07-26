@@ -7,7 +7,7 @@ main.book-details{
         display: flex;
         
         //subtracting the height of the navbar
-        height: calc(100vh - globals.$margin-big);
+        height: calc(100vh - globals.$margin-big - globals.$margin);
         justify-content: center;
         align-items: center;
         gap: globals.$margin-huge;
@@ -40,9 +40,16 @@ main.book-details{
                 span{
                     color: globals.$secondary-color;
                 }
+                span:hover{
+                    cursor: pointer;
+                }
             }
         }
         margin-bottom: globals.$margin-huge;
+    }
+    .flex-container{
+        display: flex;
+        align-items: baseline;
     }
     section.overview,
     section.more-books{
@@ -54,9 +61,10 @@ main.book-details{
     }
     section.overview{
         p{
-            width: 90%;
+            width: calc(100% - globals.$margin-big);
         }
     }
+
     section.more-books{
         height: 100%;
         .books{
@@ -69,6 +77,7 @@ main.book-details{
         h2{
             display: flex;
             align-items: center;
+            margin-bottom: globals.$margin;
             div{
                 display: inline-block;
                 height: calc(globals.$margin-big - globals.$margin-small);
@@ -81,7 +90,8 @@ main.book-details{
         textarea{
             width: 100%;
             line-height: 1;
-            overflow-y: hidden;
+            
+            margin-bottom: globals.$margin-small;
         }
         .review{
             display: flex;

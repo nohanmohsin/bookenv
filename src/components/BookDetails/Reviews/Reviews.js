@@ -46,10 +46,11 @@ const Reviews = ({ bookID, reviewAdded }) => {
     setFormValue("");
   };
   //used for textarea dynamic height change
-  function OnInput() {
+  function OnInput(e) {
+    const limit = 120;
+    e.target.style.height = "inherit";
+    e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
     
-    this.style.height = "auto";
-    this.style.height = this.scrollHeight + "px";
   }
   useEffect(() => {
     const getReviews = async () => {
@@ -75,7 +76,7 @@ const Reviews = ({ bookID, reviewAdded }) => {
     getReviews();
   }, []);
   return (
-    <section className="reviews">
+    <section className="reviews" id="reviews">
       <h2>
         Reviews
         <div className="presentation"></div>
@@ -89,7 +90,7 @@ const Reviews = ({ bookID, reviewAdded }) => {
             onChange={(e) => {
               e.preventDefault();
               setFormValue(e.target.value);
-              OnInput();
+              OnInput(e);
             }}
             placeholder="Add a Review"
             maxLength={1000}

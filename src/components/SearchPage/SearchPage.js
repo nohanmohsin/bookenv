@@ -27,7 +27,7 @@ const SearchPage = () => {
           endAt(searchQuery + "\uf8ff")
         )
       );
-      console.log(userDocs);
+      
       userDocs.forEach((userDoc) => {
         resultsArray.push(userDoc.data());
       });
