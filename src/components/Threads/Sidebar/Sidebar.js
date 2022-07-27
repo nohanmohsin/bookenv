@@ -11,6 +11,8 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 import CloseDialogBtn from "../../CloseDialogBtn/CloseDialogBtn";
+import makeThreadIcon from "../../../icons/make-thread-icon.svg";
+import joinThreadIcon from "../../../icons/join-thread-icon.svg";
 
 const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
   //these refs are used for dialogs
@@ -159,13 +161,13 @@ const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
           className="open-make-thread"
           onClick={() => makeThreadRef.current.showModal()}
         >
-          Make New Thread
+          <img src={makeThreadIcon} alt="" />
         </button>
         <button
           className="open-join-thread"
           onClick={() => joinThreadRef.current.showModal()}
         >
-          Join a Thread
+          <img src={joinThreadIcon} alt="" />
         </button>
       </div>
     </aside>

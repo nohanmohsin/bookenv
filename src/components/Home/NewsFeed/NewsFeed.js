@@ -7,6 +7,7 @@ import {
   where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 import RecSection from "./RecSection";
 
@@ -59,7 +60,10 @@ const NewsFeed = () => {
       setOtherBooks((prevOtherBooks) => {
         const newOtherBooks = {
           ...prevOtherBooks,
-          newUploads: newUploadsDocs.docs.map((book) => book.data()),
+          newUploads: newUploadsDocs.docs.map((book) => ({
+            ...book.data(),
+            ID: book.id,
+          })),
         };
         return newOtherBooks;
       });
@@ -76,7 +80,9 @@ const NewsFeed = () => {
       <section className="user-info">
         <img src={auth.currentUser.photoURL} alt="" />
         <h2>{auth.currentUser.displayName}</h2>
-        <button>Update Profile</button>
+        <Link to={`/userID=${auth.currentUser.uid}`}>
+          <button>Update Profile</button>
+        </Link>
       </section>
       {recBooks.length > 0 && (
         <section className="rec-books">

@@ -42,10 +42,12 @@ main.user-info{
         input[type="file"]{
             display: none;
         }
+        h1[contenteditable="true"]{
+            padding: 2px;
+        }
         h1[contenteditable="true"]:hover{
             background-color: transparent;
             border: 2px solid globals.$gray;
-            padding: 2px;
             border-radius: globals.$border-radius-small;
         }
         h1[contenteditable="true"]:focus{
@@ -106,7 +108,7 @@ main.user-info{
             .presentation {
                 width: calc(globals.$margin - 5px);
                 height: 5px;
-                background-color: globals.$black;
+                background-color: globals.$red;
                 border-radius: globals.$border-radius-full;
                 margin: 0 auto;
                 margin-top: calc(50% - 2.5px);

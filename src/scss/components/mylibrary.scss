@@ -83,7 +83,7 @@ main.my-library {
       .presentation {
         width: calc(globals.$margin - 5px);
         height: 5px;
-        background-color: globals.$black;
+        background-color: globals.$red;
         border-radius: globals.$border-radius-full;
         margin: 0 auto;
         margin-top: calc(50% - 2.5px);

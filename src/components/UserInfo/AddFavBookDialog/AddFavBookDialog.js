@@ -13,6 +13,8 @@ const AddFavBookDialog = ({ addFavBookRef, userData, allBooks }) => {
     favExcludedBooks = allBooks.filter(
       (book) => !userData.favBooks.includes(book.ID)
     );
+  } else {
+    favExcludedBooks = allBooks;
   }
 
   const addFavBook = async () => {

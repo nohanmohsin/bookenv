@@ -46,9 +46,32 @@ main.thread-page{
             margin-bottom: globals.$margin-small;
             width: 30rem;
         }
-        button{
-            outline: none;
+        .open-dialogs{
+            display: flex;
+            gap: globals.$margin;
+            justify-content: space-evenly;
+            border-top: 1px solid globals.$gray;
+            padding-top: 5px;
+            button{
+                outline: none;
+                background-color: transparent;
+                color: globals.$secondary-color;
+                border-radius: globals.$border-radius-small;
+                padding: 0;
+                height: auto;
+                width: auto;
+                margin: 0;
+                img{
+                    margin: 10px;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+            button:hover{
+                background-color: globals.$gray;
+            }
         }
+        
     }
     section.chatbox{
         display: flex;

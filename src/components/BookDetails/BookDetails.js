@@ -34,11 +34,8 @@ const BookDetails = () => {
         )
       );
       setMoreBooks(
-        moreBooksSnap.docs.map((book) => {
-          return { ...book.data(), ID: book.id };
-        })
+        moreBooksSnap.docs.map((book) => ({ ...book.data(), ID: book.id }))
       );
-      
     } else {
       navigate("/not-found");
     }
