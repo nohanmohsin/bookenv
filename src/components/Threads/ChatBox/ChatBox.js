@@ -88,7 +88,7 @@ const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
   return (
     <section className="chatbox">
       <header>
-        <h1>{threadData && threadData.name}</h1>{" "}
+        <h2>{threadData && threadData.name}</h2>{" "}
         <ThreadLeaveIcon onClick={leaveThread} />
       </header>
       {messages.length > 0 ? (

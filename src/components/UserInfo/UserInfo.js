@@ -6,14 +6,13 @@ import {
   doc,
   getDoc,
   getDocs,
-  limit,
   orderBy,
   query,
   updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { auth, db } from "../../firebase";
+import { db } from "../../firebase";
 import BookBasicDetails from "../BookBasicDetails/BookBasicDetails";
 import Review from "../BookDetails/Reviews/Review";
 import AddFavBookDialog from "./AddFavBookDialog/AddFavBookDialog";

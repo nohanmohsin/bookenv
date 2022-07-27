@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
+import CloseDialogBtn from "../../CloseDialogBtn/CloseDialogBtn";
 
 const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
   //these refs are used for dialogs
@@ -128,6 +129,7 @@ const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
         )}
       </div>
       <dialog className="make-thread-dialog" ref={makeThreadRef}>
+        <CloseDialogBtn dialogRef={makeThreadRef}/>
         <form onSubmit={makeThread} className="make-thread" method="dialog">
           <input
             type="text"
@@ -141,6 +143,7 @@ const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
       </dialog>
 
       <dialog className="join-thread-dialog" ref={joinThreadRef}>
+        <CloseDialogBtn dialogRef={joinThreadRef}/>
         <form className="join-thread" onSubmit={joinThread} method="dialog">
           <input
             type="text"

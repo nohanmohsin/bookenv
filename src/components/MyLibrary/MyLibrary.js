@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 
 import { auth, db } from "../../firebase";
+import CloseDialogBtn from "../CloseDialogBtn/CloseDialogBtn";
 
 import Shelf from "./Shelf";
 
@@ -160,7 +161,7 @@ const MyLibrary = () => {
   }, []);
   useEffect(() => {
     let dummyCount = 0;
-    
+
     if (libData.length > 0) {
       libData.map((shelf) => (dummyCount += shelf.books.length));
     }
@@ -223,18 +224,21 @@ const MyLibrary = () => {
         className="confirm-removal book-confirm-removal"
         ref={bookConfirmRemovalRef}
       >
+        <CloseDialogBtn dialogRef={bookConfirmRemovalRef} />
         <div className="info-container">
           <h2>Are you sure you want to remove this book?</h2>
           <button onClick={removeBook}>Confirm</button>
         </div>
       </dialog>
       <dialog className="add-book" ref={addBookRef}>
+        <CloseDialogBtn dialogRef={addBookRef} />
         <form method="dialog" className="add-book-info" onSubmit={addBook}>
           <input type="text" placeholder="Enter the id of the book" required />
           <button type="submit">Add Book</button>
         </form>
       </dialog>
       <dialog className="make-shelf" ref={makeShelfRef}>
+        <CloseDialogBtn dialogRef={makeShelfRef} />
         <form className="make-shelf-info" method="dialog" onSubmit={makeShelf}>
           <input
             type="text"
@@ -253,6 +257,7 @@ const MyLibrary = () => {
         className="confirm-removal shelf-confirm-removal"
         ref={shelfConfirmRemovalRef}
       >
+        <CloseDialogBtn dialogRef={shelfConfirmRemovalRef} />
         <div className="info-container">
           <h2>Are you sure you want to remove this shelf?</h2>
           <button onClick={removeShelf}>Confirm</button>

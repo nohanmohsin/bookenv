@@ -222,23 +222,7 @@ const PdfRenderer = () => {
         Page {pageNumber} of {numPages}
       </p>
 
-      <img
-        src={crossIcon}
-        alt=""
-        className="close"
-        onClick={async () => {
-          //TODO: use onbeforeunload to save pagesread too
-          await updateDoc(bookDBRef, {
-            pagesRead: pageNumber,
-            completed: pageNumber === numPages ? true : false,
-            timeStamp: serverTimestamp(),
-          });
-          sessionStorage.clear()
-          navigate("/home");
-        }}
-        width={40}
-        height={40}
-      />
+      
 
       {/* sorry 😭 it's 1 am */}
       <Controls

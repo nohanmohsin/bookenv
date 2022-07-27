@@ -2,6 +2,7 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../../../firebase";
+import CloseDialogBtn from "../../CloseDialogBtn/CloseDialogBtn";
 import BookOption from "./BookOption";
 
 const AddFavBookDialog = ({ addFavBookRef, userData, allBooks }) => {
@@ -31,6 +32,7 @@ const AddFavBookDialog = ({ addFavBookRef, userData, allBooks }) => {
   };
   return (
     <dialog className="add-fav-book" ref={addFavBookRef}>
+      <CloseDialogBtn dialogRef={addFavBookRef}/>
       <div className="info-container">
         <div className="book-selection">
           {userData.favBooks ? (

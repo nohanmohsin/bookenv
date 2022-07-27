@@ -1,0 +1,9 @@
+@use '../globals';
+img.close-dialog{
+    border-radius: 50%;
+    background-color: globals.$gray;
+    padding: 5px;
+    margin-top: -5px;
+    margin-bottom: globals.$margin-small;
+    margin-left: -5px;
+}

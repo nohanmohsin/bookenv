@@ -18,17 +18,18 @@ const Threads = () => {
       const checkThread = await getDoc(doc(db, "threads", linkThreadID));
       if (checkThread.exists()) {
         setThreadData(checkThread.data());
-        return;
       } else {
         navigate("/not-found");
       }
+      return;
     };
     if (linkThreadID) {
       checkExistence();
-    } else {
-      if (lastThreadID) {
+    } else if (lastThreadID) {
+      
+        const lastVisitedThreadData = getDoc(doc(db, "threads", lastThreadID))
+        lastVisitedThreadData.then(doc => setThreadData(doc.data()))
         navigate(`/threads/id=${lastThreadID}`);
-      }
     }
   }, []);
   return (
