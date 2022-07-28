@@ -101,6 +101,9 @@ const Upload = () => {
       );
     }
   }, [uploadTask]);
+  useEffect(() => {
+    document.title = "Upload a Book - Bookenv"
+  }, [])
   return (
     <main className="upload navbar-included">
       <form onSubmit={formHandler} className="upload-form">

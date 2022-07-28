@@ -48,10 +48,12 @@ const BookDetails = () => {
 
     // eslint-disable-next-line
   }, []);
-  //changing title of document
+  //changing title of document after data is set
   useEffect(() => {
-
-  }, [])
+    if (data) {
+      document.title = `${data.name} - Bookenv`;
+    }
+  }, [data]);
   return (
     <main className="book-details navbar-included">
       {/* checking for name so that we don't get error when no book is found */}
@@ -86,7 +88,7 @@ const BookDetails = () => {
             <MoreLikeThis moreBooks={moreBooks} />
           </div>
 
-          <Reviews bookID={bookID}/>
+          <Reviews bookID={bookID} />
         </>
       ) : (
         <p>Loading...</p>

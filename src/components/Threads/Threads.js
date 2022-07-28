@@ -26,17 +26,30 @@ const Threads = () => {
     if (linkThreadID) {
       checkExistence();
     } else if (lastThreadID) {
-      
-        const lastVisitedThreadData = getDoc(doc(db, "threads", lastThreadID))
-        lastVisitedThreadData.then(doc => setThreadData(doc.data()))
-        navigate(`/threads/id=${lastThreadID}`);
+      const lastVisitedThreadData = getDoc(doc(db, "threads", lastThreadID));
+      lastVisitedThreadData.then((doc) => setThreadData(doc.data()));
+      navigate(`/threads/id=${lastThreadID}`);
     }
   }, []);
+  useEffect(() => {
+    if (threadData) {
+      document.title = `${threadData.name} - Bookenv`;
+    }
+  }, [threadData]);
   return (
     <main className="thread-page navbar-included">
-      <Sidebar threadID={linkThreadID ? linkThreadID : lastThreadID} joinedThreads={joinedThreads} setJoinedThreads={setJoinedThreads}/>
+      <Sidebar
+        threadID={linkThreadID ? linkThreadID : lastThreadID}
+        joinedThreads={joinedThreads}
+        setJoinedThreads={setJoinedThreads}
+      />
       {linkThreadID ? (
-        <ChatBox threadID={linkThreadID} threadData={threadData} joinedThreads={joinedThreads} setJoinedThreads={setJoinedThreads}/>
+        <ChatBox
+          threadID={linkThreadID}
+          threadData={threadData}
+          joinedThreads={joinedThreads}
+          setJoinedThreads={setJoinedThreads}
+        />
       ) : (
         <p>Loading...</p>
       )}

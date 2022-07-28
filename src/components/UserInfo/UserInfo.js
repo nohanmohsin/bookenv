@@ -24,7 +24,11 @@ const UserInfo = () => {
   const [allBooks, setAllBooks] = useState([]);
   let { uid } = useParams();
   const addFavBookRef = useRef();
-  
+  useEffect(() => {
+    if (userData) {
+      document.title = `${userData.userName} - Bookenv`;
+    }
+  }, [userData]);
   useEffect(() => {
     const getUserData = async () => {
       const userSnap = await getDoc(doc(db, `users/${uid}`));

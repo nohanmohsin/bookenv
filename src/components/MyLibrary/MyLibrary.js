@@ -158,6 +158,7 @@ const MyLibrary = () => {
       return;
     };
     getlibData();
+    document.title = "My Library - Bookenv";
   }, []);
   useEffect(() => {
     let dummyCount = 0;

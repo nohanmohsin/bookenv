@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const NotFound = ({ errorName }) => {
@@ -16,6 +16,9 @@ const NotFound = ({ errorName }) => {
     default:
       errorMsg = "Nothing was found";
   }
+  useEffect(() => {
+    document.title = "Nothing was found"
+  }, [])
   return (
     <main className="not-found navbar-included">
       <h1 className="emphasized">404</h1>

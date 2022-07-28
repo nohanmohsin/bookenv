@@ -98,6 +98,12 @@ const PdfRenderer = () => {
       });
     }
   };
+  //changing title of page
+  useEffect(() => {
+    if (dbData) {
+      document.title = `Reading ${dbData.name} - Bookenv`;
+    }
+  }, [dbData]);
   useEffect(() => {
     getDBData();
     //making the pdf bigger according to the screen size

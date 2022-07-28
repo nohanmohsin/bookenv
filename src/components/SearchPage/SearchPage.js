@@ -48,6 +48,7 @@ const SearchPage = () => {
     };
     fetchUserResults();
     fetchBookResults();
+    document.title = `${searchQuery} - Bookenv`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
