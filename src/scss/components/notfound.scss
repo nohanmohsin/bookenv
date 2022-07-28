@@ -1,12 +1,13 @@
 @use '../globals';
 main.not-found{
     display: flex;
-    position: static;
-    height: calc(100vh - globals.$margin-big);
+    width: 100%;
+    height: calc(100vh - globals.$margin-big - globals.$margin);
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: globals.$margin-big;
+    
     h1.emphasized{
         color: globals.$primary-color;
     }

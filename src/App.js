@@ -27,10 +27,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route
-              path="/not-found"
-              element={<NotFound errorName={"book"} />}
-            />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
             <Route
@@ -75,7 +71,7 @@ function App() {
               }
             />
             <Route path="/explore" element={<Explore />} />
-            <Route path="/:bookID" element={<BookDetails />} />
+            <Route path="/bookID=:bookID" element={<BookDetails />} />
             <Route path="/search=:searchQuery" element={<SearchPage />} />
             <Route
               path="/threads/id=:linkThreadID"
@@ -93,11 +89,15 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/userID=:uid" element={
-              <PrivateRoute>
-                <UserInfo />
-              </PrivateRoute>
-            }/>
+            <Route
+              path="/userID=:uid"
+              element={
+                <PrivateRoute>
+                  <UserInfo />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<NotFound errorName={"donno"} replace/>} />
           </Routes>
         </div>
       </AuthProvider>

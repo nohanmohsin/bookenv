@@ -32,7 +32,7 @@ const MyLibrary = () => {
   const addBook = async (e) => {
     e.preventDefault();
     let bookID = e.target[0].value;
-    if (e.target[0].value.startsWith("http://localhost:3000/")) {
+    if (e.target[0].value.startsWith("http://localhost:3000/bookID=")) {
       bookID = e.target[0].value.slice(-20);
     }
     const bookSnap = await getDoc(doc(db, "books", bookID));
@@ -106,7 +106,7 @@ const MyLibrary = () => {
   const makeShelf = async (e) => {
     e.preventDefault();
     let bookID = e.target[1].value;
-    if (e.target[1].value.startsWith("http://localhost:3000/")) {
+    if (e.target[1].value.startsWith("http://localhost:3000/bookID=")) {
       bookID = e.target[1].value.slice(-20);
     }
     const bookCheckSnap = await getDoc(doc(db, "books", bookID));

@@ -165,7 +165,6 @@ const PdfRenderer = () => {
       if (bookExistence.exists()) {
         //adding bookmarks data saved earlier
         setBookmarks(bookExistence.data().bookmarks);
-        
       } else {
         //will add data if the book hasn't already been read
         //doing this so that the pagesRead and bookmarks dont reset
@@ -222,7 +221,23 @@ const PdfRenderer = () => {
         Page {pageNumber} of {numPages}
       </p>
 
-      
+      <img
+        src={crossIcon}
+        alt=""
+        className="close"
+        onClick={async () => {
+          //TODO: use onbeforeunload to save pagesread too
+          await updateDoc(bookDBRef, {
+            pagesRead: pageNumber,
+            completed: pageNumber === numPages ? true : false,
+            timeStamp: serverTimestamp(),
+          });
+          sessionStorage.clear();
+          navigate("/home");
+        }}
+        width={40}
+        height={40}
+      />
 
       {/* sorry 😭 it's 1 am */}
       <Controls
@@ -242,7 +257,11 @@ const PdfRenderer = () => {
           file={file}
           setPageNumber={setPageNumber}
         />
-        <PageComments pageNum={pageNumber} data={pageComments} bookID={bookID}/>
+        <PageComments
+          pageNum={pageNumber}
+          data={pageComments}
+          bookID={bookID}
+        />
       </div>
     </main>
   );
