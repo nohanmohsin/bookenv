@@ -40,7 +40,7 @@ const FavouriteBooks = ({ userData, setUserData, allBooks, addFavBookRef }) => {
           //then iterating through them
           .map((book) => (
             <div className="book-container">
-              <Link to={`/${book.ID}`}>
+              <Link to={`/bookID=${book.ID}`}>
                 <BookBasicDetails data={book} />
               </Link>
               {userData.uid === auth.currentUser.uid && (

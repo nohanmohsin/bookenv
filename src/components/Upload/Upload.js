@@ -37,8 +37,6 @@ const Upload = () => {
               pageCount: data.volumeInfo.pageCount,
               description: data.volumeInfo.description,
               imageURL: data.volumeInfo.imageLinks.thumbnail,
-              //TODO: check reviews with docSnap.exists() instead
-              reviewAdded: false,
               uploadTime: serverTimestamp()
             });
 

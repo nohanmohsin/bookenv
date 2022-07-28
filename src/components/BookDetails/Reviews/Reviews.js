@@ -39,8 +39,8 @@ const Reviews = ({ bookID, reviewAdded }) => {
         name: user.displayName,
         avatarURL: user.photoURL,
         review: formValue,
-        
-        bookID: bookID
+
+        bookID: bookID,
       }),
     });
     setFormValue("");
@@ -50,7 +50,6 @@ const Reviews = ({ bookID, reviewAdded }) => {
     const limit = 120;
     e.target.style.height = "inherit";
     e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
-    
   }
   useEffect(() => {
     const getReviews = async () => {
@@ -58,14 +57,15 @@ const Reviews = ({ bookID, reviewAdded }) => {
         let resultsArray = [];
         //checking if there is a reviews collection
         //reviews collection is created at first review input
-        if (reviewAdded) {
-          const reviewQuerySnapshot = await getDocs(reviewsRef);
 
+        const reviewQuerySnapshot = await getDocs(reviewsRef);
+        if (reviewQuerySnapshot.docs) {
           reviewQuerySnapshot.forEach((doc) => {
             resultsArray.push(doc.data());
           });
+
+          setReviews(resultsArray);
         }
-        setReviews(resultsArray);
       } catch (err) {
         alert("Couldn't get the reviews at this moment");
       }

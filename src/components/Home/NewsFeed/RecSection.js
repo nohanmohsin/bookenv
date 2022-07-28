@@ -10,7 +10,7 @@ const RecSection = ({ booksDataArr, title }) => {
           <h2>{title}</h2>
           <div className="books">
             {booksDataArr.map((book) => (
-              <Link to={`/${book.ID}`}>
+              <Link to={`/bookID=${book.ID}`}>
                 <BookBasicDetails data={book} />
               </Link>
             ))}

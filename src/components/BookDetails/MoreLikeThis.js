@@ -9,7 +9,7 @@ const MoreLikeThis = ({ moreBooks }) => {
       <div className="books">
         {moreBooks.length > 0 &&
           moreBooks.map((bookData) => (
-            <Link to={`/${bookData.ID}`}>
+            <Link to={`/bookID=${bookData.ID}`}>
               <BookBasicDetails data={bookData} />
             </Link>
           ))}

@@ -60,7 +60,7 @@ const SearchPage = () => {
             <div className="results-container">
               {bookResults.length > 0 ? (
                 bookResults.map((res) => (
-                  <Link to={`/${res.id}`}>
+                  <Link to={`/bookID=${res.id}`}>
                     <BookBasicDetails data={res} />
                   </Link>
                 ))

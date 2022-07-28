@@ -60,7 +60,7 @@ const UserInfo = () => {
               <h2 className="description-headline">Recent Reads</h2>
               <div className="books">
                 {allBooks.slice(-3).map((book) => (
-                  <Link to={`/${book.ID}`}>
+                  <Link to={`/bookID=${book.ID}`}>
                     <BookBasicDetails data={book} />
                   </Link>
                 ))}

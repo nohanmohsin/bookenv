@@ -30,7 +30,7 @@ const Shelf = ({ shelf, setShelfID, setBookData, addBookRef, shelfConfirmRemoval
       <div className="books">
         {shelf.books.map((book) => (
           <div className="book-container">
-            <Link to={`/${book.id}`}>
+            <Link to={`/bookID=${book.id}`}>
               <BookBasicDetails data={book} />
             </Link>
             <div

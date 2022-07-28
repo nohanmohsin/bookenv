@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../../logo.svg";
+import turnOffIcon from "../../icons/turn-off-icon.svg";
 import { auth } from "../../firebase";
 import { useAuth } from "../../contexts/AuthContext";
 import { useLocation, Link } from "react-router-dom";
@@ -37,7 +38,7 @@ const Navbar = () => {
                   width={48}
                 />
               </Link>
-              <span onClick={logOut}>Sign Out</span>
+              <img src={turnOffIcon} alt="" onClick={logOut} className="sign-off"/>
             </>
           ) : (
             <>
