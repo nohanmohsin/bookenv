@@ -40,11 +40,7 @@ const UserInfo = () => {
         const allBooksSnap = await getDocs(recentBooksQuery);
 
         if (allBooksSnap) {
-          let allBooksDummy = [];
-          allBooksSnap.forEach((book) => {
-            allBooksDummy.push(book.data());
-          });
-          setAllBooks(allBooksDummy);
+          setAllBooks(allBooksSnap.docs.map(book => book.data()));
         }
         setUserData(userSnap.data());
       } else {

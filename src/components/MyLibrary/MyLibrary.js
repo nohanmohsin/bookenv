@@ -152,7 +152,7 @@ const MyLibrary = () => {
         libDataSnap.forEach((shelf) => {
           libDataDummy.push(shelf.data());
         });
-        setLibData(libDataDummy.reverse());
+        setLibData(libDataSnap.docs.map(shelf => shelf.data()).reverse());
       }
       setDisabled(false);
       return;
@@ -181,7 +181,7 @@ const MyLibrary = () => {
         <>
           <div className="title">
             <div>
-              <h1>Your Library</h1>
+              <h1>My Library</h1>
               <p>
                 You have {libData.length}{" "}
                 {libData.length > 1 ? "shelves" : "shelf"} and {bookCount}{" "}

@@ -42,6 +42,7 @@ const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
             id: threadRef.id,
           }),
         });
+        alert(`Joined ${threadRef.data().name}`)
       }
 
       //to prevent adding the active class multiple times

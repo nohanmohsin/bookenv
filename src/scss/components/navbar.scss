@@ -35,7 +35,7 @@
     input.user-search{
         width: 15.625rem;
         position: absolute;
-        margin-left: globals.$margin-big;
+        margin-left: calc(globals.$margin-big + globals.$margin-small);
     }
     .navlinks{
         display: flex;

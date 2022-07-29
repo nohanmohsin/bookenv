@@ -16,8 +16,14 @@ import Threads from "./components/Threads/Threads";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import MyLibrary from "./components/MyLibrary/MyLibrary";
 import UserInfo from "./components/UserInfo/UserInfo";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    if(window.innerWidth < 1000){
+      alert("The UI of this website is not responsive...therefore you might have a tough time using it on this device")
+    }
+  }, [])
   return (
     <Router>
       <AuthProvider>

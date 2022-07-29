@@ -18,6 +18,7 @@ const Threads = () => {
       const checkThread = await getDoc(doc(db, "threads", linkThreadID));
       if (checkThread.exists()) {
         setThreadData(checkThread.data());
+        
       } else {
         navigate("/not-found");
       }

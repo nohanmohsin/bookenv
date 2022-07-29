@@ -31,7 +31,7 @@ const SearchPage = () => {
       userDocs.forEach((userDoc) => {
         resultsArray.push(userDoc.data());
       });
-      setUserResults(resultsArray);
+      setUserResults(userDocs.docs.map(user => user.data()));
     };
     const fetchBookResults = async () => {
       let resultsArray = [];
@@ -44,7 +44,7 @@ const SearchPage = () => {
       queryDocs.forEach((doc) => {
         resultsArray.push({ ...doc.data(), id: doc.id });
       });
-      setBookResults(resultsArray);
+      setBookResults(queryDocs.docs.map(book => book.data()));
     };
     fetchUserResults();
     fetchBookResults();

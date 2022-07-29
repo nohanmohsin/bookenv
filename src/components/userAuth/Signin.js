@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../firebase";
 
 const Signin = () => {
   const emailRef = useRef();
@@ -23,6 +24,11 @@ const Signin = () => {
 
     setLoading(false);
   }
+  useEffect(() => {
+    if(auth.currentUser){
+      navigate('/home')
+    }
+  }, [])
   return (
     <main className="login">
       <h1>Sign In to your Account</h1>

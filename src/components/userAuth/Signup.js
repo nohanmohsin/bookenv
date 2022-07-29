@@ -1,5 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { auth } from "../../firebase";
 
 const Signup = () => {
   const usernameRef = useRef();
@@ -7,6 +9,7 @@ const Signup = () => {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { signup } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,6 +30,11 @@ const Signup = () => {
 
     
   }
+  useEffect(() => {
+    if(auth.currentUser){
+      navigate('/home')
+    }
+  }, [])
   return (
     <main className="signup">
       <h1>Create an Account</h1>

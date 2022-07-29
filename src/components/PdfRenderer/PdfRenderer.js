@@ -69,10 +69,7 @@ const PdfRenderer = () => {
       //you can't fetch data from collections in a transaction
       const pageCommentsSnap = await getDocs(PageCommentQuery);
       if (pageCommentsSnap.docs.length > 0) {
-        pageCommentsSnap.forEach((pageComment) => {
-          pageCommentsDummy.push(pageComment.data());
-        });
-        setPageComments(pageCommentsDummy);
+        setPageComments(pageCommentsSnap.docs.map(comment => comment.data()));
       }
     } else {
       navigate("/not-found");

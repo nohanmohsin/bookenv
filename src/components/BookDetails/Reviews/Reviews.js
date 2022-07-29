@@ -54,17 +54,12 @@ const Reviews = ({ bookID, reviewAdded }) => {
   useEffect(() => {
     const getReviews = async () => {
       try {
-        let resultsArray = [];
         //checking if there is a reviews collection
         //reviews collection is created at first review input
 
         const reviewQuerySnapshot = await getDocs(reviewsRef);
         if (reviewQuerySnapshot.docs) {
-          reviewQuerySnapshot.forEach((doc) => {
-            resultsArray.push(doc.data());
-          });
-
-          setReviews(resultsArray);
+          setReviews(reviewQuerySnapshot.docs.map(review => review.data()));
         }
       } catch (err) {
         alert("Couldn't get the reviews at this moment");
