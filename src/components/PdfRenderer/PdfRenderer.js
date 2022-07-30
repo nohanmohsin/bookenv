@@ -51,8 +51,6 @@ const PdfRenderer = () => {
   const userDBRef = doc(db, "users", auth.currentUser.uid);
   //used for adding and fetching the data of the current book
   const bookDBRef = doc(db, `users/${auth.currentUser.uid}/books`, bookID);
-  //check for bookmark on the currently opened page
-
   //gets the data for currently active book from db
   const getDBData = async () => {
     //https://firebase.google.com/docs/firestore/query-data/get-data
@@ -64,7 +62,6 @@ const PdfRenderer = () => {
     );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      let pageCommentsDummy = [];
       setDBData(docSnap.data());
       //you can't fetch data from collections in a transaction
       const pageCommentsSnap = await getDocs(PageCommentQuery);
@@ -229,7 +226,6 @@ const PdfRenderer = () => {
         alt=""
         className="close"
         onClick={async () => {
-          //TODO: use onbeforeunload to save pagesread too
           await updateDoc(bookDBRef, {
             pagesRead: pageNumber,
             completed: pageNumber === numPages ? true : false,

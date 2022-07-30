@@ -29,21 +29,17 @@ const Reviews = ({ bookID, reviewAdded }) => {
       avatarURL: user.photoURL,
       review: formValue,
       createdAt: serverTimestamp(),
-    }).then(() => {
-      updateDoc(doc(db, `books/${bookID}`), {
-        reviewAdded: true,
-      });
-    });
+    })
     await updateDoc(doc(db, `users/${user.uid}`), {
       reviews: arrayUnion({
         name: user.displayName,
         avatarURL: user.photoURL,
         review: formValue,
-
         bookID: bookID,
       }),
     });
     setFormValue("");
+    alert("Review added successfully")
   };
   //used for textarea dynamic height change
   function OnInput(e) {

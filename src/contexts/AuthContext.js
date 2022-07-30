@@ -51,6 +51,8 @@ export function AuthProvider({ children }) {
 
   function logOut() {
     signOut(auth)
+    sessionStorage.clear()
+    localStorage.clear()
   }
 
   function resetPassword(email) {

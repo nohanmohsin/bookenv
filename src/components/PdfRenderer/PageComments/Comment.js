@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
 
-const Comment = () => {
+const Comment = ({ comment }) => {
   return (
-    <div className='comment'>
-      
+    <div className="comment">
+      <img src={comment.avatarURL} alt="" width={30} height={30} />
+      <span>{comment.name}</span>
+      <p>{comment.comment}</p>
     </div>
   );
 };

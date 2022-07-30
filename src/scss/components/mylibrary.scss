@@ -90,11 +90,22 @@ main.my-library {
       }
     }
   }
+  dialog.make-shelf{
+    form{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      input{
+        margin-bottom: globals.$margin-small;
+      }
+      button{
+        margin-top: globals.$margin-small;
+      }
+    }
+  }
   .no-shelves {
     display: flex;
-    //because parent has margin top
-    margin-top: -3.75rem;
-    height: 100vh;
+    height: calc(100vh - globals.$margin-big - globals.$margin);
     width: 100%;
     flex-direction: column;
     justify-content: center;

@@ -1,5 +1,6 @@
 import { addDoc, arrayUnion, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
+import Comment from "./Comment";
 import { auth, db } from "../../../firebase";
 
 const PageComments = ({ pageNum, data, bookID }) => {
@@ -10,7 +11,7 @@ const PageComments = ({ pageNum, data, bookID }) => {
     await addDoc(collection(db, `books/${bookID}/pagecomments`), {
       name: user.displayName,
       avatarURL:
-        "https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo",
+        user.photoURL,
       comment: commentContent,
       pageNum: pageNum,
       createdAt: serverTimestamp(),
@@ -25,7 +26,7 @@ const PageComments = ({ pageNum, data, bookID }) => {
       <h3>Comments</h3>
       <form onSubmit={submitComment}>
         <img
-          src="https://yt3.ggpht.com/ytc/AKedOLQFCSVrqjFIW4_wDf-XAB60ze8RHm-zE-c3oVe0=s88-c-k-c0x00ffffff-no-rj-mo"
+          src={user.photoURL}
           alt=""
           width={30}
           height={30}
@@ -42,11 +43,7 @@ const PageComments = ({ pageNum, data, bookID }) => {
       <div className="comments">
         {filteredData.length > 0 ? (
           filteredData.map((comment) => (
-            <div className="comment">
-              <img src={comment.avatarURL} alt="" width={30} height={30} />
-              <span>{comment.name}</span>
-              <p>{comment.comment}</p>
-            </div>
+            <Comment comment={comment}/>
           ))
         ) : (
           <p>Be the first to comment on this page</p>

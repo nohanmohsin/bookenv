@@ -32,41 +32,45 @@ const NewsFeed = () => {
         `users/${auth.currentUser.uid}/books`
       );
       const userBookDocs = await getDocs(userBooksDBRef);
-      userBookDocs.forEach((book) => resultsArray.push(book.data()));
-      //setting data for uncompleted books
-      setOtherBooks({
-        ...otherBooks,
-        continueReading: resultsArray.filter((res) => res.completed === false),
-      });
-      resultsArray.forEach((result) => genres.push(...result.genres));
-      const favGenre = mode(genres);
-      const recBooksDocs = await getDocs(
-        query(
-          collection(db, "books"),
-          where("genres", "array-contains", favGenre)
-        )
-      );
-      recBooksDocs.forEach(
-        (book) =>
-          //if user hasn't already read the book it will be recommended
-          !resultsArray.some((resBook) => resBook.ID === book.id) &&
-          recResultsArray.push({ ...book.data(), ID: book.id })
-      );
-      sessionStorage.setItem("recBooks", JSON.stringify(recResultsArray));
-      setRecBooks(recResultsArray);
-      const newUploadsDocs = await getDocs(
-        query(collection(db, "books"), orderBy("uploadTime"), limit(10))
-      );
-      setOtherBooks((prevOtherBooks) => {
-        const newOtherBooks = {
-          ...prevOtherBooks,
-          newUploads: newUploadsDocs.docs.map((book) => ({
-            ...book.data(),
-            ID: book.id,
-          })),
-        };
-        return newOtherBooks;
-      });
+      if (userBookDocs.docs.length > 0) {
+        userBookDocs.forEach((book) => resultsArray.push(book.data()));
+        //setting data for uncompleted books
+        setOtherBooks({
+          ...otherBooks,
+          continueReading: resultsArray.filter(
+            (res) => res.completed === false
+          ),
+        });
+        resultsArray.forEach((result) => genres.push(...result.genres));
+        const favGenre = mode(genres);
+        const recBooksDocs = await getDocs(
+          query(
+            collection(db, "books"),
+            where("genres", "array-contains", favGenre)
+          )
+        );
+        recBooksDocs.forEach(
+          (book) =>
+            //if user hasn't already read the book it will be recommended
+            !resultsArray.some((resBook) => resBook.ID === book.id) &&
+            recResultsArray.push({ ...book.data(), ID: book.id })
+        );
+        sessionStorage.setItem("recBooks", JSON.stringify(recResultsArray));
+        setRecBooks(recResultsArray);
+        const newUploadsDocs = await getDocs(
+          query(collection(db, "books"), orderBy("uploadTime"), limit(10))
+        );
+        setOtherBooks((prevOtherBooks) => {
+          const newOtherBooks = {
+            ...prevOtherBooks,
+            newUploads: newUploadsDocs.docs.map((book) => ({
+              ...book.data(),
+              ID: book.id,
+            })),
+          };
+          return newOtherBooks;
+        });
+      }
     };
     if (JSON.parse(sessionStorage.getItem("otherBooks"))) {
       setOtherBooks(JSON.parse(sessionStorage.getItem("otherBooks")));
@@ -94,18 +98,29 @@ const NewsFeed = () => {
           }
         </section>
       )}
-      <section className="continue-reading">
-        <RecSection
-          booksDataArr={otherBooks && otherBooks.continueReading}
-          title={"Continue Reading"}
-        />
-      </section>
-      <section className="new-uploads">
-        <RecSection
-          booksDataArr={otherBooks && otherBooks.newUploads}
-          title={"New Uploads"}
-        />
-      </section>
+      {otherBooks && (
+        <>
+          <section className="continue-reading">
+            <RecSection
+              booksDataArr={otherBooks && otherBooks.continueReading}
+              title={"Continue Reading"}
+            />
+          </section>
+          <section className="new-uploads">
+            <RecSection
+              booksDataArr={otherBooks && otherBooks.newUploads}
+              title={"New Uploads"}
+            />
+          </section>
+        </>
+      )}
+
+      {!recBooks.length > 0 && !otherBooks && (
+        <section className="no-books">
+          <h1>Nothing here :(</h1>
+          <p>Try reading a few books</p>
+        </section>
+      )}
     </main>
   );
 };

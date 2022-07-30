@@ -8,7 +8,6 @@ import Signin from "./components/userAuth/Signin";
 import ResetPass from "./components/userAuth/ResetPass";
 import PdfRenderer from "./components/PdfRenderer/PdfRenderer";
 import Upload from "./components/Upload/Upload";
-import Explore from "./components/Explore/Explore";
 import BookDetails from "./components/BookDetails/BookDetails";
 import SearchPage from "./components/SearchPage/SearchPage";
 import NotFound from "./components/NotFound/NotFound";
@@ -76,7 +75,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/explore" element={<Explore />} />
             <Route path="/bookID=:bookID" element={<BookDetails />} />
             <Route path="/search=:searchQuery" element={<SearchPage />} />
             <Route

@@ -36,17 +36,22 @@ const ChatBox = ({ threadID, threadData, joinedThreads, setJoinedThreads }) => {
     await updateDoc(doc(db, "users", user.uid), {
       threads: arrayRemove({ id: threadID, name: threadData.name }),
     });
-    const nextThreadID =
-      joinedThreads[
-        joinedThreads.findIndex((thread) => thread.id === threadID) - 1
-      ].id;
-    
-    setJoinedThreads((prevThreads) => {
-      return prevThreads.filter((thread) => thread.id !== threadID);
-    });
-    navigate(`/threads/id=${nextThreadID}`);
-    //very hacky solution
-    window.location.reload();
+    if (joinedThreads.length > 1) {
+      const nextThreadID =
+        joinedThreads[
+          joinedThreads.findIndex((thread) => thread.id === threadID) - 1
+        ].id;
+
+      setJoinedThreads((prevThreads) => {
+        return prevThreads.filter((thread) => thread.id !== threadID);
+      });
+      navigate(`/threads/id=${nextThreadID}`);
+      //very hacky solution
+      window.location.reload();
+    } else {
+      navigate("/threads");
+      window.location.reload()
+    }
   };
   const handleMessagesScroll = (e) => {
     //increasing msg query limit on scroll to the top

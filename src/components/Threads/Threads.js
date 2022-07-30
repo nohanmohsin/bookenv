@@ -52,7 +52,7 @@ const Threads = () => {
           setJoinedThreads={setJoinedThreads}
         />
       ) : (
-        <p>Loading...</p>
+        <p>{joinedThreads.length > 0}</p>
       )}
     </main>
   );

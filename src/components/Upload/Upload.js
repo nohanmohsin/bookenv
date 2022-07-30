@@ -45,6 +45,7 @@ const Upload = () => {
             const storageRef = ref(storage, `files/${docRef.id}.pdf`);
             let tempTask = uploadBytesResumable(storageRef, file);
             setUploadTask(tempTask);
+            e.target[0].value = "";
           } catch (err) {
             //no need to alert here cos the upload Task gets cancelled here
             //cancelling the upload because the book data couldn't be added to the db
