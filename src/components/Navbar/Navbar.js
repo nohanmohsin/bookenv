@@ -15,6 +15,7 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     if (e.target.value.length > 0) {
       navigate(`search=${e.target.value}`);
+      window.location.reload();
     }
   };
   if (!dontShow.includes(location) && !location.startsWith("/view")) {
@@ -50,7 +51,7 @@ const Navbar = () => {
         <div className="login-btn-parent">
           {user ? (
             <>
-              <Link to="/account">
+              <Link to={`/userID=${auth.currentUser.uid}`}>
                 <img src={auth.currentUser.photoURL} alt="" width={48} />
               </Link>
               <img
@@ -62,7 +63,9 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <span>Sign In</span>
+              <Link to="/signin">
+                <span>Sign In</span>
+              </Link>
               <Link to="/signup">
                 <button>Sign Up</button>
               </Link>

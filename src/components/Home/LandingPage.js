@@ -24,10 +24,9 @@ const LandingPage = () => {
             of specific books to discuss with fellow bookworms.
           </p>
           <div className="login-btn-parent">
-            <Link to="/explore">
-              <button>Explore</button>
+            <Link to="/signin">
+              <span>Sign In</span>
             </Link>
-            <span>Sign In</span>
           </div>
         </div>
       </section>
@@ -47,7 +46,9 @@ const LandingPage = () => {
             <Link to="/signup">
               <button>Make An Account</button>
             </Link>
-            <span>Sign In</span>
+            <Link to="/signin">
+              <span>Sign In</span>
+            </Link>
           </div>
         </div>
         <img
@@ -66,9 +67,6 @@ const LandingPage = () => {
           your progress and (if you want) we'll tell others about it. You can
           also earn awards from reading your favourite books too
         </p>
-        <Link to="/explore">
-          <button>Explore</button>
-        </Link>
       </section>
     </main>
   );

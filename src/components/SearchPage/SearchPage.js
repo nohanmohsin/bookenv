@@ -35,6 +35,7 @@ const SearchPage = () => {
     };
     const fetchBookResults = async () => {
       let resultsArray = [];
+      console.log(searchQuery.split(" ", 10));
       const queryDocs = await getDocs(
         query(
           collection(db, "books"),
@@ -44,7 +45,7 @@ const SearchPage = () => {
       queryDocs.forEach((doc) => {
         resultsArray.push({ ...doc.data(), id: doc.id });
       });
-      setBookResults(queryDocs.docs.map(book => book.data()));
+      setBookResults(resultsArray);
     };
     fetchUserResults();
     fetchBookResults();

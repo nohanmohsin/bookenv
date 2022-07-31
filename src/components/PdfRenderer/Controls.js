@@ -86,7 +86,7 @@ const Controls = ({
       />
       <img src={shareIcon} alt="" width={30} className="share" onClick={() => {
         //TODO: change this to the hosted url when website is hosted
-        navigator.clipboard.writeText(`http://localhost:3000/view=${fileID}.pdf/page=${pageNumber}`)
+        navigator.clipboard.writeText(`https://bookenv-dev.web.app/view=${fileID}.pdf/page=${pageNumber}`)
         alert("Link copied to clipboard")
       }}/>
       <img

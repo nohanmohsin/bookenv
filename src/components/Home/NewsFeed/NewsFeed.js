@@ -57,20 +57,21 @@ const NewsFeed = () => {
         );
         sessionStorage.setItem("recBooks", JSON.stringify(recResultsArray));
         setRecBooks(recResultsArray);
-        const newUploadsDocs = await getDocs(
-          query(collection(db, "books"), orderBy("uploadTime"), limit(10))
-        );
-        setOtherBooks((prevOtherBooks) => {
-          const newOtherBooks = {
-            ...prevOtherBooks,
-            newUploads: newUploadsDocs.docs.map((book) => ({
-              ...book.data(),
-              ID: book.id,
-            })),
-          };
-          return newOtherBooks;
-        });
       }
+
+      const newUploadsDocs = await getDocs(
+        query(collection(db, "books"), orderBy("uploadTime"), limit(10))
+      );
+      setOtherBooks((prevOtherBooks) => {
+        const newOtherBooks = {
+          ...prevOtherBooks,
+          newUploads: newUploadsDocs.docs.map((book) => ({
+            ...book.data(),
+            ID: book.id,
+          })),
+        };
+        return newOtherBooks;
+      });
     };
     if (JSON.parse(sessionStorage.getItem("otherBooks"))) {
       setOtherBooks(JSON.parse(sessionStorage.getItem("otherBooks")));
@@ -100,12 +101,15 @@ const NewsFeed = () => {
       )}
       {otherBooks && (
         <>
-          <section className="continue-reading">
-            <RecSection
-              booksDataArr={otherBooks && otherBooks.continueReading}
-              title={"Continue Reading"}
-            />
-          </section>
+          {otherBooks.continueReading && (
+            <section className="continue-reading">
+              <RecSection
+                booksDataArr={otherBooks.continueReading}
+                title={"Continue Reading"}
+              />
+            </section>
+          )}
+
           <section className="new-uploads">
             <RecSection
               booksDataArr={otherBooks && otherBooks.newUploads}

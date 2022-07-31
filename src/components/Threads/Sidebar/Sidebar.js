@@ -57,7 +57,7 @@ const Sidebar = ({ threadID, joinedThreads, setJoinedThreads }) => {
   const joinThread = async (e) => {
     e.preventDefault();
     let threadID = e.target[0].value;
-    if (e.target[0].value.startsWith("http://localhost:3000/threads/id=")) {
+    if (e.target[0].value.startsWith("https://bookenv-dev.web.app/threads/id=")) {
       threadID = e.target[0].value.substr(
         e.target[0].value.indexOf("id=") + 3,
         //there are 20 characters in every id
